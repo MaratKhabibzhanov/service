@@ -1,0 +1,52 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./web_service:/service/web_service
+
+    command: >
+      sh -c "python manage.py test&python manage.py runserver 0.0.0.0:8000"
+    environment:
+      DJANGO_DATABASE_HOST: database
+      DJANGO_REDIS_HOST: redis
+    env_file:
+      - .env.dev
+
+    depends_on:
+      - database
+      - redis
+
+  database:
+    image: postgres:14.6-alpine
+    volumes:
+      - dev_postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.dev
+
+  redis:
+    image: redis:7.0.5-alpine
+    hostname: redis
+
+  worker:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    hostname: worker
+    entrypoint: celery
+    command: -A celery_app.app worker --loglevel=info
+    volumes:
+      - ./web_service:/service/web_service
+    links:
+      - redis
+    depends_on:
+      - redis
+      - database
+    env_file:
+      - .env.dev
+
+volumes:
+  dev_postgres_data:
