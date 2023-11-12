@@ -1,5 +1,7 @@
 from django.db import models
 
+from config import settings
+
 
 class Warehouse(models.Model):
     """Склад"""
@@ -23,7 +25,7 @@ class Acceptor(models.Model):
     """Мастер - приемщик"""
     first_name = models.CharField("Имя", max_length=50)
     second_name = models.CharField("Фамилия", max_length=50)
-    third_name = models.CharField("Отчество", max_length=50)
+    patronim = models.CharField("Отчество", max_length=50)
 
     def __str__(self):
         return f'{self.second_name} {self.first_name}'
@@ -53,6 +55,7 @@ class Maintenance(models.Model):
 
 class Avto(models.Model):
     """Автомобиль"""
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Собственник", on_delete=models.CASCADE)
     vin = models.CharField("VIN", max_length=17, unique=True)
     number = models.CharField("Госномер", max_length=9, blank=True, unique=True)
     sts = models.CharField("Номер свидетельства о регистрации", max_length=10, blank=True, unique=True)

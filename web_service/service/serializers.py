@@ -26,7 +26,7 @@ class WorkingPriceSerializer(serializers.ModelSerializer):
 class AcceptorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Acceptor
-        fields = ['id', 'first_name', 'second_name', 'third_name']
+        fields = ['id', 'first_name', 'second_name', 'patronim']
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
