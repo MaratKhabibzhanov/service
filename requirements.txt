@@ -7,3 +7,5 @@ smsaero-api==2.1.1
 coverage==7.3.0
 drf-spectacular
 Pillow
+djoser
+djangorestframework_simplejwt
