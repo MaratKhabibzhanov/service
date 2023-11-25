@@ -13,7 +13,7 @@ class WarehouseViewSet(viewsets.ModelViewSet):
 class CarModelViewSet(viewsets.ModelViewSet):
     queryset = CarModel.objects.all()
     serializer_class = CarModelSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class WorkingPriceViewSet(viewsets.ModelViewSet):

@@ -12,6 +12,24 @@ class Warehouse(models.Model):
         return self.spare_part
 
 
+class Oil(models.Model):
+    """Склад"""
+    title = models.CharField("Масло", max_length=50, blank=False, null=False)
+    viscosity = models.CharField("Вязкость", max_length=7, blank=False, null=False)
+    price = models.DecimalField("Цена", max_digits=9, decimal_places=2)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'viscosity'],
+                name='oil_uq'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.title} {self.viscosity}'
+
+
 class WorkingPrice(models.Model):
     """Цена определенного вида работы"""
     working_type = models.CharField("Тип нормочаса", max_length=50, unique=True)
@@ -31,12 +49,24 @@ class Acceptor(models.Model):
         return f'{self.second_name} {self.first_name}'
 
 
+class Engine(models.Model):
+    """Модель автомобиля"""
+    model = models.CharField("Модель", max_length=50, unique=True)
+    oil = models.ForeignKey(Oil, blank=True, on_delete=models.PROTECT)
+    oil_count = models.DecimalField("Количество масла", max_digits=3, decimal_places=1)
+    engine_vol = models.DecimalField("Объём двигателя", max_digits=3, decimal_places=1)
+
+    def __str__(self):
+        return self.model
+
+
 class CarModel(models.Model):
     """Модель автомобиля"""
     model = models.CharField("Модель", max_length=50, unique=True)
     image = models.CharField(max_length=100)
     coef = models.DecimalField("Коэффициент", max_digits=3, decimal_places=1)
     warehouses = models.ManyToManyField(Warehouse, blank=True)
+    engine = models.ForeignKey(Engine, blank=False, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.model
@@ -60,7 +90,6 @@ class Avto(models.Model):
     number = models.CharField("Госномер", max_length=9, blank=True, unique=True)
     sts = models.CharField("Номер свидетельства о регистрации", max_length=10, blank=True, unique=True)
     sold_date = models.DateField("Дата продажи", blank=True)
-    engine_vol = models.CharField("Объём двигателя", max_length=3)
     mileage = models.IntegerField("Пробег")
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля", on_delete=models.PROTECT)
 

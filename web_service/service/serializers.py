@@ -10,12 +10,26 @@ class WarehouseSerializer(serializers.ModelSerializer):
         fields = ['id', 'spare_part', 'price']
 
 
+class OilSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Engine
+        fields = ['id', 'title', 'viscosity', 'price']
+
+
+class EngineSerializer(serializers.ModelSerializer):
+    oil = serializers.PrimaryKeyRelatedField(queryset=Oil.objects.all())
+    class Meta:
+        model = Engine
+        fields = ['id', 'model', 'oil', 'oil_count', 'engine_vol']
+
+
 class CarModelSerializer(serializers.ModelSerializer):
     warehouses = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all(), many=True)
+    engine = serializers.PrimaryKeyRelatedField(queryset=Engine.objects.all())
 
     class Meta:
         model = CarModel
-        fields = ['id', 'model', 'coef', 'image', 'warehouses']
+        fields = ['id', 'model', 'coef', 'image', 'warehouses', 'engine']
 
 
 class WorkingPriceSerializer(serializers.ModelSerializer):
@@ -43,9 +57,10 @@ class MaintenanceSerializer(serializers.ModelSerializer):
 class AvtoSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
     car_model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())
+
     class Meta:
         model = Avto
-        fields = ['id', 'owner', 'vin', 'number', 'sts', 'sold_date', 'engine_vol', 'mileage', 'car_model']
+        fields = ['id', 'owner', 'vin', 'number', 'sts', 'sold_date', 'mileage', 'car_model']
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
