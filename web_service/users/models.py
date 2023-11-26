@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
 
 
@@ -12,8 +13,10 @@ class CustomUser(AbstractUser):
     first_name = models.CharField("Имя", max_length=50)
     last_name = models.CharField("Фамилия", max_length=50)
     patronim = models.CharField("Отчество", max_length=50)
-    role = models.CharField("Роль", max_length=7,
-                            choices=ROLES_CHOICES, default=USER_ROLE, blank=False)
-    phone_number = models.CharField("Номер телефона", max_length=12, blank=False)
+    role = models.CharField("Роль", max_length=7, choices=ROLES_CHOICES,
+                            default=USER_ROLE, blank=False)
+    phone_number = models.CharField("Номер телефона", max_length=12,
+                                    blank=False, unique=True,
+                                    validators=(RegexValidator(regex=r'\+7(\d{10})'),))
     email = models.EmailField("Email", blank=False)
 

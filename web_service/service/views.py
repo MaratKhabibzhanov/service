@@ -1,7 +1,24 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, views, status
+from rest_framework.response import Response
 
-from .models import *
-from .serializers import *
+from .models import (Warehouse,
+                     CarModel,
+                     WorkingPrice,
+                     Acceptor,
+                     Avto,
+                     Maintenance,
+                     Registration,
+                     Oil,
+                     Engine)
+from .serializers import (WarehouseSerializer,
+                          CarModelSerializer,
+                          WorkingPriceSerializer,
+                          AcceptorSerializer,
+                          MaintenanceSerializer,
+                          AvtoSerializer,
+                          RegistrationSerializer,
+                          OilSerializer,
+                          EngineSerializer)
 
 
 class WarehouseViewSet(viewsets.ModelViewSet):
@@ -13,7 +30,7 @@ class WarehouseViewSet(viewsets.ModelViewSet):
 class CarModelViewSet(viewsets.ModelViewSet):
     queryset = CarModel.objects.all()
     serializer_class = CarModelSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class WorkingPriceViewSet(viewsets.ModelViewSet):
@@ -44,3 +61,17 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class OilViewSet(viewsets.ModelViewSet):
+    queryset = Oil.objects.all()
+    serializer_class = OilSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class EngineViewSet(viewsets.ModelViewSet):
+    queryset = Engine.objects.all()
+    serializer_class = EngineSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+

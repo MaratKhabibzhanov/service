@@ -16,7 +16,7 @@ router.register(r'registration', views.RegistrationViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
 ]
 
 urlpatterns += router.urls

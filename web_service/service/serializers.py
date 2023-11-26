@@ -1,7 +1,15 @@
 from rest_framework import serializers
 
 from users.models import CustomUser
-from .models import *
+from .models import (Avto,
+                     Acceptor,
+                     WorkingPrice,
+                     Warehouse,
+                     Oil,
+                     CarModel,
+                     Maintenance,
+                     Engine,
+                     Registration)
 
 
 class WarehouseSerializer(serializers.ModelSerializer):
@@ -12,12 +20,13 @@ class WarehouseSerializer(serializers.ModelSerializer):
 
 class OilSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Engine
+        model = Oil
         fields = ['id', 'title', 'viscosity', 'price']
 
 
 class EngineSerializer(serializers.ModelSerializer):
     oil = serializers.PrimaryKeyRelatedField(queryset=Oil.objects.all())
+
     class Meta:
         model = Engine
         fields = ['id', 'model', 'oil', 'oil_count', 'engine_vol']
@@ -67,6 +76,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     acceptor = serializers.PrimaryKeyRelatedField(queryset=Acceptor.objects.all())
     maintenance = serializers.PrimaryKeyRelatedField(queryset=Maintenance.objects.all())
     avto = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+
     class Meta:
         model = Registration
         fields = ['id', 'day', 'time', 'acceptor', 'maintenance', 'avto']

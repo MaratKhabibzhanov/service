@@ -63,9 +63,9 @@ class Engine(models.Model):
 class CarModel(models.Model):
     """Модель автомобиля"""
     model = models.CharField("Модель", max_length=50, unique=True)
-    image = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='image')
     coef = models.DecimalField("Коэффициент", max_digits=3, decimal_places=1)
-    warehouses = models.ManyToManyField(Warehouse, blank=True)
+    warehouses = models.ManyToManyField(Warehouse, blank=True, related_name='carmodels')
     engine = models.ForeignKey(Engine, blank=False, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -76,7 +76,7 @@ class Maintenance(models.Model):
     """Ремонт"""
     operation = models.CharField("Операция", max_length=150, unique=True)
     working_time = models.DecimalField("Количество нормо-часов", max_digits=3, decimal_places=1)
-    warehouses = models.ManyToManyField(Warehouse, verbose_name="Запасные части")
+    warehouses = models.ManyToManyField(Warehouse, verbose_name="Запасные части", related_name='maintenances')
     working_price = models.ForeignKey(WorkingPrice, verbose_name="Предварительная стоимость", on_delete=models.PROTECT)
 
     def __str__(self):
