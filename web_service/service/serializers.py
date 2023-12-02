@@ -24,7 +24,10 @@ class PartSerializer(serializers.ModelSerializer):
 class OilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Oil
-        fields = ['id', 'title', 'viscosity', 'price']
+        fields = ['id',
+                  'title',
+                  'viscosity',
+                  'price']
 
 
 class EngineSerializer(serializers.ModelSerializer):
@@ -32,7 +35,11 @@ class EngineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Engine
-        fields = ['id', 'model', 'oil', 'oil_count', 'engine_vol']
+        fields = ['id',
+                  'model',
+                  'oil',
+                  'oil_count',
+                  'engine_vol']
 
 
 class CarModelSerializer(serializers.ModelSerializer):
@@ -40,19 +47,27 @@ class CarModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CarModel
-        fields = ['id', 'model', 'image', 'engine']
+        fields = ['id',
+                  'model',
+                  'image',
+                  'engine']
 
 
 class WorkingTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkingType
-        fields = ['id', 'working_type', 'price']
+        fields = ['id',
+                  'working_type',
+                  'price']
 
 
 class AcceptorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Acceptor
-        fields = ['id', 'first_name', 'second_name', 'patronim']
+        fields = ['id',
+                  'first_name',
+                  'second_name',
+                  'patronim']
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
@@ -77,7 +92,14 @@ class AvtoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Avto
-        fields = ['id', 'owner', 'vin', 'number', 'sts', 'sold_date', 'mileage', 'car_model']
+        fields = ['id',
+                  'owner',
+                  'vin',
+                  'number',
+                  'sts',
+                  'sold_date',
+                  'mileage',
+                  'car_model']
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -87,4 +109,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Registration
-        fields = ['id', 'day', 'time', 'acceptor', 'maintenance', 'avto']
+        fields = ['id',
+                  'day',
+                  'time',
+                  'acceptor',
+                  'maintenance',
+                  'avto',
+                  'canceled']

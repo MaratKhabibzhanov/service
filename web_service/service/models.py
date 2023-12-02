@@ -104,6 +104,7 @@ class Registration(models.Model):
     acceptor = models.ForeignKey(Acceptor, verbose_name="Мастер приемщик", on_delete=models.PROTECT)
     maintenance = models.ForeignKey(Maintenance, verbose_name="Тип ремонта", on_delete=models.PROTECT)
     avto = models.ForeignKey(Avto, verbose_name="Автомобиль", on_delete=models.CASCADE)
+    canceled = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.day} {self.time}'
