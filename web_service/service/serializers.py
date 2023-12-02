@@ -3,8 +3,8 @@ from rest_framework import serializers
 from users.models import CustomUser
 from .models import (Avto,
                      Acceptor,
-                     WorkingPrice,
-                     Warehouse,
+                     WorkingType,
+                     Part,
                      Oil,
                      CarModel,
                      Maintenance,
@@ -12,10 +12,13 @@ from .models import (Avto,
                      Registration)
 
 
-class WarehouseSerializer(serializers.ModelSerializer):
+class PartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Warehouse
-        fields = ['id', 'spare_part', 'price']
+        model = Part
+        fields = ['id',
+                  'spare_part',
+                  'price',
+                  'compatible_car']
 
 
 class OilSerializer(serializers.ModelSerializer):
@@ -33,17 +36,16 @@ class EngineSerializer(serializers.ModelSerializer):
 
 
 class CarModelSerializer(serializers.ModelSerializer):
-    warehouses = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all(), many=True)
     engine = serializers.PrimaryKeyRelatedField(queryset=Engine.objects.all())
 
     class Meta:
         model = CarModel
-        fields = ['id', 'model', 'coef', 'image', 'warehouses', 'engine']
+        fields = ['id', 'model', 'image', 'engine']
 
 
-class WorkingPriceSerializer(serializers.ModelSerializer):
+class WorkingTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WorkingPrice
+        model = WorkingType
         fields = ['id', 'working_type', 'price']
 
 
@@ -54,13 +56,19 @@ class AcceptorSerializer(serializers.ModelSerializer):
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
-    warehouses = serializers.PrimaryKeyRelatedField(queryset=Warehouse.objects.all(),
-                                                    many=True,)
-    working_price = serializers.PrimaryKeyRelatedField(queryset=WorkingPrice.objects.all())
+    parts = serializers.PrimaryKeyRelatedField(queryset=Part.objects.all(),
+                                                    many=True, )
+    working_type = serializers.PrimaryKeyRelatedField(queryset=WorkingType.objects.all())
+    car_model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())
 
     class Meta:
         model = Maintenance
-        fields = ['id', 'operation', 'working_time', 'warehouses', 'working_price']
+        fields = ['id',
+                  'operation',
+                  'working_time',
+                  'parts',
+                  'working_type',
+                  'car_model']
 
 
 class AvtoSerializer(serializers.ModelSerializer):
