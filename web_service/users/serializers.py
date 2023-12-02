@@ -13,7 +13,6 @@ class UserMeSerializer(serializers.ModelSerializer):
                   'last_name',
                   'patronim',
                   'role',
-                  'phone_number',
                   )
 
 
@@ -25,5 +24,4 @@ class UserRegistrationSerializer(BaseUserRegistrationSerializer):
                   'first_name',
                   'last_name',
                   'patronim',
-                  'phone_number',
                   )
