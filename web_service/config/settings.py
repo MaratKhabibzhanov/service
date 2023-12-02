@@ -104,10 +104,15 @@ DJOSER = {
     'SET_PASSWORD_RETYPE': False,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": False,
     "TOKEN_MODEL": None,
-    'SERIALIZERS': {
+    "SERIALIZERS": {
+        'user': 'users.serializers.UsersSerializer',
+        'list': 'users.serializers.UsersSerializer',
         'user_create': 'users.serializers.UserRegistrationSerializer',
         'current_user': 'users.serializers.UserMeSerializer'
     },
+    "PERMISSIONS": {
+        'user_list': ['users.permissions.IsManagerGetList'],
+    }
 }
 
 

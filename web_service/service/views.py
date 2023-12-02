@@ -18,7 +18,8 @@ from .serializers import (PartSerializer,
                           AvtoSerializer,
                           RegistrationSerializer,
                           OilSerializer,
-                          EngineSerializer)
+                          EngineSerializer, AvtoUserSerializer)
+from users.models import CustomUser
 
 
 class PartViewSet(viewsets.ModelViewSet):
@@ -55,6 +56,17 @@ class AvtoViewSet(viewsets.ModelViewSet):
     queryset = Avto.objects.all()
     serializer_class = AvtoSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        if self.request.user.role == CustomUser.USER_ROLE:
+            serializer.save(owner=self.request.user)
+        else:
+            serializer.save()
+
+    def get_serializer_class(self):
+        if self.request.user.role == CustomUser.USER_ROLE:
+            return AvtoUserSerializer
+        return super().get_serializer_class()
 
 
 class RegistrationViewSet(viewsets.ModelViewSet):
