@@ -1,0 +1,79 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/lines-between-class-members": "off",
+    "import/order": "off",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": ["variable"],
+        "format": ["camelCase", "PascalCase", "snake_case", "UPPER_CASE"],
+        "leadingUnderscore": "allow"
+      }
+    ],
+    // allow _
+    "no-underscore-dangle": [
+      "error",
+      { "allow": ["_text", "_attributes", "_instruction"] }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^(_){1}." }
+    ],
+    // allow reassign 'state'
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "state",
+          "item",
+          "socket",
+          "data",
+          "ws"
+        ]
+      }
+    ],
+    "no-void": ["error", { "allowAsStatement": true }],
+    // Configure prettier
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 100,
+        "trailingComma": "es5",
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": true,
+        "jsxSingleQuote": false,
+        "arrowParens": "always",
+        "endOfLine": "auto"
+      }
+    ]
+  }
+}
