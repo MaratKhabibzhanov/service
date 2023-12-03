@@ -20,7 +20,7 @@ export const App: FC = () => {
           <Layout.Content>
             <Outlet />
           </Layout.Content>
-          <Layout.Footer />
+          <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
         </Layout>
       </RootStoreContext.Provider>
     </ConfigProvider>

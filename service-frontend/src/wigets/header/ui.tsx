@@ -1,9 +1,10 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Layout, Menu, Space, Switch, Typography } from 'antd';
+import { tton, Layout, Menu, Space, Switch, Typography } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { menuItems } from './consts';
+import { AuthModal } from 'features';
 
 type HeaderProps = {
   isDarkTheme: boolean;
@@ -40,6 +41,7 @@ export const Header: FC<HeaderProps> = ({ isDarkTheme, setIsDarkTheme }) => {
           style={{ marginBottom: '3px' }}
         />
       </Space>
+      <AuthModal />
     </Layout.Header>
   );
 };

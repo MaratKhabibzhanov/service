@@ -9,11 +9,15 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <></>,
+        element: <>content</>,
       },
       {
         path: 'login',
         element: <>asd</>,
+      },
+      {
+        path: '*',
+        element: <span style={{ color: 'red' }}>error</span>,
       },
     ],
   },
