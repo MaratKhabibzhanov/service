@@ -112,6 +112,7 @@ DJOSER = {
     },
     "PERMISSIONS": {
         'user_list': ['users.permissions.IsManagerGetList'],
+        'user_delete': ['users.permissions.IsManagerGetList'],
     }
 }
 

@@ -119,7 +119,7 @@ class AvtoUserSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     acceptor = serializers.PrimaryKeyRelatedField(queryset=Acceptor.objects.all())
     maintenance = serializers.PrimaryKeyRelatedField(queryset=Maintenance.objects.all())
-    avto = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    avto = serializers.PrimaryKeyRelatedField(queryset=Avto.objects.all())
 
     class Meta:
         model = Registration

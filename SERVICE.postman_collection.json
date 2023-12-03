@@ -288,14 +288,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{endpoint}}/API/avto/3/",
+									"raw": "{{endpoint}}/API/avto/5/",
 									"host": [
 										"{{endpoint}}"
 									],
 									"path": [
 										"API",
 										"avto",
-										"3",
+										"5",
 										""
 									]
 								}
@@ -420,7 +420,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"vin\": \"2HKRM3H32FH507509\",\n    \"number\": \"c455сп174\",\n    \"sts\": \"4535591765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 52000,\n    \"car_model\": 1,\n    \"owner\": 5\n}",
+									"raw": "{\n    \"vin\": \"2HHRM3H32FT507609\",\n    \"number\": \"c875сп174\",\n    \"sts\": \"4536941765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 1,\n    \"owner\": 14\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -447,14 +447,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{endpoint}}/API/avto/2/",
+									"raw": "{{endpoint}}/API/avto/6/",
 									"host": [
 										"{{endpoint}}"
 									],
 									"path": [
 										"API",
 										"avto",
-										"2",
+										"6",
 										""
 									]
 								}

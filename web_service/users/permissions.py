@@ -5,9 +5,12 @@ from .models import CustomUser
 
 class IsManagerGetList(permissions.IsAuthenticatedOrReadOnly):
     """
-    Проверка прав на редактирование публикаций
+    Проверка прав на доступ к пользователям
     """
-    def has_permission(self, request, view) -> bool:
+
+    def has_object_permission(self, request, view, obj):
         role = request.user.role if type(request.user) != AnonymousUser else None
-        return role == CustomUser.MANAGER_ROLE
+        if request.method in permissions.SAFE_METHODS and role == CustomUser.MANAGER_ROLE:
+            return True
+        return request.user == obj
 

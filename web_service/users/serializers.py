@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from users.models import CustomUser
-# from djoser.views import UserViewSet
+# from djoser.views import
 
 
 class UserMeSerializer(serializers.ModelSerializer):

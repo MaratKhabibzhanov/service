@@ -14,6 +14,6 @@ class CustomUser(AbstractUser):
     last_name = models.CharField("Фамилия", max_length=50)
     patronim = models.CharField("Отчество", max_length=50)
     role = models.CharField("Роль", max_length=7, choices=ROLES_CHOICES,
-                            default=USER_ROLE, blank=False)
-    email = models.EmailField("Email", blank=False)
+                            default=USER_ROLE)
+    email = models.EmailField("Email", unique=True)
 

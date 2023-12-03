@@ -10,6 +10,7 @@ from .models import (Part,
                      Registration,
                      Oil,
                      Engine)
+from .permissions import IsOwner
 from .serializers import (PartSerializer,
                           CarModelSerializer,
                           WorkingTypeSerializer,
@@ -24,24 +25,28 @@ from users.models import CustomUser
 
 class PartViewSet(viewsets.ModelViewSet):
     queryset = Part.objects.all()
+    http_method_names = ("get", "head", "options")
     serializer_class = PartSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class CarModelViewSet(viewsets.ModelViewSet):
     queryset = CarModel.objects.all()
+    http_method_names = ("get", "head", "options")
     serializer_class = CarModelSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class WorkingTypeViewSet(viewsets.ModelViewSet):
     queryset = WorkingType.objects.all()
+    http_method_names = ("get", "head", "options")
     serializer_class = WorkingTypeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class AcceptorViewSet(viewsets.ModelViewSet):
     queryset = Acceptor.objects.all()
+    http_method_names = ("get", "head", "options")
     serializer_class = AcceptorSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -55,7 +60,7 @@ class MaintenanceViewSet(viewsets.ModelViewSet):
 class AvtoViewSet(viewsets.ModelViewSet):
     queryset = Avto.objects.all()
     serializer_class = AvtoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
 
     def perform_create(self, serializer):
         if self.request.user.role == CustomUser.USER_ROLE:
@@ -68,6 +73,11 @@ class AvtoViewSet(viewsets.ModelViewSet):
             return AvtoUserSerializer
         return super().get_serializer_class()
 
+    def get_queryset(self):
+        if self.request.user.role == CustomUser.USER_ROLE:
+            return Avto.objects.filter(owner=self.request.user.id)
+        return super().get_queryset()
+
 
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
@@ -77,12 +87,14 @@ class RegistrationViewSet(viewsets.ModelViewSet):
 
 class OilViewSet(viewsets.ModelViewSet):
     queryset = Oil.objects.all()
+    http_method_names = ("get", "head", "options")
     serializer_class = OilSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
 class EngineViewSet(viewsets.ModelViewSet):
     queryset = Engine.objects.all()
+    http_method_names = ("get", "head", "options")
     serializer_class = EngineSerializer
     permission_classes = [permissions.IsAuthenticated]
 
