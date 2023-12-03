@@ -37,27 +37,15 @@
       }
     ],
     // allow _
-    "no-underscore-dangle": [
-      "error",
-      { "allow": ["_text", "_attributes", "_instruction"] }
-    ],
+    "no-underscore-dangle": ["error", { "allow": ["_text", "_attributes", "_instruction"] }],
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "varsIgnorePattern": "^(_){1}." }
-    ],
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^(_){1}." }],
     // allow reassign 'state'
     "no-param-reassign": [
       "error",
       {
         "props": true,
-        "ignorePropertyModificationsFor": [
-          "state",
-          "item",
-          "socket",
-          "data",
-          "ws"
-        ]
+        "ignorePropertyModificationsFor": ["state", "item", "socket", "data", "ws"]
       }
     ],
     "no-void": ["error", { "allowAsStatement": true }],
