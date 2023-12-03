@@ -10,6 +10,10 @@ export const AuthModal: FC = () => {
     setOpen(false);
   };
 
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
   return (
     <>
       <Button type="primary" onClick={() => setOpen(true)}>
@@ -27,7 +31,7 @@ export const AuthModal: FC = () => {
           name="auth_form"
           className="login-form"
           initialValues={{ remember: true }}
-          // onFinish={onFinish}
+          onFinish={onFinish}
         >
           <Form.Item
             name="username"
@@ -52,7 +56,7 @@ export const AuthModal: FC = () => {
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <Link to="/" style={{ float: 'right' }}>
+            <Link to="/" style={{ float: 'right' }} onClick={close}>
               Forgot password
             </Link>
           </Form.Item>
@@ -61,7 +65,10 @@ export const AuthModal: FC = () => {
               Log in
             </Button>
           </Form.Item>
-          Or <Link to="/registration">register now!</Link>
+          Or{' '}
+          <Link to="/registration" onClick={close}>
+            register now!
+          </Link>
         </Form>
       </Modal>
     </>
