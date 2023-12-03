@@ -1,11 +1,10 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { FC } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useStore } from 'app/store';
 import { AuthModal, ThemeSwitcher } from 'features';
 
-import { tton, Layout, Menu, Space, Switch, Typography } from 'antd';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { Layout, Menu, Space, Typography } from 'antd';
 import { menuItems } from './consts';
 
 export const Header: FC = () => {
