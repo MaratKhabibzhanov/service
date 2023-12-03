@@ -2,13 +2,13 @@ import { Button, Form, Input } from 'antd';
 import { FC } from 'react';
 
 type FieldType = {
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
   confirm?: string;
-  email?: string;
-  name?: string;
-  surname?: string;
-  patronymic?: string;
+  email: string;
+  name: string;
+  surname: string;
+  patronymic: string;
 };
 
 const formItemLayout = {
@@ -23,7 +23,13 @@ const formItemLayout = {
 };
 
 export const RegistrationForm: FC = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FieldType>();
+
+  const sendForm = (values: FieldType) => {
+    const dataToSend = { ...values };
+    if (dataToSend.confirm) delete dataToSend.confirm;
+    console.log(dataToSend);
+  };
 
   return (
     <Form
@@ -32,6 +38,7 @@ export const RegistrationForm: FC = () => {
       scrollToFirstError
       {...formItemLayout}
       style={{ maxWidth: 600 }}
+      onFinish={sendForm}
     >
       <Form.Item<FieldType>
         label="Username"

@@ -1,16 +1,23 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Modal, Space, Typography } from 'antd';
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, Modal } from 'antd';
+
+type FieldType = {
+  username: string;
+  password: string;
+};
+
 export const AuthModal: FC = () => {
   const [open, setOpen] = useState(false);
+  const [form] = Form.useForm<FieldType>();
 
   const close = () => {
     setOpen(false);
   };
 
-  const onFinish = (values) => {
+  const onFinish = (values: FieldType) => {
     console.log(values);
   };
 
@@ -27,12 +34,7 @@ export const AuthModal: FC = () => {
         style={{ maxWidth: '400px' }}
         footer={[<Button onClick={close}>Close</Button>]}
       >
-        <Form
-          name="auth_form"
-          className="login-form"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
+        <Form name="auth_form" form={form} initialValues={{ remember: true }} onFinish={onFinish}>
           <Form.Item
             name="username"
             rules={[{ required: true, message: 'Please input your Username!' }]}
