@@ -5,6 +5,7 @@
   align-items: center;
   gap: 60px;
   z-index: 10;
+  width: 100vw;
 }
 
 .menu {
@@ -14,7 +15,7 @@
 .container {
   max-width: 1240px;
   width: 100%;
-  min-height: calc(100vh - 116px);
+  min-height: calc(100vh - 133px);
   margin: 0 auto;
   padding: 20px 20px 52px 20px;
   box-sizing: border-box;

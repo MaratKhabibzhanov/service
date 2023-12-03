@@ -18,7 +18,9 @@ export const App: FC = () => {
         <Layout className="layout">
           <Header isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
           <Layout.Content>
-            <Outlet />
+            <div className="container">
+              <Outlet />
+            </div>
           </Layout.Content>
           <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
         </Layout>
