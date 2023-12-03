@@ -21,7 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["./service-frontend/src"],
   "exclude": ["node_modules", "public"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./service-frontend/tsconfig.node.json" }]
 }

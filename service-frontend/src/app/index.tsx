@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './app.css';
 
+import { withProviders } from './providers';
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -22,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default withProviders(App);
