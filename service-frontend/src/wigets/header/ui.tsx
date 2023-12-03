@@ -6,7 +6,7 @@ import { useStore } from 'app/store';
 import { AuthModal, MobileMenu, ThemeSwitcher } from 'features';
 
 import { Layout, Menu, Space } from 'antd';
-import { menuItems } from './consts';
+import { menuItems } from 'shared/consts';
 
 export const Header: FC = () => {
   const { pathname } = useLocation();
@@ -16,7 +16,7 @@ export const Header: FC = () => {
 
   return (
     <Layout.Header className="header">
-      <Space size="large">
+      <Space>
         {auth.isAuth && (
           <MediaQuery maxWidth={768}>
             <MobileMenu />

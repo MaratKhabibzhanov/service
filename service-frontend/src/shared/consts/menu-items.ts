@@ -1,6 +1,9 @@
-import { MenuProps } from 'antd';
+type MenuItems = {
+  label: string;
+  key: string;
+};
 
-export const menuItems: MenuProps['items'] = [
+export const menuItems: MenuItems[] = [
   {
     label: 'Home',
     key: '/',
