@@ -7,6 +7,7 @@ import { ConfigProvider, Layout } from 'antd';
 
 import { rootStore, RootStoreContext } from './store';
 import { darkTheme, lightTheme } from 'shared/theme';
+import { Header } from 'wigets';
 
 export const App: FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(window.localStorage.getItem('theme') === 'dark');
@@ -15,7 +16,7 @@ export const App: FC = () => {
     <ConfigProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <RootStoreContext.Provider value={rootStore}>
         <Layout className="layout">
-          <Layout.Header></Layout.Header>
+          <Header />
           <Layout.Content>
             <Outlet />
           </Layout.Content>
