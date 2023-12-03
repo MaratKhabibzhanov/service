@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useStore } from 'app/store';
 import { AuthModal, ThemeSwitcher } from 'features';
@@ -15,7 +15,9 @@ export const Header: FC = () => {
 
   return (
     <Layout.Header className="header">
-      <Typography.Text style={{ color: '#fff', fontSize: '20px' }}>Habib Service</Typography.Text>
+      <Link to="/" style={{ color: '#fff', fontSize: '20px' }}>
+        Habib Service
+      </Link>
       {auth.isAuth && (
         <Menu
           items={menuItems}

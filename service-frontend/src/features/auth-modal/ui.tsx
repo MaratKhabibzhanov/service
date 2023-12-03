@@ -1,4 +1,5 @@
-import { Button, Input, Modal, Space, Typography } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, Modal, Space, Typography } from 'antd';
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -20,19 +21,48 @@ export const AuthModal: FC = () => {
         onOk={() => setOpen(false)}
         onCancel={() => setOpen(false)}
         style={{ maxWidth: '400px' }}
-        footer={[<Button onClick={close}>Close</Button>, <Button type="primary">Log in</Button>]}
+        footer={[<Button onClick={close}>Close</Button>]}
       >
-        <Space direction="vertical" style={{ width: '100%' }}>
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Typography.Text>
-            If you don't have an account,{' '}
-            <Link to="/registration" onClick={close}>
-              register now
+        <Form
+          name="auth_form"
+          className="login-form"
+          initialValues={{ remember: true }}
+          // onFinish={onFinish}
+        >
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: 'Please input your Username!' }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your Password!' }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+            <Link to="/" style={{ float: 'right' }}>
+              Forgot password
             </Link>
-          </Typography.Text>
-          <Link to="/registration">Forgot your password?</Link>
-        </Space>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+              Log in
+            </Button>
+          </Form.Item>
+          Or <Link to="/registration">register now!</Link>
+        </Form>
       </Modal>
     </>
   );
