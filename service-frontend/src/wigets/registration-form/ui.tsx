@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { FC } from 'react';
 
 type FieldType = {
@@ -99,6 +99,12 @@ export const RegistrationForm: FC = () => {
         rules={[{ required: true, message: 'Please input your patronymic!' }]}
       >
         <Input />
+      </Form.Item>
+
+      <Form.Item wrapperCol={{ sm: { offset: 12, span: 6 } }}>
+        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+          Submit
+        </Button>
       </Form.Item>
     </Form>
   );

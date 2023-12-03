@@ -11,12 +11,3 @@
 .menu {
   flex-grow: 1;
 }
-
-.container {
-  max-width: 1240px;
-  width: 100%;
-  min-height: calc(100vh - 133px);
-  margin: 0 auto;
-  padding: 20px 20px 52px 20px;
-  box-sizing: border-box;
-}

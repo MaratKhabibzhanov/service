@@ -15,12 +15,10 @@ export const App: FC = () => {
   return (
     <ConfigProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <RootStoreContext.Provider value={rootStore}>
-        <Layout className="layout">
+        <Layout className="layout" style={{ minHeight: '100vh' }}>
           <Header isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
           <Layout.Content>
-            <div className="container">
-              <Outlet />
-            </div>
+            <Outlet />
           </Layout.Content>
           <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
         </Layout>
