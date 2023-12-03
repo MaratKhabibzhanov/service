@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import MediaQuery from 'react-responsive';
 
 import { useStore } from 'app/store';
-import { AuthModal, ThemeSwitcher } from 'features';
+import { AuthModal, MobileMenu, ThemeSwitcher } from 'features';
 
-import { Layout, Menu, Space, Typography } from 'antd';
+import { Layout, Menu, Space } from 'antd';
 import { menuItems } from './consts';
 
 export const Header: FC = () => {
@@ -15,20 +16,31 @@ export const Header: FC = () => {
 
   return (
     <Layout.Header className="header">
-      <Link to="/" style={{ color: '#fff', fontSize: '20px' }}>
-        Habib Service
-      </Link>
+      <Space size="large">
+        {auth.isAuth && (
+          <MediaQuery maxWidth={768}>
+            <MobileMenu />
+          </MediaQuery>
+        )}
+        <Link to="/" style={{ color: '#fff', fontSize: '20px' }}>
+          Habib Service
+        </Link>
+      </Space>
       {auth.isAuth && (
-        <Menu
-          items={menuItems}
-          selectedKeys={[pathname]}
-          onClick={(e) => navigate(e.key)}
-          mode="horizontal"
-          className="menu"
-        />
+        <MediaQuery minWidth={769}>
+          <Menu
+            items={menuItems}
+            selectedKeys={[pathname]}
+            onClick={(e) => navigate(e.key)}
+            mode="horizontal"
+            className="menu"
+          />
+        </MediaQuery>
       )}
       <Space size="large">
-        <ThemeSwitcher />
+        <MediaQuery minWidth={769}>
+          <ThemeSwitcher />
+        </MediaQuery>
         <AuthModal />
       </Space>
     </Layout.Header>

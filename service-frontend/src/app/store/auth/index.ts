@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
 export class Auth {
-  isAuth = false;
+  isAuth = true;
 
   constructor() {
     makeAutoObservable(this);
