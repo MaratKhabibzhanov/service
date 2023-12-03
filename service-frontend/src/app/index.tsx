@@ -1,21 +1,28 @@
+import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import './app.css';
+// import './app.css';
 
 import { Outlet } from 'react-router-dom';
-import { Layout } from 'antd';
-import { rootStore, RootStoreContext } from './store';
+import { ConfigProvider, Layout } from 'antd';
 
-function App() {
+import { rootStore, RootStoreContext } from './store';
+import { darkTheme, lightTheme } from 'shared/theme';
+
+export const App: FC = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState(window.localStorage.getItem('theme') === 'dark');
+
   return (
-    <RootStoreContext.Provider value={rootStore}>
-      <Layout className="layout">
-        <Layout.Header></Layout.Header>
-        <Layout.Content>
-          <Outlet />
-        </Layout.Content>
-      </Layout>
-    </RootStoreContext.Provider>
+    <ConfigProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <RootStoreContext.Provider value={rootStore}>
+        <Layout className="layout">
+          <Layout.Header></Layout.Header>
+          <Layout.Content>
+            <Outlet />
+          </Layout.Content>
+        </Layout>
+      </RootStoreContext.Provider>
+    </ConfigProvider>
   );
-}
+};
 
 export default observer(App);
