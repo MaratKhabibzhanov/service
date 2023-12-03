@@ -17,7 +17,7 @@ export const App: FC = () => {
       <RootStoreContext.Provider value={rootStore}>
         <Layout className="layout" style={{ minHeight: '100vh' }}>
           <Header isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          <Layout.Content>
+          <Layout.Content className="container">
             <Outlet />
           </Layout.Content>
           <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
