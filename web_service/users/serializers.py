@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from users.models import CustomUser
+# from djoser.views import
 
 
 class UserMeSerializer(serializers.ModelSerializer):
+    role = serializers.CharField(read_only=True)
+
     class Meta:
         model = CustomUser
         fields = ('id',
@@ -13,7 +16,19 @@ class UserMeSerializer(serializers.ModelSerializer):
                   'last_name',
                   'patronim',
                   'role',
-                  'phone_number',
+                  )
+
+
+class UsersSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ('id',
+                  'username',
+                  'email',
+                  'first_name',
+                  'last_name',
+                  'patronim',
                   )
 
 
@@ -25,5 +40,4 @@ class UserRegistrationSerializer(BaseUserRegistrationSerializer):
                   'first_name',
                   'last_name',
                   'patronim',
-                  'phone_number',
                   )
