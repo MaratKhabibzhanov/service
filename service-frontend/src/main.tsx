@@ -5,9 +5,12 @@ import { RouterProvider } from 'react-router-dom';
 import './index.css';
 
 import { router } from 'shared/router';
+import { RootStoreContext, rootStore } from 'app/store';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <RootStoreContext.Provider value={rootStore}>
+      <RouterProvider router={router} />
+    </RootStoreContext.Provider>
   </React.StrictMode>
 );

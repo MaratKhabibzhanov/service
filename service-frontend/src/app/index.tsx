@@ -1,28 +1,25 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import './app.css';
 
 import { Outlet } from 'react-router-dom';
 import { ConfigProvider, Layout } from 'antd';
 
-import { rootStore, RootStoreContext } from './store';
 import { darkTheme, lightTheme } from 'shared/theme';
 import { Header } from 'wigets';
+import { useStore } from './store';
 
 export const App: FC = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState(window.localStorage.getItem('theme') === 'dark');
-
+  const { settings } = useStore();
   return (
-    <ConfigProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      <RootStoreContext.Provider value={rootStore}>
-        <Layout className="layout" style={{ minHeight: '100vh' }}>
-          <Header isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          <Layout.Content className="container">
-            <Outlet />
-          </Layout.Content>
-          <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
-        </Layout>
-      </RootStoreContext.Provider>
+    <ConfigProvider theme={settings.theme === 'dark' ? darkTheme : lightTheme}>
+      <Layout className="layout" style={{ minHeight: '100vh' }}>
+        <Header />
+        <Layout.Content className="container">
+          <Outlet />
+        </Layout.Content>
+        <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+      </Layout>
     </ConfigProvider>
   );
 };

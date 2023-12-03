@@ -2,28 +2,17 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useStore } from 'app/store';
-import { AuthModal } from 'features';
+import { AuthModal, ThemeSwitcher } from 'features';
 
 import { tton, Layout, Menu, Space, Switch, Typography } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { menuItems } from './consts';
 
-type HeaderProps = {
-  isDarkTheme: boolean;
-  setIsDarkTheme: Dispatch<SetStateAction<boolean>>;
-};
-
-export const Header: FC<HeaderProps> = ({ isDarkTheme, setIsDarkTheme }) => {
+export const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const { auth } = useStore();
-
-  const handleChangeThemeMode = (value: boolean) => {
-    if (value) localStorage.setItem('theme', 'dark');
-    else localStorage.setItem('theme', 'light');
-    setIsDarkTheme(value);
-  };
 
   return (
     <Layout.Header className="header">
@@ -38,16 +27,7 @@ export const Header: FC<HeaderProps> = ({ isDarkTheme, setIsDarkTheme }) => {
         />
       )}
       <Space size="large">
-        <Space>
-          <Typography.Text style={{ color: '#fff' }}>Dark mode:</Typography.Text>
-          <Switch
-            checkedChildren={<CheckOutlined />}
-            unCheckedChildren={<CloseOutlined />}
-            checked={isDarkTheme}
-            onChange={handleChangeThemeMode}
-            style={{ marginBottom: '3px' }}
-          />
-        </Space>
+        <ThemeSwitcher />
         <AuthModal />
       </Space>
     </Layout.Header>
