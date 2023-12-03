@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-// import './app.css';
+import './app.css';
 
 import { Outlet } from 'react-router-dom';
 import { ConfigProvider, Layout } from 'antd';
@@ -16,10 +16,11 @@ export const App: FC = () => {
     <ConfigProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <RootStoreContext.Provider value={rootStore}>
         <Layout className="layout">
-          <Header />
+          <Header isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
           <Layout.Content>
             <Outlet />
           </Layout.Content>
+          <Layout.Footer />
         </Layout>
       </RootStoreContext.Provider>
     </ConfigProvider>
