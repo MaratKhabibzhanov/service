@@ -6,6 +6,7 @@ const useCatch = () => {
 
   const catchCallback = useCallback(
     (e: Error) => {
+      console.log(e.message);
       messageApi.open({
         type: 'error',
         content: e.message,

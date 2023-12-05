@@ -1,8 +1,11 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { AuthService } from 'shared/api';
+import { useCatch } from 'shared/hooks';
+
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 type FieldType = {
   username: string;
@@ -10,15 +13,22 @@ type FieldType = {
 };
 
 export const AuthModal: FC = () => {
-  const [open, setOpen] = useState(false);
   const [form] = Form.useForm<FieldType>();
+  const { catchCallback } = useCatch();
+
+  const [open, setOpen] = useState(false);
 
   const close = () => {
     setOpen(false);
   };
 
   const onFinish = (values: FieldType) => {
-    console.log(values);
+    AuthService.auth(values)
+      .then((data) => {
+        console.log('success');
+        console.log(data);
+      })
+      .catch(catchCallback);
   };
 
   return (
