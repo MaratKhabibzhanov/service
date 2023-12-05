@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 import './app.css';
 
-import { ConfigProvider, Layout, message } from 'antd';
+import { ConfigProvider, Layout } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import enUS from 'antd/locale/en_US';
 
@@ -15,7 +15,6 @@ import { useStore } from './store';
 const locales = { ruRU, enUS };
 
 export const App: FC = () => {
-  const [_messageApi, contextMessage] = message.useMessage();
   const { settings } = useStore();
 
   return (
@@ -23,7 +22,6 @@ export const App: FC = () => {
       theme={settings.theme === 'dark' ? darkTheme : lightTheme}
       locale={locales[settings.locale]}
     >
-      {contextMessage}
       <Layout className="layout" style={{ minHeight: '100vh' }}>
         <Header />
         <Layout.Content className="container">

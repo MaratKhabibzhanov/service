@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthService } from 'shared/api';
-import { useCatch } from 'shared/hooks';
 
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -14,7 +13,6 @@ type FieldType = {
 
 export const AuthModal: FC = () => {
   const [form] = Form.useForm<FieldType>();
-  const { catchCallback } = useCatch();
 
   const [open, setOpen] = useState(false);
 
@@ -28,7 +26,7 @@ export const AuthModal: FC = () => {
         console.log('success');
         console.log(data);
       })
-      .catch(catchCallback);
+      .catch((e) => console.log(e.message));
   };
 
   return (
