@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Button, Form, Input } from 'antd';
+
 import { RegistrationService } from 'shared/api';
+import { useCatch } from 'shared/hooks';
 
 type FieldType = User & {
   confirm?: string;
@@ -19,6 +21,7 @@ const formItemLayout = {
 
 export const RegistrationForm: FC = () => {
   const [form] = Form.useForm<FieldType>();
+  const { catchCallback } = useCatch();
 
   const sendForm = (values: FieldType) => {
     const { confirm: _unusedKey, ...dataToSend } = values;
@@ -27,7 +30,7 @@ export const RegistrationForm: FC = () => {
         console.log('success');
         console.log(data);
       })
-      .catch((e) => console.log(e));
+      .catch(catchCallback);
   };
 
   return (
