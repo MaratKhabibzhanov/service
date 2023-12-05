@@ -1,14 +1,9 @@
-import { Button, Form, Input } from 'antd';
 import { FC } from 'react';
+import { Button, Form, Input } from 'antd';
+import { RegistrationService } from 'shared/api';
 
-type FieldType = {
-  username: string;
-  password: string;
+type FieldType = User & {
   confirm?: string;
-  email: string;
-  name: string;
-  surname: string;
-  patronymic: string;
 };
 
 const formItemLayout = {
@@ -26,9 +21,13 @@ export const RegistrationForm: FC = () => {
   const [form] = Form.useForm<FieldType>();
 
   const sendForm = (values: FieldType) => {
-    const dataToSend = { ...values };
-    if (dataToSend.confirm) delete dataToSend.confirm;
-    console.log(dataToSend);
+    const { confirm: _unusedKey, ...dataToSend } = values;
+    RegistrationService.registration(dataToSend)
+      .then((data) => {
+        console.log('success');
+        console.log(data);
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -87,23 +86,23 @@ export const RegistrationForm: FC = () => {
       </Form.Item>
 
       <Form.Item<FieldType>
-        label="Name"
-        name="name"
-        rules={[{ required: true, message: 'Please input your name!' }]}
+        label="First name"
+        name="first_name"
+        rules={[{ required: true, message: 'Please input your First name!' }]}
       >
         <Input />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Surname"
-        name="surname"
-        rules={[{ required: true, message: 'Please input your surname!' }]}
+        label="Last name"
+        name="last_name"
+        rules={[{ required: true, message: 'Please input your Last name!' }]}
       >
         <Input />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Patronymic"
-        name="patronymic"
-        rules={[{ required: true, message: 'Please input your patronymic!' }]}
+        label="Patronim"
+        name="patronim"
+        rules={[{ required: true, message: 'Please input your patronim!' }]}
       >
         <Input />
       </Form.Item>
