@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { AuthService } from 'shared/api';
 
@@ -9,9 +9,11 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 type FieldType = {
   username: string;
   password: string;
+  remember: boolean;
 };
 
 export const AuthModal: FC = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm<FieldType>();
 
   const [open, setOpen] = useState(false);
@@ -21,10 +23,12 @@ export const AuthModal: FC = () => {
   };
 
   const onFinish = (values: FieldType) => {
-    AuthService.auth(values)
-      .then((data) => {
-        console.log('success');
-        console.log(data);
+    const { remember, ...dataToSend } = values;
+
+    AuthService.auth(dataToSend)
+      .then((tokens) => {
+        if (remember) localStorage.setItem('refreshToken', tokens.refresh);
+        navigate('/auto');
       })
       .catch((e) => console.log(e.message));
   };
@@ -40,7 +44,11 @@ export const AuthModal: FC = () => {
         onOk={() => setOpen(false)}
         onCancel={() => setOpen(false)}
         style={{ maxWidth: '400px' }}
-        footer={[<Button onClick={close}>Close</Button>]}
+        footer={[
+          <Button onClick={close} key="close">
+            Close
+          </Button>,
+        ]}
       >
         <Form name="auth_form" form={form} initialValues={{ remember: true }} onFinish={onFinish}>
           <Form.Item
