@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
+import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
 import { AuthModal, MobileMenu, ThemeSwitcher } from 'features';
-
-import { Layout, Menu, Space } from 'antd';
 import { menuItems } from 'shared/consts';
-import { observer } from 'mobx-react-lite';
+
+import { Button, Layout, Menu, Space } from 'antd';
 
 const Header: FC = () => {
   const { pathname } = useLocation();
@@ -42,7 +42,13 @@ const Header: FC = () => {
         <MediaQuery minWidth={769}>
           <ThemeSwitcher />
         </MediaQuery>
-        <AuthModal />
+        {auth.isAuth ? (
+          <Button type="primary" onClick={() => navigate('profile')}>
+            Profile
+          </Button>
+        ) : (
+          <AuthModal />
+        )}
       </Space>
     </Layout.Header>
   );

@@ -12,4 +12,8 @@ export const menuItems: MenuItems[] = [
     label: 'Schedule',
     key: '/schedule',
   },
+  {
+    label: 'Auto',
+    key: 'auto',
+  },
 ];

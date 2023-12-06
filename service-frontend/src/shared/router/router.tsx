@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from 'app';
-import { RegistrationPage } from 'pages';
+import { ProfilePage, RegistrationPage } from 'pages';
 
 export const router = createBrowserRouter([
   {
@@ -17,8 +17,12 @@ export const router = createBrowserRouter([
         element: <RegistrationPage />,
       },
       {
+        path: 'profile',
+        element: <ProfilePage />,
+      },
+      {
         path: '*',
-        element: <span style={{ color: 'red' }}>error</span>,
+        element: <span style={{ color: 'red' }}>Page not found</span>,
       },
     ],
   },
