@@ -2,20 +2,10 @@ import { FC } from 'react';
 import { Button, Form, Input } from 'antd';
 
 import { RegistrationService } from 'shared/api';
+import { formItemLayout } from 'shared/consts';
 
 type FieldType = NewUser & {
   confirm?: string;
-};
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
 };
 
 export const RegistrationForm: FC = () => {
