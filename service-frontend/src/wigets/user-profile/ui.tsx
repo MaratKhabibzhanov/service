@@ -1,6 +1,7 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
+import { useStore } from 'app/store';
 import { ProfileSkeleton } from 'shared/ui';
 import { formItemLayout } from 'shared/consts';
 
@@ -9,11 +10,15 @@ import { Button, Form, Input } from 'antd';
 type FieldType = Omit<NewUser, 'password'>;
 
 const UserProfile: FC = () => {
+  const { profile } = useStore();
+
   const [form] = Form.useForm<FieldType>();
 
-  const loading = false;
+  useEffect(() => {
+    profile.getProfile();
+  }, [profile]);
 
-  if (loading) return <ProfileSkeleton />;
+  if (profile.loadingStatus === 'loading') return <ProfileSkeleton />;
 
   return (
     <Form

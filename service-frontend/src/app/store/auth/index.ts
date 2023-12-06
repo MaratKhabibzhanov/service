@@ -51,8 +51,4 @@ export class Auth {
 
     return this.loadingStatus;
   }
-
-  setIsAuth(value: boolean) {
-    this.isAuth = value;
-  }
 }
