@@ -6,3 +6,5 @@ type User = {
   first_name: string;
   patronim: string;
 };
+
+type LogIn = { username: string; password: string };

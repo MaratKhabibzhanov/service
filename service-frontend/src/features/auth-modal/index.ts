@@ -1,1 +1,1 @@
-export { AuthModal } from './ui';
+export { default as AuthModal } from './ui';

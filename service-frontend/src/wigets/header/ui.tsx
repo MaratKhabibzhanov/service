@@ -7,8 +7,9 @@ import { AuthModal, MobileMenu, ThemeSwitcher } from 'features';
 
 import { Layout, Menu, Space } from 'antd';
 import { menuItems } from 'shared/consts';
+import { observer } from 'mobx-react-lite';
 
-export const Header: FC = () => {
+const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -46,3 +47,5 @@ export const Header: FC = () => {
     </Layout.Header>
   );
 };
+
+export default observer(Header);

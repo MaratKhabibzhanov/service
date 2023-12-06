@@ -1,9 +1,10 @@
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Space, Switch, Typography } from 'antd';
 import { useStore } from 'app/store';
+import { observer } from 'mobx-react-lite';
 import { FC } from 'react';
 
-export const ThemeSwitcher: FC = () => {
+const ThemeSwitcher: FC = () => {
   const { settings } = useStore();
 
   const changeThemeMode = (value: boolean) => {
@@ -23,3 +24,4 @@ export const ThemeSwitcher: FC = () => {
     </Space>
   );
 };
+export default observer(ThemeSwitcher);

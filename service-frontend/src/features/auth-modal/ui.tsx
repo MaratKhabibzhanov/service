@@ -1,10 +1,11 @@
 import { FC, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
-import { AuthService } from 'shared/api';
+import { useStore } from 'app/store';
 
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 type FieldType = {
   username: string;
@@ -12,9 +13,10 @@ type FieldType = {
   remember: boolean;
 };
 
-export const AuthModal: FC = () => {
-  const navigate = useNavigate();
+const AuthModal: FC = () => {
   const [form] = Form.useForm<FieldType>();
+
+  const { auth } = useStore();
 
   const [open, setOpen] = useState(false);
 
@@ -23,14 +25,9 @@ export const AuthModal: FC = () => {
   };
 
   const onFinish = (values: FieldType) => {
-    const { remember, ...dataToSend } = values;
-
-    AuthService.auth(dataToSend)
-      .then((tokens) => {
-        if (remember) localStorage.setItem('refreshToken', tokens.refresh);
-        navigate('/auto');
-      })
-      .catch((e) => console.log(e.message));
+    auth.logIn(values).then((status) => {
+      if (status === 'idle') setOpen(false);
+    });
   };
 
   return (
@@ -79,7 +76,12 @@ export const AuthModal: FC = () => {
             </Link>
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              style={{ width: '100%' }}
+              loading={auth.loadingStatus === 'loading'}
+            >
               Log in
             </Button>
           </Form.Item>
@@ -92,3 +94,5 @@ export const AuthModal: FC = () => {
     </>
   );
 };
+
+export default observer(AuthModal);
