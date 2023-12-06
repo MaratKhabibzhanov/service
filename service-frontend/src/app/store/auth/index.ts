@@ -1,12 +1,20 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { AuthService } from 'shared/api';
 
+const localToken = localStorage.getItem('refreshToken');
+const sessionToken = sessionStorage.getItem('refreshToken');
+
+let initialRefreshToken: null | string = null;
+
+if (sessionToken) initialRefreshToken = sessionToken;
+else if (localToken) initialRefreshToken = localToken;
+
 export class Auth {
   isAuth = false;
   loadingStatus: LoadingStatus = 'idle';
 
+  refreshToken: string | null = initialRefreshToken;
   accessToken: string | null = null;
-  refreshToken: string | null = null;
 
   constructor() {
     makeAutoObservable(this);
