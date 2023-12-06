@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { Link } from 'react-router-dom';
 
 import { useStore } from 'app/store';
 
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 
 type FieldType = {
   username: string;

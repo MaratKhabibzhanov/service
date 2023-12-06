@@ -28,6 +28,10 @@ export class Auth {
 
         if (authData.remember) {
           localStorage.setItem('refreshToken', refresh);
+          localStorage.setItem('accessToken', access);
+        } else {
+          sessionStorage.setItem('refreshToken', refresh);
+          sessionStorage.setItem('accessToken', access);
         }
       });
     } catch (e) {

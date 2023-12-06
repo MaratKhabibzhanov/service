@@ -3,7 +3,7 @@ import { Button, Form, Input } from 'antd';
 
 import { RegistrationService } from 'shared/api';
 
-type FieldType = User & {
+type FieldType = NewUser & {
   confirm?: string;
 };
 
