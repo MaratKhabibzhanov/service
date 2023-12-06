@@ -11,6 +11,7 @@ type FieldType = Omit<NewUser, 'password'>;
 
 const UserProfile: FC = () => {
   const { profile } = useStore();
+  const { profile: userProfile } = profile;
 
   const [form] = Form.useForm<FieldType>();
 
@@ -32,7 +33,7 @@ const UserProfile: FC = () => {
       <Form.Item<FieldType>
         label="Username"
         name="username"
-        initialValue={'asd'}
+        initialValue={userProfile?.username}
         rules={[{ required: true, message: 'Please input your username!' }]}
       >
         <Input />
@@ -41,6 +42,7 @@ const UserProfile: FC = () => {
       <Form.Item<FieldType>
         label="Email"
         name="email"
+        initialValue={userProfile?.email}
         rules={[
           {
             type: 'email',
@@ -55,6 +57,7 @@ const UserProfile: FC = () => {
       <Form.Item<FieldType>
         label="First name"
         name="first_name"
+        initialValue={userProfile?.first_name}
         rules={[{ required: true, message: 'Please input your First name!' }]}
       >
         <Input />
@@ -62,6 +65,7 @@ const UserProfile: FC = () => {
       <Form.Item<FieldType>
         label="Last name"
         name="last_name"
+        initialValue={userProfile?.last_name}
         rules={[{ required: true, message: 'Please input your Last name!' }]}
       >
         <Input />
@@ -69,6 +73,7 @@ const UserProfile: FC = () => {
       <Form.Item<FieldType>
         label="Patronim"
         name="patronim"
+        initialValue={userProfile?.patronim}
         rules={[{ required: true, message: 'Please input your patronim!' }]}
       >
         <Input />
