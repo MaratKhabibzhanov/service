@@ -175,22 +175,22 @@
     • Ссылка на автомобиль
 
 Комманда для создания дампа
-sudo docker exec -i service_database_1 pg_dump -F t -U dbuser -v -d dbname -f /service/pg_dump/dump_1.tar
+`sudo docker exec -i service_database_1 pg_dump -F t -U dbuser -v -d dbname -f /service/pg_dump/dump_1.tar`
 
 
 Для запуска сервиса записи необходимо склонировать к себе на локальную машину данный репозиторий.
 в окне терминала в локальной директории с проектом "/service" запустить команду:
 
-sudo docker-compose -f docker-compose.dev.yml up --build
+`sudo docker-compose -f docker-compose.dev.yml up --build`
 (При повторном запуске можно без --build)
 
 Находясь в той же локальной директории с проектом открыть новое окно терминала и выполнить команду:
 
-sudo docker exec -i service_database_1 pg_restore -U dbuser -v -d dbname  /service/pg_dump/dump_1.tar
+`sudo docker exec -i service_database_1 pg_restore -U dbuser -v -d dbname  /service/pg_dump/dump_1.tar`
 
 
 После чего в первом окне терминала остановить все запущенные контейнеры: "Ctrl+C" и снова выполнить команду:
 
-sudo docker-compose -f docker-compose.dev.yml up 
+`sudo docker-compose -f docker-compose.dev.yml up`
 
 
