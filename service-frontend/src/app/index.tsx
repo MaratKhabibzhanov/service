@@ -1,28 +1,60 @@
-import { FC, useState } from 'react';
+import { FC, useLayoutEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { Outlet } from 'react-router-dom';
+
 import './app.css';
 
-import { Outlet } from 'react-router-dom';
-import { ConfigProvider, Layout } from 'antd';
+import { ConfigProvider, Layout, Spin } from 'antd';
+import ruRU from 'antd/locale/ru_RU';
+import enUS from 'antd/locale/en_US';
 
-import { rootStore, RootStoreContext } from './store';
 import { darkTheme, lightTheme } from 'shared/theme';
+import { getRefreshTokens } from 'shared/helpers';
 import { Header } from 'wigets';
 
+import { useStore } from './store';
+import MediaQuery from 'react-responsive';
+
+const locales = { ruRU, enUS };
+
 export const App: FC = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState(window.localStorage.getItem('theme') === 'dark');
+  const { settings, profile, auth } = useStore();
+  const [loading, setLoading] = useState(true);
+
+  const initialRender = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!initialRender.current) {
+      const { local, session } = getRefreshTokens();
+
+      if ((local || session) && !auth.isAuth) {
+        profile.getProfile().then(() => {
+          setLoading(false);
+        });
+      } else {
+        setLoading(false);
+      }
+
+      initialRender.current = true;
+    }
+  }, [profile, auth.isAuth]);
 
   return (
-    <ConfigProvider theme={isDarkTheme ? darkTheme : lightTheme}>
-      <RootStoreContext.Provider value={rootStore}>
-        <Layout className="layout">
-          <Header isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          <Layout.Content>
+    <ConfigProvider
+      theme={settings.theme === 'dark' ? darkTheme : lightTheme}
+      locale={locales[settings.locale]}
+    >
+      <Spin spinning={loading}>
+        <Layout className="layout" style={{ minHeight: '100vh' }}>
+          <Header />
+          <Layout.Content className="container">
             <Outlet />
           </Layout.Content>
-          <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+          <MediaQuery minWidth={769}>
+            <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+          </MediaQuery>
         </Layout>
-      </RootStoreContext.Provider>
+      </Spin>
     </ConfigProvider>
   );
 };

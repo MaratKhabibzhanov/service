@@ -1,47 +1,64 @@
-import { Dispatch, FC, SetStateAction } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { FC } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import MediaQuery from 'react-responsive';
+import { observer } from 'mobx-react-lite';
 
-import { tton, Layout, Menu, Space, Switch, Typography } from 'antd';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { menuItems } from './consts';
-import { AuthModal } from 'features';
+import { useStore } from 'app/store';
+import { AuthModal, Logout, MobileMenu, ThemeSwitcher } from 'features';
 
-type HeaderProps = {
-  isDarkTheme: boolean;
-  setIsDarkTheme: Dispatch<SetStateAction<boolean>>;
-};
+import { Button, Flex, Layout, Menu, Space } from 'antd';
+import { getMenuItems } from 'shared/helpers';
 
-export const Header: FC<HeaderProps> = ({ isDarkTheme, setIsDarkTheme }) => {
+const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const handleChangeThemeMode = (value: boolean) => {
-    if (value) localStorage.setItem('theme', 'dark');
-    else localStorage.setItem('theme', 'light');
-    setIsDarkTheme(value);
-  };
+  const { auth, profile } = useStore();
+
+  const menuItems = getMenuItems(profile.profile?.role);
 
   return (
     <Layout.Header className="header">
-      <Typography.Text style={{ color: '#fff', fontSize: '20px' }}>Habib Service</Typography.Text>
-      <Menu
-        items={menuItems}
-        selectedKeys={[pathname]}
-        onClick={(e) => navigate(e.key)}
-        mode="horizontal"
-        className="menu"
-      />
       <Space>
-        <Typography.Text style={{ color: '#fff' }}>Dark mode:</Typography.Text>
-        <Switch
-          checkedChildren={<CheckOutlined />}
-          unCheckedChildren={<CloseOutlined />}
-          checked={isDarkTheme}
-          onChange={handleChangeThemeMode}
-          style={{ marginBottom: '3px' }}
-        />
+        {auth.isAuth && (
+          <MediaQuery maxWidth={768}>
+            <MobileMenu />
+          </MediaQuery>
+        )}
+        <Link to="/" style={{ color: '#fff', fontSize: '20px' }}>
+          Habib Service
+        </Link>
       </Space>
-      <AuthModal />
+      {auth.isAuth && (
+        <MediaQuery minWidth={769}>
+          <Menu
+            items={menuItems}
+            selectedKeys={[pathname]}
+            onClick={(e) => navigate(e.key)}
+            mode="horizontal"
+            className="menu"
+          />
+        </MediaQuery>
+      )}
+      <Space size="large">
+        <MediaQuery minWidth={769}>
+          <ThemeSwitcher />
+        </MediaQuery>
+        {auth.isAuth ? (
+          <Flex gap={20}>
+            <Button type="primary" onClick={() => navigate('profile')}>
+              Profile
+            </Button>
+            <MediaQuery minWidth={769}>
+              <Logout />
+            </MediaQuery>
+          </Flex>
+        ) : (
+          <AuthModal />
+        )}
+      </Space>
     </Layout.Header>
   );
 };
+
+export default observer(Header);
