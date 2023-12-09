@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from 'app';
-import { CarsPage, ProfilePage, RegistrationPage } from 'pages';
+import { AddCarPage, CarsPage, ProfilePage, RegistrationPage } from 'pages';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +24,10 @@ export const router = createBrowserRouter([
         path: 'cars',
         element: <CarsPage />,
       },
+      {
+        path: 'add_car',
+        element: <AddCarPage/>
+      }
       {
         path: '*',
         element: <span style={{ color: 'red' }}>Page not found</span>,
