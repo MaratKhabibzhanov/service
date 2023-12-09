@@ -16,7 +16,7 @@ type FieldType = {
 const AuthModal: FC = () => {
   const [form] = Form.useForm<FieldType>();
 
-  const { auth } = useStore();
+  const { auth, profile } = useStore();
 
   const [open, setOpen] = useState(false);
 
@@ -26,7 +26,10 @@ const AuthModal: FC = () => {
 
   const onFinish = (values: FieldType) => {
     auth.logIn(values).then((status) => {
-      if (status === 'idle') setOpen(false);
+      if (status === 'idle') {
+        setOpen(false);
+        profile.getProfile();
+      }
     });
   };
 

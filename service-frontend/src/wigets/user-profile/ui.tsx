@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
@@ -14,10 +14,6 @@ const UserProfile: FC = () => {
   const { profile: userProfile } = profile;
 
   const [form] = Form.useForm<FieldType>();
-
-  useEffect(() => {
-    profile.getProfile();
-  }, [profile]);
 
   if (profile.loadingStatus === 'loading') return <ProfileSkeleton />;
 
@@ -37,7 +33,7 @@ const UserProfile: FC = () => {
         initialValue={profile.profile?.username}
         rules={[{ required: true, message: 'Please input your username!' }]}
       >
-        <Input />
+        <Input disabled={true} />
       </Form.Item>
 
       <Form.Item<FieldType>

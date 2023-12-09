@@ -9,11 +9,11 @@ import ruRU from 'antd/locale/ru_RU';
 import enUS from 'antd/locale/en_US';
 
 import { darkTheme, lightTheme } from 'shared/theme';
-import { UserService } from 'shared/api';
 import { getRefreshTokens } from 'shared/helpers';
 import { Header } from 'wigets';
 
 import { useStore } from './store';
+import MediaQuery from 'react-responsive';
 
 const locales = { ruRU, enUS };
 
@@ -40,9 +40,9 @@ export const App: FC = () => {
         <Layout.Content className="container">
           <Outlet />
         </Layout.Content>
-        <Layout.Footer style={{ textAlign: 'center' }} onClick={() => UserService.getMe()}>
-          footer
-        </Layout.Footer>
+        <MediaQuery minWidth={769}>
+          <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+        </MediaQuery>
       </Layout>
     </ConfigProvider>
   );
