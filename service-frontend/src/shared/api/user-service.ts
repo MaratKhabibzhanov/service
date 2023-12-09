@@ -1,5 +1,7 @@
 import { $api } from './$api';
 
+type Passwords = { current_password: string; new_password: string };
+
 export default class UserService {
   static async getMe() {
     const role: User = await $api.get('auth/users/me/').json();
@@ -11,8 +13,7 @@ export default class UserService {
     return request;
   }
 
-  static async changePassword(current_password: string, new_password: string) {
-    const body = { current_password, new_password };
+  static async changePassword(body: Passwords) {
     const request = await $api.post('auth/users/set_password/', { json: body }).json();
 
     return request;

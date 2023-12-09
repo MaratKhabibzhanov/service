@@ -5,8 +5,9 @@ import { useStore } from 'app/store';
 import { ProfileSkeleton } from 'shared/ui';
 import { formItemLayout } from 'shared/consts';
 
-import { Button, Form, Input } from 'antd';
+import { Button, Flex, Form, Input } from 'antd';
 import { UserService } from 'shared/api';
+import { ChangePasswordModal } from 'features';
 
 type FieldType = UserToUpdate & { username?: string };
 
@@ -88,10 +89,13 @@ const UserProfile: FC = () => {
         <Input disabled={loading} />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ sm: { offset: 12, span: 6 } }}>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={loading}>
-          Save
-        </Button>
+      <Form.Item wrapperCol={{ sm: { offset: 2, span: 16 } }}>
+        <Flex style={{ width: '100%', justifyContent: 'space-between' }}>
+          <ChangePasswordModal disabled={loading} />
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Save
+          </Button>
+        </Flex>
       </Form.Item>
     </Form>
   );
