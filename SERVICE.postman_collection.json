@@ -7,656 +7,460 @@
 	},
 	"item": [
 		{
-			"name": "For_user",
+			"name": "authentication",
 			"item": [
 				{
-					"name": "authentication",
-					"item": [
+					"name": "login_manager",
+					"event": [
 						{
-							"name": "login_user",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"console.log(pm.environment.get(\"user_username\"))",
-											"console.log(pm.environment.get(\"user_password\"))",
-											"",
-											"pm.test(\"Status is ok, login successful\", function () {",
-											"    pm.response.to.be.ok;",
-											"    pm.response.to.be.json;",
-											"});",
-											"",
-											"try {",
-											"    console.log(pm.response.json());",
-											"    pm.environment.set(\"accessToken\", pm.response.json().access);",
-											"    pm.environment.set(\"refreshToken\", pm.response.json().refresh);",
-											"} catch (e) {",
-											"    console.log(e);",
-											"}"
-										],
-										"type": "text/javascript"
-									}
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.environment.get(\"manager_username\"))\r",
+									"console.log(pm.environment.get(\"manager_password\"))\r",
+									"\r",
+									"pm.test(\"Status is ok, login successful\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"try {\r",
+									"    console.log(pm.response.json());\r",
+									"    pm.environment.set(\"accessToken\", pm.response.json().access);\r",
+									"    pm.environment.set(\"refreshToken\", pm.response.json().refresh);\r",
+									"} catch (e) {\r",
+									"    console.log(e);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{manager_username}}\",\r\n    \"password\": \"{{manager_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/jwt/create",
+							"host": [
+								"{{endpoint}}"
 							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"{{user_username}}\",\n    \"password\": \"{{user_password}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/jwt/create",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"jwt",
-										"create"
-									]
-								}
-							},
-							"response": []
+							"path": [
+								"auth",
+								"jwt",
+								"create"
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "User_me",
-					"item": [
+					"name": "login_user",
+					"event": [
 						{
-							"name": "get_me",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update_me",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"first_name\": \"Anton1\",\n    \"patronim\": \"Antonovich\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update_me",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"{{user_username}}\",\n    \"email\": \"s53th@mail.com\",\n    \"last_name\": \"Antonov\",\n    \"first_name\": \"Anton\",\n    \"patronim\": \"Antonovich\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete_me",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"current_password\": \"{{user_password}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "change_password",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"new_password\": \"string2423\",\n  \"current_password\": \"{{user_password}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/set_password/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"set_password",
-										""
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.environment.get(\"user_username\"))",
+									"console.log(pm.environment.get(\"user_password\"))",
+									"",
+									"pm.test(\"Status is ok, login successful\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"try {",
+									"    console.log(pm.response.json());",
+									"    pm.environment.set(\"accessToken\", pm.response.json().access);",
+									"    pm.environment.set(\"refreshToken\", pm.response.json().refresh);",
+									"} catch (e) {",
+									"    console.log(e);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_username}}\",\n    \"password\": \"{{user_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/jwt/create",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"jwt",
+								"create"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "CarModel",
-					"item": [
-						{
-							"name": "car_model_list",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/API/carmodel/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"carmodel",
-										""
-									]
+					"name": "refresh",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Avto",
-					"item": [
-						{
-							"name": "get_avtos",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/API/avto/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"avto",
-										""
-									]
-								}
-							},
-							"response": []
+							}
 						},
-						{
-							"name": "add_avto_from_user",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"sts\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/API/avto/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"avto",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete_avto",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/API/avto/5/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"avto",
-										"5",
-										""
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{endpoint}}/auth/jwt/refresh",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"jwt",
+								"refresh"
+							]
 						}
-					]
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "For_manager",
+			"name": "CarModel",
 			"item": [
 				{
-					"name": "authentication",
-					"item": [
-						{
-							"name": "login_manager",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"console.log(pm.environment.get(\"manager_username\"))\r",
-											"console.log(pm.environment.get(\"manager_password\"))\r",
-											"\r",
-											"pm.test(\"Status is ok, login successful\", function () {\r",
-											"    pm.response.to.be.ok;\r",
-											"    pm.response.to.be.json;\r",
-											"});\r",
-											"\r",
-											"try {\r",
-											"    console.log(pm.response.json());\r",
-											"    pm.environment.set(\"accessToken\", pm.response.json().access);\r",
-											"    pm.environment.set(\"refreshToken\", pm.response.json().refresh);\r",
-											"} catch (e) {\r",
-											"    console.log(e);\r",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								}
+					"name": "car_model_list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/API/carmodel/",
+							"host": [
+								"{{endpoint}}"
 							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"{{manager_username}}\",\r\n    \"password\": \"{{manager_password}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/jwt/create",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"jwt",
-										"create"
-									]
-								}
-							},
-							"response": []
+							"path": [
+								"API",
+								"carmodel",
+								""
+							]
 						}
-					]
-				},
-				{
-					"name": "CarModel",
-					"item": [
-						{
-							"name": "car_model_list",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/API/carmodel/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"carmodel",
-										""
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Avto",
-					"item": [
-						{
-							"name": "get_avtos",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/API/avto/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"avto",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "add_avto_from_manager",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"vin\": \"2HHRM3H32FT507609\",\n    \"number\": \"c875сп174\",\n    \"sts\": \"4536941765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 1,\n    \"owner\": 14\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/API/avto/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"avto",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete_avto",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/API/avto/6/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"API",
-										"avto",
-										"6",
-										""
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Users",
-					"item": [
-						{
-							"name": "get_users",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/auth/users/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										""
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"auth": {
-						"type": "bearer",
-						"bearer": [
-							{
-								"key": "token",
-								"value": "{{accessToken}}",
-								"type": "string"
-							}
-						]
 					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Avto",
+			"item": [
+				{
+					"name": "get_avtos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/API/avto/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"API",
+								"avto",
+								""
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "User_me",
-					"item": [
-						{
-							"name": "get_me",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
+					"name": "add_avto_from_manager",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vin\": \"2HHRM3H32FT507609\",\n    \"number\": \"c875сп174\",\n    \"sts\": \"4536941765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 1,\n    \"owner\": 14\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
 						},
-						{
-							"name": "update_me",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "update_me",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"{{manager_username}}\",\n    \"email\": \"manager@mail.com\",\n    \"last_name\": \"Annova\",\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna2\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete_me",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"current_password\": \"{{manager_password}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/me/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"me",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "change_password",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"new_password\": \"string2423\",\n  \"current_password\": \"{{manager_password}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{endpoint}}/auth/users/set_password/",
-									"host": [
-										"{{endpoint}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"set_password",
-										""
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{endpoint}}/API/avto/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"API",
+								"avto",
+								""
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "add_avto_from_user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"sts\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/API/avto/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"API",
+								"avto",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_avto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/API/avto/6/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"API",
+								"avto",
+								"6",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "get_users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/auth/users/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{accessToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User_me",
+			"item": [
+				{
+					"name": "get_me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/auth/users/me/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_me",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/users/me/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_me",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{manager_username}}\",\n    \"email\": \"manager@mail.com\",\n    \"last_name\": \"Annova\",\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/users/me/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_me",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_password\": \"{{manager_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/users/me/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change_password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"new_password\": \"string2423\",\n  \"current_password\": \"{{manager_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/users/set_password/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"set_password",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
