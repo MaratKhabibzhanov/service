@@ -14,9 +14,6 @@ class CustomUser(AbstractUser):
     last_name = models.CharField("Фамилия", max_length=50)
     patronim = models.CharField("Отчество", max_length=50)
     role = models.CharField("Роль", max_length=7, choices=ROLES_CHOICES,
-                            default=USER_ROLE, blank=False)
-    phone_number = models.CharField("Номер телефона", max_length=12,
-                                    blank=False, unique=True,
-                                    validators=(RegexValidator(regex=r'\+7(\d{10})'),))
-    email = models.EmailField("Email", blank=False)
+                            default=USER_ROLE)
+    email = models.EmailField("Email", unique=True)
 

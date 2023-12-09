@@ -4,9 +4,9 @@ from rest_framework import routers
 from service import views
 
 router = routers.DefaultRouter()
-router.register(r'warehouse', views.WarehouseViewSet)
+# router.register(r'part', views.PartViewSet)
 router.register(r'carmodel', views.CarModelViewSet)
-router.register(r'workingprice', views.WorkingPriceViewSet)
+# router.register(r'workingtype', views.WorkingTypeViewSet)
 router.register(r'acceptor', views.AcceptorViewSet)
 router.register(r'maintenance', views.MaintenanceViewSet)
 router.register(r'avto', views.AvtoViewSet)
