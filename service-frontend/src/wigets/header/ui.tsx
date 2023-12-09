@@ -5,15 +5,17 @@ import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
 import { AuthModal, MobileMenu, ThemeSwitcher } from 'features';
-import { menuItems } from 'shared/consts';
 
 import { Button, Layout, Menu, Space } from 'antd';
+import { getMenuItems } from 'shared/helpers';
 
 const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const { auth } = useStore();
+  const { auth, profile } = useStore();
+
+  const menuItems = getMenuItems(profile.profile?.role);
 
   return (
     <Layout.Header className="header">

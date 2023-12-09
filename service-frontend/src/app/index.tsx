@@ -1,10 +1,10 @@
-import { FC, useLayoutEffect, useRef } from 'react';
+import { FC, useLayoutEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 
 import './app.css';
 
-import { ConfigProvider, Layout } from 'antd';
+import { ConfigProvider, Layout, Spin } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import enUS from 'antd/locale/en_US';
 
@@ -19,13 +19,22 @@ const locales = { ruRU, enUS };
 
 export const App: FC = () => {
   const { settings, profile, auth } = useStore();
+  const [loading, setLoading] = useState(true);
 
   const initialRender = useRef(false);
 
   useLayoutEffect(() => {
     if (!initialRender.current) {
       const { local, session } = getRefreshTokens();
-      if ((local || session) && !auth.isAuth) profile.getProfile();
+
+      if ((local || session) && !auth.isAuth) {
+        profile.getProfile().then(() => {
+          setLoading(false);
+        });
+      } else {
+        setLoading(false);
+      }
+
       initialRender.current = true;
     }
   }, [profile, auth.isAuth]);
@@ -35,15 +44,17 @@ export const App: FC = () => {
       theme={settings.theme === 'dark' ? darkTheme : lightTheme}
       locale={locales[settings.locale]}
     >
-      <Layout className="layout" style={{ minHeight: '100vh' }}>
-        <Header />
-        <Layout.Content className="container">
-          <Outlet />
-        </Layout.Content>
-        <MediaQuery minWidth={769}>
-          <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
-        </MediaQuery>
-      </Layout>
+      <Spin spinning={loading}>
+        <Layout className="layout" style={{ minHeight: '100vh' }}>
+          <Header />
+          <Layout.Content className="container">
+            <Outlet />
+          </Layout.Content>
+          <MediaQuery minWidth={769}>
+            <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+          </MediaQuery>
+        </Layout>
+      </Spin>
     </ConfigProvider>
   );
 };
