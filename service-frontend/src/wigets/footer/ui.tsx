@@ -7,11 +7,15 @@ const Footer: FC = () => {
     <Layout.Footer className="footer">
       <Flex align="center" gap={10}>
         <Typography.Text code>Backend: </Typography.Text>
-        <Button icon={<GithubOutlined />} shape="circle" />
+        <a href="https://github.com/MaratKhabibzhanov" target="_blank">
+          <Button icon={<GithubOutlined />} shape="circle" />
+        </a>
       </Flex>
       <Flex align="center" gap={10}>
         <Typography.Text code>Frontend: </Typography.Text>
-        <Button icon={<GithubOutlined />} shape="circle" />
+        <a href="https://github.com/skrill3901">
+          <Button icon={<GithubOutlined />} shape="circle" />
+        </a>
       </Flex>
     </Layout.Footer>
   );
