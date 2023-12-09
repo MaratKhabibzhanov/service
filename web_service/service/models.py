@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from config import settings
 
@@ -67,8 +69,6 @@ class Part(models.Model):
     """Склад"""
     spare_part = models.CharField("Запчасть", max_length=150, unique=True)
     price = models.DecimalField("Цена", max_digits=9, decimal_places=2)
-    compatible_car = models.ManyToManyField(CarModel, verbose_name="Совместимый автомобиль",
-                                            related_name="parts")
 
     def __str__(self):
         return self.spare_part
@@ -85,9 +85,14 @@ class Maintenance(models.Model):
                                      related_name="maintenances", on_delete=models.PROTECT)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",
                                   related_name="maintenances", on_delete=models.PROTECT)
+    total_cost = models.DecimalField(verbose_name="Предварительная стоимость",
+                                     max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.operation
+
+
+
 
 
 class Avto(models.Model):
