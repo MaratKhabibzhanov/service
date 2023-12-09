@@ -15,6 +15,7 @@ export const RegistrationForm: FC = () => {
     const { confirm: _unusedKey, ...dataToSend } = values;
     RegistrationService.registration(dataToSend)
       .then((data) => {
+        // TDOD: snackbar
         console.log('success');
         console.log(data);
       })

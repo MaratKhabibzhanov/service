@@ -10,7 +10,7 @@ import enUS from 'antd/locale/en_US';
 
 import { darkTheme, lightTheme } from 'shared/theme';
 import { getRefreshTokens } from 'shared/helpers';
-import { Header } from 'wigets';
+import { Footer, Header } from 'wigets';
 
 import { useStore } from './store';
 import MediaQuery from 'react-responsive';
@@ -51,7 +51,7 @@ export const App: FC = () => {
             <Outlet />
           </Layout.Content>
           <MediaQuery minWidth={769}>
-            <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+            <Footer />
           </MediaQuery>
         </Layout>
       </Spin>
