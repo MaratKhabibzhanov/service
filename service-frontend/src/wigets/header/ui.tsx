@@ -4,9 +4,9 @@ import MediaQuery from 'react-responsive';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
-import { AuthModal, MobileMenu, ThemeSwitcher } from 'features';
+import { AuthModal, Logout, MobileMenu, ThemeSwitcher } from 'features';
 
-import { Button, Layout, Menu, Space } from 'antd';
+import { Button, Flex, Layout, Menu, Space } from 'antd';
 import { getMenuItems } from 'shared/helpers';
 
 const Header: FC = () => {
@@ -45,9 +45,14 @@ const Header: FC = () => {
           <ThemeSwitcher />
         </MediaQuery>
         {auth.isAuth ? (
-          <Button type="primary" onClick={() => navigate('profile')}>
-            Profile
-          </Button>
+          <Flex gap={20}>
+            <Button type="primary" onClick={() => navigate('profile')}>
+              Profile
+            </Button>
+            <MediaQuery minWidth={769}>
+              <Logout />
+            </MediaQuery>
+          </Flex>
         ) : (
           <AuthModal />
         )}

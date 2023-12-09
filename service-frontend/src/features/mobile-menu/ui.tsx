@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ThemeSwitcher } from 'features';
+import { Logout, ThemeSwitcher } from 'features';
 import { getMenuItems } from 'shared/helpers';
 import { useStore } from 'app/store';
 
@@ -45,7 +45,10 @@ export const MobileMenu: FC = () => {
               </Button>
             ))}
           </Space>
-          <ThemeSwitcher />
+          <Flex vertical gap={40}>
+            <ThemeSwitcher />
+            <Logout />
+          </Flex>
         </Flex>
       </Drawer>
     </>

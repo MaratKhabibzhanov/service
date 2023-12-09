@@ -37,7 +37,7 @@ export class Auth {
     }
   }
 
-  async logIn(authData: LogIn & { remember: boolean }): Promise<LoadingStatus> {
+  logIn = async (authData: LogIn & { remember: boolean }): Promise<LoadingStatus> => {
     this.loadingStatus = 'loading';
     this.remember = authData.remember;
 
@@ -55,9 +55,9 @@ export class Auth {
     }
 
     return this.loadingStatus;
-  }
+  };
 
-  async refreshTokens() {
+  refreshTokens = async () => {
     if (!this.refreshToken) return undefined;
 
     try {
@@ -74,5 +74,17 @@ export class Auth {
     }
 
     return this.loadingStatus;
-  }
+  };
+
+  logOut = () => {
+    this.isAuth = false;
+    this.accessToken = null;
+    this.refreshToken = null;
+
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+  };
 }
