@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useLayoutEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 
@@ -9,14 +9,26 @@ import ruRU from 'antd/locale/ru_RU';
 import enUS from 'antd/locale/en_US';
 
 import { darkTheme, lightTheme } from 'shared/theme';
-import { Header } from 'wigets';
-import { useStore } from './store';
 import { UserService } from 'shared/api';
+import { getRefreshTokens } from 'shared/helpers';
+import { Header } from 'wigets';
+
+import { useStore } from './store';
 
 const locales = { ruRU, enUS };
 
 export const App: FC = () => {
-  const { settings } = useStore();
+  const { settings, profile, auth } = useStore();
+
+  const initialRender = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!initialRender.current) {
+      const { local, session } = getRefreshTokens();
+      if ((local || session) && !auth.isAuth) profile.getProfile();
+      initialRender.current = true;
+    }
+  }, [profile, auth.isAuth]);
 
   return (
     <ConfigProvider
