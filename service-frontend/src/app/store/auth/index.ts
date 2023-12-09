@@ -12,6 +12,7 @@ else if (localToken) initialRefreshToken = localToken;
 export class Auth {
   isAuth = false;
   loadingStatus: LoadingStatus = 'idle';
+  remember = false;
 
   refreshToken: string | null = initialRefreshToken;
   accessToken: string | null = null;
@@ -19,28 +20,51 @@ export class Auth {
   constructor() {
     makeAutoObservable(this);
   }
+  setAuth(tokens: Tokens) {
+    this.isAuth = true;
+
+    const { access, refresh } = tokens;
+
+    this.accessToken = access;
+    this.refreshToken = refresh;
+
+    if (this.remember) {
+      localStorage.setItem('refreshToken', refresh);
+      localStorage.setItem('accessToken', access);
+    } else {
+      sessionStorage.setItem('refreshToken', refresh);
+      sessionStorage.setItem('accessToken', access);
+    }
+  }
 
   async logIn(authData: LogIn & { remember: boolean }): Promise<LoadingStatus> {
     this.loadingStatus = 'loading';
+    this.remember = authData.remember;
 
     try {
       const tokens = await AuthService.auth(authData);
       runInAction(() => {
-        this.isAuth = true;
         this.loadingStatus = 'idle';
+        this.setAuth(tokens);
+      });
+    } catch (e) {
+      runInAction(() => {
+        this.isAuth = false;
+        this.loadingStatus = 'error';
+      });
+    }
 
-        const { access, refresh } = tokens;
+    return this.loadingStatus;
+  }
 
-        this.accessToken = access;
-        this.refreshToken = refresh;
+  async refreshTokens() {
+    if (!this.refreshToken) return undefined;
 
-        if (authData.remember) {
-          localStorage.setItem('refreshToken', refresh);
-          localStorage.setItem('accessToken', access);
-        } else {
-          sessionStorage.setItem('refreshToken', refresh);
-          sessionStorage.setItem('accessToken', access);
-        }
+    try {
+      const tokens = await AuthService.refreshTokens(this.refreshToken);
+      runInAction(() => {
+        this.loadingStatus = 'idle';
+        this.setAuth(tokens);
       });
     } catch (e) {
       runInAction(() => {

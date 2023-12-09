@@ -11,6 +11,7 @@ import enUS from 'antd/locale/en_US';
 import { darkTheme, lightTheme } from 'shared/theme';
 import { Header } from 'wigets';
 import { useStore } from './store';
+import { UserService } from 'shared/api';
 
 const locales = { ruRU, enUS };
 
@@ -27,7 +28,9 @@ export const App: FC = () => {
         <Layout.Content className="container">
           <Outlet />
         </Layout.Content>
-        <Layout.Footer style={{ textAlign: 'center' }}>footer</Layout.Footer>
+        <Layout.Footer style={{ textAlign: 'center' }} onClick={() => UserService.getMe()}>
+          footer
+        </Layout.Footer>
       </Layout>
     </ConfigProvider>
   );
