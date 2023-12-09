@@ -1,13 +1,15 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
 import { ProfileSkeleton } from 'shared/ui';
 import { formItemLayout } from 'shared/consts';
 
-import { Button, Form, Input } from 'antd';
+import { Button, Flex, Form, Input } from 'antd';
+import { UserService } from 'shared/api';
+import { ChangePasswordModal } from 'features';
 
-type FieldType = Omit<NewUser, 'password'>;
+type FieldType = UserToUpdate & { username?: string };
 
 const UserProfile: FC = () => {
   const { profile } = useStore();
@@ -15,7 +17,22 @@ const UserProfile: FC = () => {
 
   const [form] = Form.useForm<FieldType>();
 
+  const [loading, setLoading] = useState(false);
+
   if (profile.loadingStatus === 'loading') return <ProfileSkeleton />;
+
+  const updateProfile = async (value: FieldType) => {
+    setLoading(true);
+
+    try {
+      const newProfile = await UserService.updateProfile(value);
+      profile.setProfile(newProfile);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Form
@@ -25,7 +42,7 @@ const UserProfile: FC = () => {
       {...formItemLayout}
       style={{ maxWidth: 600 }}
       initialValues={userProfile || undefined}
-      // onFinish={sendForm}
+      onFinish={updateProfile}
     >
       <Form.Item<FieldType>
         label="Username"
@@ -47,7 +64,7 @@ const UserProfile: FC = () => {
           { required: true, message: 'Please input your email!' },
         ]}
       >
-        <Input />
+        <Input disabled={loading} />
       </Form.Item>
 
       <Form.Item<FieldType>
@@ -55,27 +72,30 @@ const UserProfile: FC = () => {
         name="first_name"
         rules={[{ required: true, message: 'Please input your First name!' }]}
       >
-        <Input />
+        <Input disabled={loading} />
       </Form.Item>
       <Form.Item<FieldType>
         label="Last name"
         name="last_name"
         rules={[{ required: true, message: 'Please input your Last name!' }]}
       >
-        <Input />
+        <Input disabled={loading} />
       </Form.Item>
       <Form.Item<FieldType>
         label="Patronim"
         name="patronim"
         rules={[{ required: true, message: 'Please input your patronim!' }]}
       >
-        <Input />
+        <Input disabled={loading} />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ sm: { offset: 12, span: 6 } }}>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-          Save
-        </Button>
+      <Form.Item wrapperCol={{ sm: { offset: 2, span: 16 } }}>
+        <Flex style={{ width: '100%', justifyContent: 'space-between' }}>
+          <ChangePasswordModal disabled={loading} />
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Save
+          </Button>
+        </Flex>
       </Form.Item>
     </Form>
   );

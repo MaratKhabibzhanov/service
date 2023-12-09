@@ -7,8 +7,10 @@ type NewUser = {
   patronim: string;
 };
 
-type UserRole = 'USER' | 'MANAGER';
-
 type User = NewUser & { role: UserRole };
+
+type UserToUpdate = Omit<NewUser, 'username' | 'password'>;
+
+type UserRole = 'USER' | 'MANAGER';
 
 type LogIn = { username: string; password: string };

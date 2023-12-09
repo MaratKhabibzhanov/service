@@ -22,4 +22,9 @@ export class Profile {
 
     return this.loadingStatus;
   }
+
+  setProfile(profile: User) {
+    this.profile = profile;
+    this.loadingStatus = 'idle';
+  }
 }
