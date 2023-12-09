@@ -16,14 +16,10 @@ export const $api = ky.create({ prefixUrl: import.meta.env.VITE_API_ENDPOINT }).
     afterResponse: [
       async (request, _options, response) => {
         if (response.status === 401 && rootStore.auth.refreshToken) {
-          try {
-            await rootStore.auth.refreshTokens();
+          await rootStore.auth.refreshTokens();
 
-            request.headers.set('Authorization', `Bearer ${rootStore.auth.accessToken}`);
-            return await ky(request);
-          } catch (e) {
-            return e;
-          }
+          request.headers.set('Authorization', `Bearer ${rootStore.auth.accessToken}`);
+          return ky(request);
         }
       },
     ],
