@@ -37,7 +37,7 @@ export class Auth {
     }
   }
 
-  logIn = async (authData: LogIn & { remember: boolean }): Promise<LoadingStatus> => {
+  async logIn(authData: LogIn & { remember: boolean }): Promise<LoadingStatus> {
     this.loadingStatus = 'loading';
     this.remember = authData.remember;
 
@@ -55,9 +55,9 @@ export class Auth {
     }
 
     return this.loadingStatus;
-  };
+  }
 
-  refreshTokens = async () => {
+  async refreshTokens() {
     if (!this.refreshToken) return undefined;
 
     try {
@@ -74,7 +74,7 @@ export class Auth {
     }
 
     return this.loadingStatus;
-  };
+  }
 
   logOut = () => {
     this.isAuth = false;

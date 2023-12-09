@@ -6,7 +6,7 @@ export default class UserService {
     return role;
   }
 
-  static async updateProfile(body: User) {
+  static async updateProfile(body: UserToUpdate) {
     const request: User = await $api.put('auth/users/me/', { json: body }).json();
     return request;
   }
