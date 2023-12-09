@@ -174,7 +174,7 @@
     
     • Ссылка на автомобиль
 
-Комманда для создания дампа
+Комманда для создания дампа\n
 `sudo docker exec -i service_database_1 pg_dump -F t -U dbuser -v -d dbname -f /service/pg_dump/dump_1.tar`
 
 
