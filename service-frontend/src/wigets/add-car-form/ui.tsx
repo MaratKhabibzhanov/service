@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { formItemLayout } from 'shared/consts';
 
-import { Button, Form, Input } from 'antd';
+import { Button, DatePicker, Form, Input } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
 const AddCarForm: FC = () => {
@@ -42,19 +42,22 @@ const AddCarForm: FC = () => {
         <Input />
       </Form.Item>
       <Form.Item<Car>
-        label="Commissioning date"
-        name="sold_date"
-        tooltip={{ title: 'Tooltip with customize icon', icon: <InfoCircleOutlined /> }}
-        rules={[{ required: true, message: 'Please input your commissioning date!' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item<Car>
         label="Milage"
         name="mileage"
         rules={[{ required: true, message: 'Please input your milage!' }]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item<Car>
+        label="Commissioning date"
+        name="sold_date"
+        tooltip={{
+          title: 'Date the car was purchased at the dealership',
+          icon: <InfoCircleOutlined />,
+        }}
+        rules={[{ required: true, message: 'Please input your commissioning date!' }]}
+      >
+        <DatePicker disabledDate={(d) => !d || d.isAfter(new Date()) || d.isBefore('2002-12-31')} />
       </Form.Item>
 
       <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
