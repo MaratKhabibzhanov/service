@@ -20,7 +20,7 @@ services:
     volumes:
       - ./web_service:/service/web_service
 
-    command: ../entrypoint.dev.sh
+    command: ../entrypoint.sh
     environment:
       DJANGO_DATABASE_HOST: database
       DJANGO_REDIS_HOST: redis
