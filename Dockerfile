@@ -3,7 +3,7 @@ FROM python:3.9-alpine3.16
 WORKDIR /service/web_service
 COPY web_service /service/web_service
 COPY requirements.txt /service/requirements.txt
-COPY entrypoint.dev.sh /service/
+COPY entrypoint.sh /service/
 
 
 EXPOSE 8000
@@ -15,4 +15,3 @@ RUN pip install -r /service/requirements.txt
 RUN adduser --disabled-password srvice-user
 
 USER srvice-user
-

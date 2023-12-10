@@ -1,0 +1,31 @@
+# service_nginx.conf
+
+server {
+    listen      80;
+    # Доменное имя пока не существует
+    server_name ${SERVICE_HOSTNAME}; # подставить доменное имя сервера
+    charset     utf-8;
+
+    # Путь к frontend
+    location / {
+        root   /usr/share/nginx/service-frontend/dist;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
+    }
+
+
+    # Перенаправляем все api запросы на джангу
+    location /api {
+        proxy_pass http://backend:8000;
+        client_max_body_size 10M;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+    # Путь к медиа файлам
+    location /api/media/ {
+        alias /usr/src/app/media/;
+    }
+
+}
