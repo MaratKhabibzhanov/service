@@ -18,7 +18,7 @@ const CarsList: FC = () => {
 
   if (profile.cars.length === 0) {
     return (
-      <Flex vertical align="center">
+      <Flex vertical align="center" justify="center" style={{ marginTop: '20%' }}>
         <Typography.Text style={style}>You don't have a car yet.</Typography.Text>
         <Typography.Text style={style}>
           Want to{' '}
