@@ -154,12 +154,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/carmodel/",
+							"raw": "{{endpoint}}/service/carmodel/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"carmodel",
 								""
 							]
@@ -178,12 +178,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/avto/",
+							"raw": "{{endpoint}}/service/avto/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								""
 							]
@@ -206,12 +206,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{endpoint}}/API/avto/",
+							"raw": "{{endpoint}}/service/avto/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								""
 							]
@@ -234,12 +234,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{endpoint}}/API/avto/",
+							"raw": "{{endpoint}}/service/avto/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								""
 							]
@@ -253,12 +253,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/avto/6/",
+							"raw": "{{endpoint}}/service/avto/6/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								"6",
 								""
@@ -473,12 +473,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/maintenance/?car_model_id=2",
+							"raw": "{{endpoint}}/service/maintenance/?car_model_id=2",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"maintenance",
 								""
 							],

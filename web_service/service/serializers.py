@@ -71,9 +71,6 @@ class AcceptorSerializer(serializers.ModelSerializer):
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
-    # parts = serializers.PrimaryKeyRelatedField(queryset=Part.objects.all(),
-    #                                                 many=True, )
-    # working_type = serializers.PrimaryKeyRelatedField(queryset=WorkingType.objects.all())
     car_model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())
 
     class Meta:
