@@ -42,7 +42,7 @@ const AddCarForm: FC = () => {
       </Form.Item>
       <Form.Item<Car>
         label="Commissioning date"
-        name="solid_date"
+        name="sold_date"
         rules={[{ required: true, message: 'Please input your commissioning date!' }]}
       >
         <Input />
