@@ -8,6 +8,7 @@ services:
       - ./nginx/templates:/etc/nginx/templates
       - ./service-frontend/dist:/usr/share/nginx/service-frontend/dist
       - ./web_service/media:/usr/src/app/media
+      - ./web_service/static:/usr/src/app/static
     depends_on:
       - backend
     env_file:
