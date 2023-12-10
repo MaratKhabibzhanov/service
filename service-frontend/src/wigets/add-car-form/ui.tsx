@@ -2,8 +2,9 @@ import { FC } from 'react';
 
 import { formItemLayout } from 'shared/consts';
 
-import { Button, DatePicker, Form, Input } from 'antd';
+import { Button, DatePicker, Form, Input, Space } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { CarsModal } from 'features';
 
 const AddCarForm: FC = () => {
   const [form] = Form.useForm<Car>();
@@ -17,8 +18,15 @@ const AddCarForm: FC = () => {
       style={{ maxWidth: 600 }}
       onFinish={() => undefined}
     >
-      <Form.Item<Car> label="Car" name="car_model">
-        <Input disabled />
+      <Form.Item<Car>
+        label="Car"
+        name="car_model"
+        rules={[{ required: true, message: 'Please input your car model!' }]}
+      >
+        <Space.Compact style={{ width: '100%' }}>
+          <Input disabled />
+          <CarsModal />
+        </Space.Compact>
       </Form.Item>
       <Form.Item<Car>
         label="VIN"

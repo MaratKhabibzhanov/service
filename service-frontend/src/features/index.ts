@@ -3,3 +3,4 @@ export { AuthModal } from './auth-modal';
 export { ThemeSwitcher } from './theme-switcher';
 export { Logout } from './logout-button';
 export { ChangePasswordModal } from './change-password-modal';
+export { CarsModal } from './cars-modal';
