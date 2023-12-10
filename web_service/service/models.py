@@ -76,7 +76,7 @@ class Part(models.Model):
 
 class Maintenance(models.Model):
     """Ремонт"""
-    operation = models.CharField("Операция", max_length=150, unique=True)
+    operation = models.CharField("Операция", max_length=150)
     working_time = models.DecimalField("Количество нормо-часов",
                                        max_digits=3, decimal_places=1)
     parts = models.ManyToManyField(Part, verbose_name="Запасные части",
@@ -88,8 +88,16 @@ class Maintenance(models.Model):
     total_cost = models.DecimalField(verbose_name="Предварительная стоимость",
                                      max_digits=10, decimal_places=2, null=True, blank=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['operation', 'car_model'],
+                name='maintenance'
+            )
+        ]
+
     def __str__(self):
-        return self.operation
+        return f"{self.operation} - {self.car_model}"
 
 
 

@@ -13,8 +13,10 @@ def maintenance_post_save(sender, instance, **kwargs):
     oil_price = instance.car_model.engine.oil.price
     oil_quantity = instance.car_model.engine.oil_count
     oil_cost = oil_price * oil_quantity
-    parts_cost = Part.objects.filter(maintenances__id=instance.id).aggregate(Sum('price')).get('price__sum')
-    total_cost = working_price + oil_cost + parts_cost
+    parts_cost = (Part.objects.filter(maintenances__id=instance.id)
+                  .aggregate(Sum('price')).get('price__sum'))
+    total_cost = working_price + oil_cost + parts_cost \
+        if parts_cost else working_price + oil_cost
     sender.objects.filter(pk=instance.pk).update(total_cost=total_cost)
 
 
@@ -27,9 +29,10 @@ def maintenances_m2m_changed(sender, instance, action, **kwargs):
         oil_price = instance.car_model.engine.oil.price
         oil_quantity = instance.car_model.engine.oil_count
         oil_cost = oil_price * oil_quantity
-        parts_cost = sender.objects.filter(maintenance_id=instance.id).aggregate(Sum('part__price')).get('part__price__sum')
-        print(f"working_price: {working_price}, oil_cost: {oil_cost}, parts_cost: {parts_cost}")
-        total_cost = working_price + oil_cost + parts_cost if parts_cost else working_price + oil_cost
+        parts_cost = (sender.objects.filter(maintenance_id=instance.id)
+                      .aggregate(Sum('part__price')).get('part__price__sum'))
+        total_cost = working_price + oil_cost + parts_cost \
+            if parts_cost else working_price + oil_cost
         Maintenance.objects.filter(pk=instance.pk).update(total_cost=total_cost)
 
 

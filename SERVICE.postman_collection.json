@@ -198,7 +198,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HHRM3H32FT507609\",\n    \"number\": \"c875сп174\",\n    \"sts\": \"4536941765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 1,\n    \"owner\": 14\n}",
+							"raw": "{\n    \"vin\": \"2HHRR3H32FT567609\",\n    \"number\": \"c885ск174\",\n    \"sts\": \"4526941665\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 2,\n    \"owner\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -457,6 +457,36 @@
 								"users",
 								"set_password",
 								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Maintenance",
+			"item": [
+				{
+					"name": "maintenance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/API/maintenance/?car_model_id=2",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"API",
+								"maintenance",
+								""
+							],
+							"query": [
+								{
+									"key": "car_model_id",
+									"value": "2"
+								}
 							]
 						}
 					},

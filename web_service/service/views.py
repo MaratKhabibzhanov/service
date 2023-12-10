@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, views, status
+from rest_framework import viewsets, permissions, views, status, generics
 from rest_framework.response import Response
 
 from .models import (Part,
@@ -51,10 +51,19 @@ class AcceptorViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class MaintenanceViewSet(viewsets.ModelViewSet):
+class MaintenanceView(generics.GenericAPIView):
     queryset = Maintenance.objects.all()
     serializer_class = MaintenanceSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        car_model_id = request.query_params.get("car_model_id")
+        if car_model_id:
+            queryset = Maintenance.objects.filter(car_model_id=car_model_id)
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(data="Отсутствует обязательный аргумент: car_model_id",
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class AvtoViewSet(viewsets.ModelViewSet):
