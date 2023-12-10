@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { formItemLayout } from 'shared/consts';
 
 import { Button, Form, Input } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 const AddCarForm: FC = () => {
   const [form] = Form.useForm<Car>();
@@ -43,6 +44,7 @@ const AddCarForm: FC = () => {
       <Form.Item<Car>
         label="Commissioning date"
         name="sold_date"
+        tooltip={{ title: 'Tooltip with customize icon', icon: <InfoCircleOutlined /> }}
         rules={[{ required: true, message: 'Please input your commissioning date!' }]}
       >
         <Input />
@@ -55,7 +57,7 @@ const AddCarForm: FC = () => {
         <Input />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ sm: { offset: 12, span: 6 } }}>
+      <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
         <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
           Submit
         </Button>
