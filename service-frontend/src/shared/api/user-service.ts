@@ -24,7 +24,7 @@ export default class UserService {
     return request;
   }
   static async addCar(body: Car) {
-    const request: Car = await $api.post('API/avto/', { json: body }).json();
+    const request: Car = await $api.post('service/avto/', { json: body }).json();
     return request;
   }
 }
