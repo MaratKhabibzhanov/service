@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useStore } from 'app/store';
 
@@ -14,6 +14,7 @@ type FieldType = {
 };
 
 const AuthModal: FC = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm<FieldType>();
 
   const { auth, profile } = useStore();
@@ -29,6 +30,7 @@ const AuthModal: FC = () => {
       if (status === 'idle') {
         setOpen(false);
         profile.getProfile();
+        navigate('/');
       }
     });
   };

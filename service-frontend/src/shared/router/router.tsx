@@ -26,8 +26,8 @@ export const router = createBrowserRouter([
       },
       {
         path: 'add_car',
-        element: <AddCarPage/>
-      }
+        element: <AddCarPage />,
+      },
       {
         path: '*',
         element: <span style={{ color: 'red' }}>Page not found</span>,
