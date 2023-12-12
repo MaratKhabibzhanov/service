@@ -198,7 +198,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HHRR3H32FT567609\",\n    \"number\": \"c885ск174\",\n    \"sts\": \"4526941665\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 2,\n    \"owner\": 6\n}",
+							"raw": "{\n    \"vin\": \"2HHRR3H32FT567609\",\n    \"number\": \"c885ск174\",\n    \"vehicle_certificate\": \"4526941665\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 2,\n    \"owner\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -226,7 +226,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"sts\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
+							"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"vehicle_certificate\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
