@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Space } from 'antd';
+import { Flex, Skeleton } from 'antd';
 import { FC } from 'react';
 
 export const ProfileSkeleton: FC = () => {

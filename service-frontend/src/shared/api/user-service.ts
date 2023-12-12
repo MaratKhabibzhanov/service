@@ -27,4 +27,9 @@ export default class UserService {
     const request: CarInfo = await $api.post('service/avto/', { json: body }).json();
     return request;
   }
+
+  static async removeCar(id: number) {
+    const request: null = await $api.delete(`service/auto/${id}`);
+    return request;
+  }
 }
