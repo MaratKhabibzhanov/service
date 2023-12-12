@@ -4,7 +4,7 @@ type Car = {
   sts: string;
   sold_date: string;
   mileage: number;
-  car_model: number;
+  car_model: CarModel;
 };
 
 type CarModel = {

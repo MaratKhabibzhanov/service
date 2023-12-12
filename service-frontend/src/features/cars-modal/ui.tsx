@@ -4,11 +4,11 @@ import { Button, Card, Flex, Image, Modal } from 'antd';
 import { AdditionalService } from 'shared/api';
 
 type CarsModalProps = {
-  currentModel?: number;
-  setModel: (car: CarModel) => void;
+  currentModel: CarModel | null;
+  setCurrentCar: (car: CarModel) => void;
 };
 
-const CarsModal: FC<CarsModalProps> = ({ currentModel, setModel }) => {
+const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
   const [open, setOpen] = useState(false);
   const [cars, setCars] = useState<CarModel[]>([]);
 
@@ -19,6 +19,11 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setModel }) => {
       });
     }
   }, [open]);
+
+  const handleClickModel = (model: CarModel) => {
+    setCurrentCar(model);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -40,7 +45,7 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setModel }) => {
               }
             >
               <Card.Meta
-                title={<Button onClick={() => setModel(item)}>{item.model}</Button>}
+                title={<Button onClick={() => handleClickModel(item)}>{item.model}</Button>}
                 description={`Engine type: ${item.engine}`}
               />
             </Card>

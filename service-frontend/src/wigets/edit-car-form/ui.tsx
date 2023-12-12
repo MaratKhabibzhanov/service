@@ -1,13 +1,43 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Dayjs } from 'dayjs';
 
 import { formItemLayout } from 'shared/consts';
 import { CarsModal } from 'features';
+import { useStore } from 'app/store';
 
 import { Button, DatePicker, Form, Input, Space } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
 const EditCarForm: FC = () => {
+  const { carId } = useParams();
+  const navigate = useNavigate();
+
+  const { profile } = useStore();
   const [form] = Form.useForm<Car>();
+
+  const [currentCar, setCurrentCar] = useState<CarModel | null>(null);
+
+  const changeCarModel = (model: CarModel) => {
+    setCurrentCar(model);
+    form.setFieldValue('car_model', model);
+  };
+
+  const onFinish = async (values: Car) => {
+    const currentValues = {
+      ...values,
+      sold_date: (values.sold_date as unknown as Dayjs).format('YYYY-MM-DD'),
+    };
+
+    if (carId === 'new') {
+      try {
+        const response = await profile.addCar(currentValues);
+        console.log(response);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+  };
 
   return (
     <Form
@@ -16,7 +46,7 @@ const EditCarForm: FC = () => {
       scrollToFirstError
       {...formItemLayout}
       style={{ maxWidth: 600 }}
-      onFinish={() => undefined}
+      onFinish={onFinish}
     >
       <Form.Item<Car>
         label="Car"
@@ -24,8 +54,8 @@ const EditCarForm: FC = () => {
         rules={[{ required: true, message: 'Please input your car model!' }]}
       >
         <Space.Compact style={{ width: '100%' }}>
-          <Input disabled />
-          <CarsModal />
+          <Input value={currentCar?.model} disabled />
+          <CarsModal currentModel={currentCar} setCurrentCar={changeCarModel} />
         </Space.Compact>
       </Form.Item>
       <Form.Item<Car>
@@ -54,7 +84,7 @@ const EditCarForm: FC = () => {
         name="mileage"
         rules={[{ required: true, message: 'Please input your milage!' }]}
       >
-        <Input />
+        <Input type="number" />
       </Form.Item>
       <Form.Item<Car>
         label="Commissioning date"
@@ -63,7 +93,13 @@ const EditCarForm: FC = () => {
           title: 'Date the car was purchased at the dealership',
           icon: <InfoCircleOutlined />,
         }}
-        rules={[{ required: true, message: 'Please input your commissioning date!' }]}
+        rules={[
+          {
+            type: 'object' as const,
+            required: true,
+            message: 'Please input your commissioning date!',
+          },
+        ]}
       >
         <DatePicker disabledDate={(d) => !d || d.isAfter(new Date()) || d.isBefore('2002-12-31')} />
       </Form.Item>

@@ -35,13 +35,18 @@ export class Profile {
   }
 
   async addCar(car: Car) {
+    let response = null;
     try {
       const newCar = await UserService.addCar(car);
       runInAction(() => {
         this.cars.push(newCar);
+        response = 'ok';
       });
     } catch (e) {
       console.warn(e);
+      response = (e as Error).message;
     }
+
+    return response;
   }
 }
