@@ -22,7 +22,7 @@ const CarsList: FC = () => {
         <Typography.Text style={style}>You don't have a car yet.</Typography.Text>
         <Typography.Text style={style}>
           Want to{' '}
-          <Button type="primary" onClick={() => navigate('/add_car')}>
+          <Button type="primary" onClick={() => navigate('new')}>
             add
           </Button>{' '}
           ?

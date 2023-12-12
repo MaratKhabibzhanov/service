@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
 import { formItemLayout } from 'shared/consts';
+import { CarsModal } from 'features';
 
 import { Button, DatePicker, Form, Input, Space } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { CarsModal } from 'features';
 
-const AddCarForm: FC = () => {
+const EditCarForm: FC = () => {
   const [form] = Form.useForm<Car>();
 
   return (
@@ -77,4 +77,4 @@ const AddCarForm: FC = () => {
   );
 };
 
-export default AddCarForm;
+export default EditCarForm;

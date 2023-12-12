@@ -1,16 +1,16 @@
 import { FC } from 'react';
 
-import { AddCarForm } from 'wigets';
+import { EditCarForm } from 'wigets';
 
 import { Space, Typography } from 'antd';
 
-const AddCatPage: FC = () => {
+const EditCarPage: FC = () => {
   return (
     <Space direction="vertical" style={{ width: '100%' }}>
       <Typography.Title>Select a car:</Typography.Title>
-      <AddCarForm />
+      <EditCarForm />
     </Space>
   );
 };
 
-export default AddCatPage;
+export default EditCarPage;
