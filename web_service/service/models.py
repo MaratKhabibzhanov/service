@@ -109,7 +109,7 @@ class Avto(models.Model):
                               on_delete=models.CASCADE, related_name="avtos")
     vin = models.CharField("VIN", max_length=17, unique=True)
     number = models.CharField("Госномер", max_length=9, blank=True, unique=True)
-    sts = models.CharField("Номер свидетельства о регистрации", max_length=10, blank=True, unique=True)
+    vehicle_certificate = models.CharField("Номер свидетельства о регистрации", max_length=10, blank=True, unique=True)
     sold_date = models.DateField("Дата продажи", blank=True)
     mileage = models.IntegerField("Пробег", blank=True)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",

@@ -84,7 +84,7 @@ class MaintenanceSerializer(serializers.ModelSerializer):
 
 class AvtoSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    car_model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())
+    car_model = CarModelSerializer(read_only=True)
 
     class Meta:
         model = Avto
@@ -92,21 +92,21 @@ class AvtoSerializer(serializers.ModelSerializer):
                   'owner',
                   'vin',
                   'number',
-                  'sts',
+                  'vehicle_certificate',
                   'sold_date',
                   'mileage',
                   'car_model']
 
 
 class AvtoUserSerializer(serializers.ModelSerializer):
-    car_model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())
+    car_model = CarModelSerializer(read_only=True)
 
     class Meta:
         model = Avto
         fields = ['id',
                   'vin',
                   'number',
-                  'sts',
+                  'vehicle_certificate',
                   'sold_date',
                   'mileage',
                   'car_model']
