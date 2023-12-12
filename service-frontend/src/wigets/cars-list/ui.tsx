@@ -16,7 +16,7 @@ const CarsList: FC = () => {
   const navigate = useNavigate();
   const { profile } = useStore();
 
-  if (profile.cars.length === 0) {
+  if (profile.carsInfo.length === 0) {
     return (
       <Flex vertical align="center" justify="center" style={{ marginTop: '20%' }}>
         <Typography.Text style={style}>You don't have a car yet.</Typography.Text>

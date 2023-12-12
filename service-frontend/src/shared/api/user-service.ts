@@ -23,8 +23,8 @@ export default class UserService {
     const request = await $api.delete('auth/users/me/').json();
     return request;
   }
-  static async addCar(body: Car) {
-    const request: Car = await $api.post('service/avto/', { json: body }).json();
+  static async addCar(body: CarInfo) {
+    const request: CarInfo = await $api.post('service/avto/', { json: body }).json();
     return request;
   }
 }

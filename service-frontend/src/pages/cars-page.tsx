@@ -10,7 +10,7 @@ const CarsPage: FC = () => {
 
   return (
     <Space direction="vertical" style={{ width: '100%' }}>
-      {profile.cars.length > 0 && <Typography.Title>Your cars:</Typography.Title>}
+      {profile.carsInfo.length > 0 && <Typography.Title>Your cars:</Typography.Title>}
       <CarsList />
     </Space>
   );

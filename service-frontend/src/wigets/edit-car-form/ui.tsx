@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
@@ -14,16 +14,26 @@ const EditCarForm: FC = () => {
   const navigate = useNavigate();
 
   const { profile } = useStore();
-  const [form] = Form.useForm<Car>();
+  const [form] = Form.useForm<CarInfo>();
 
-  const [currentCar, setCurrentCar] = useState<CarModel | null>(null);
+  if (!carId) throw new Error('No car ID found');
+
+  const initialCarInfo = useMemo(
+    () =>
+      carId !== 'new' ? profile.carsInfo.find((car) => car.car_model.id === +carId) : undefined,
+    [carId, profile.carsInfo]
+  );
+
+  const [currentCar, setCurrentCar] = useState<CarModel | null>(
+    initialCarInfo ? initialCarInfo.car_model : null
+  );
 
   const changeCarModel = (model: CarModel) => {
     setCurrentCar(model);
     form.setFieldValue('car_model', model);
   };
 
-  const onFinish = async (values: Car) => {
+  const onFinish = async (values: CarInfo) => {
     const currentValues = {
       ...values,
       sold_date: (values.sold_date as unknown as Dayjs).format('YYYY-MM-DD'),
@@ -46,10 +56,11 @@ const EditCarForm: FC = () => {
       scrollToFirstError
       {...formItemLayout}
       style={{ maxWidth: 600 }}
+      initialValues={initialCarInfo}
       onFinish={onFinish}
     >
-      <Form.Item<Car>
-        label="Car"
+      <Form.Item<CarInfo>
+        label="CarInfo"
         name="car_model"
         rules={[{ required: true, message: 'Please input your car model!' }]}
       >
@@ -58,35 +69,35 @@ const EditCarForm: FC = () => {
           <CarsModal currentModel={currentCar} setCurrentCar={changeCarModel} />
         </Space.Compact>
       </Form.Item>
-      <Form.Item<Car>
+      <Form.Item<CarInfo>
         label="VIN"
         name="vin"
         rules={[{ required: true, message: 'Please input your VIN!' }]}
       >
         <Input />
       </Form.Item>
-      <Form.Item<Car>
+      <Form.Item<CarInfo>
         label="STS"
         name="sts"
         rules={[{ required: true, message: 'Please input your STS!' }]}
       >
         <Input />
       </Form.Item>
-      <Form.Item<Car>
+      <Form.Item<CarInfo>
         label="Number"
         name="number"
         rules={[{ required: true, message: 'Please input your number!' }]}
       >
         <Input />
       </Form.Item>
-      <Form.Item<Car>
+      <Form.Item<CarInfo>
         label="Milage"
         name="mileage"
         rules={[{ required: true, message: 'Please input your milage!' }]}
       >
         <Input type="number" />
       </Form.Item>
-      <Form.Item<Car>
+      <Form.Item<CarInfo>
         label="Commissioning date"
         name="sold_date"
         tooltip={{

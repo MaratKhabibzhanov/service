@@ -3,7 +3,7 @@ import { UserService } from 'shared/api';
 
 export class Profile {
   profile: User | null = null;
-  cars: Car[] = [];
+  carsInfo: CarInfo[] = [];
 
   loadingStatus: LoadingStatus = 'idle';
 
@@ -34,12 +34,12 @@ export class Profile {
     this.loadingStatus = 'idle';
   }
 
-  async addCar(car: Car) {
+  async addCar(car: CarInfo) {
     let response = null;
     try {
       const newCar = await UserService.addCar(car);
       runInAction(() => {
-        this.cars.push(newCar);
+        this.carsInfo.push(newCar);
         response = 'ok';
       });
     } catch (e) {

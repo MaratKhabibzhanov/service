@@ -1,4 +1,4 @@
-type Car = {
+type CarInfo = {
   vin: string;
   number: string;
   sts: string;
