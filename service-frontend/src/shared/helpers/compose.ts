@@ -1,3 +1,4 @@
+/* eslint-disable  */
 /** @see https://github.com/reduxjs/redux/blob/master/src/compose.ts */
 
 type Func<T extends any[], R> = (...a: T) => R;
