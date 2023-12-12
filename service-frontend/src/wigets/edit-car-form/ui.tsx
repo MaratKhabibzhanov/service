@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
 import { formItemLayout } from 'shared/consts';
@@ -11,7 +11,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 
 const EditCarForm: FC = () => {
   const { carId } = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { profile } = useStore();
   const [form] = Form.useForm<CarInfo>();
