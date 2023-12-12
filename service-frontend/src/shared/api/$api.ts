@@ -7,7 +7,7 @@ export const $api = ky.create({ prefixUrl: import.meta.env.VITE_API_ENDPOINT }).
     beforeRequest: [
       (request) => {
         if (rootStore.auth.accessToken) {
-          request.headers.set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`);
+          request.headers.set('Authorization', `Bearer ${rootStore.auth.accessToken}`);
         }
       },
     ],

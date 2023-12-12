@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from config import settings
 
@@ -67,8 +69,6 @@ class Part(models.Model):
     """Склад"""
     spare_part = models.CharField("Запчасть", max_length=150, unique=True)
     price = models.DecimalField("Цена", max_digits=9, decimal_places=2)
-    compatible_car = models.ManyToManyField(CarModel, verbose_name="Совместимый автомобиль",
-                                            related_name="parts")
 
     def __str__(self):
         return self.spare_part
@@ -76,7 +76,7 @@ class Part(models.Model):
 
 class Maintenance(models.Model):
     """Ремонт"""
-    operation = models.CharField("Операция", max_length=150, unique=True)
+    operation = models.CharField("Операция", max_length=150)
     working_time = models.DecimalField("Количество нормо-часов",
                                        max_digits=3, decimal_places=1)
     parts = models.ManyToManyField(Part, verbose_name="Запасные части",
@@ -85,9 +85,22 @@ class Maintenance(models.Model):
                                      related_name="maintenances", on_delete=models.PROTECT)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",
                                   related_name="maintenances", on_delete=models.PROTECT)
+    total_cost = models.DecimalField(verbose_name="Предварительная стоимость",
+                                     max_digits=10, decimal_places=2, null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['operation', 'car_model'],
+                name='maintenance'
+            )
+        ]
 
     def __str__(self):
-        return self.operation
+        return f"{self.operation} - {self.car_model}"
+
+
+
 
 
 class Avto(models.Model):
@@ -96,7 +109,7 @@ class Avto(models.Model):
                               on_delete=models.CASCADE, related_name="avtos")
     vin = models.CharField("VIN", max_length=17, unique=True)
     number = models.CharField("Госномер", max_length=9, blank=True, unique=True)
-    sts = models.CharField("Номер свидетельства о регистрации", max_length=10, blank=True, unique=True)
+    vehicle_certificate = models.CharField("Номер свидетельства о регистрации", max_length=10, blank=True, unique=True)
     sold_date = models.DateField("Дата продажи", blank=True)
     mileage = models.IntegerField("Пробег", blank=True)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",

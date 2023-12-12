@@ -99,7 +99,7 @@ export const RegistrationForm: FC = () => {
         <Input />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ sm: { offset: 12, span: 6 } }}>
+      <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
         <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
           Submit
         </Button>

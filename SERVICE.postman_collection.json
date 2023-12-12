@@ -154,12 +154,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/carmodel/",
+							"raw": "{{endpoint}}/service/carmodel/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"carmodel",
 								""
 							]
@@ -178,12 +178,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/avto/",
+							"raw": "{{endpoint}}/service/avto/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								""
 							]
@@ -198,7 +198,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HHRM3H32FT507609\",\n    \"number\": \"c875сп174\",\n    \"sts\": \"4536941765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 1,\n    \"owner\": 14\n}",
+							"raw": "{\n    \"vin\": \"2HHRR3H32FT567609\",\n    \"number\": \"c885ск174\",\n    \"vehicle_certificate\": \"4526941665\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 2,\n    \"owner\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -206,12 +206,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{endpoint}}/API/avto/",
+							"raw": "{{endpoint}}/service/avto/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								""
 							]
@@ -226,7 +226,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"sts\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
+							"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"vehicle_certificate\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -234,12 +234,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{endpoint}}/API/avto/",
+							"raw": "{{endpoint}}/service/avto/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								""
 							]
@@ -253,12 +253,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/API/avto/6/",
+							"raw": "{{endpoint}}/service/avto/6/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
-								"API",
+								"service",
 								"avto",
 								"6",
 								""
@@ -457,6 +457,36 @@
 								"users",
 								"set_password",
 								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Maintenance",
+			"item": [
+				{
+					"name": "maintenance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/service/maintenance/?car_model_id=2",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"service",
+								"maintenance",
+								""
+							],
+							"query": [
+								{
+									"key": "car_model_id",
+									"value": "2"
+								}
 							]
 						}
 					},

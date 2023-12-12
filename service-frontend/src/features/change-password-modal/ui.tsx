@@ -15,10 +15,15 @@ const ChangePasswordModal: FC<{ disabled?: boolean }> = ({ disabled }) => {
 
   const [open, setOpen] = useState(false);
 
+  const close = () => {
+    setOpen(false);
+    form.resetFields();
+  };
+
   const onSave = async (values: FieldType) => {
     try {
       await UserService.changePassword(values);
-      setOpen(false);
+      close();
     } catch (e) {
       console.warn(3);
     }
@@ -34,8 +39,8 @@ const ChangePasswordModal: FC<{ disabled?: boolean }> = ({ disabled }) => {
         open={open}
         footer={null}
         style={{ maxWidth: '400px' }}
-        onCancel={() => setOpen(false)}
-        onOk={() => setOpen(false)}
+        onCancel={close}
+        onOk={close}
       >
         <Form
           name="change_password_form"
@@ -65,7 +70,7 @@ const ChangePasswordModal: FC<{ disabled?: boolean }> = ({ disabled }) => {
               { required: true, message: 'Please confirm your new password!' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue('new_password') === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(

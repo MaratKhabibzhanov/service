@@ -1,8 +1,10 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { UserService } from 'shared/api';
 
 export class Profile {
   profile: User | null = null;
+  carsInfo: CarInfo[] = [];
+
   loadingStatus: LoadingStatus = 'idle';
 
   constructor() {
@@ -14,10 +16,14 @@ export class Profile {
 
     try {
       const profile = await UserService.getMe();
-      this.profile = profile;
-      this.loadingStatus = 'idle';
+      runInAction(() => {
+        this.profile = profile;
+        this.loadingStatus = 'idle';
+      });
     } catch (e) {
-      this.loadingStatus = 'error';
+      runInAction(() => {
+        this.loadingStatus = 'error';
+      });
     }
 
     return this.loadingStatus;
@@ -26,5 +32,21 @@ export class Profile {
   setProfile(profile: User) {
     this.profile = profile;
     this.loadingStatus = 'idle';
+  }
+
+  async addCar(car: CarInfo) {
+    let response = null;
+    try {
+      const newCar = await UserService.addCar(car);
+      runInAction(() => {
+        this.carsInfo.push(newCar);
+        response = 'ok';
+      });
+    } catch (e) {
+      console.warn(e);
+      response = (e as Error).message;
+    }
+
+    return response;
   }
 }

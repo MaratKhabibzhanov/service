@@ -89,7 +89,7 @@ const UserProfile: FC = () => {
         <Input disabled={loading} />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ sm: { offset: 2, span: 16 } }}>
+      <Form.Item wrapperCol={{ sm: { offset: 4, span: 16 } }}>
         <Flex style={{ width: '100%', justifyContent: 'space-between' }}>
           <ChangePasswordModal disabled={loading} />
           <Button type="primary" htmlType="submit" loading={loading}>

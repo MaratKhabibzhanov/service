@@ -1,15 +1,26 @@
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/templates_dev:/etc/nginx/templates
+      - ./service-frontend/dist:/usr/share/nginx/service-frontend/dist
+      - ./web_service/media:/usr/src/app/media
+      - ./web_service/static:/usr/src/app/static
+    depends_on:
+      - backend
+    env_file:
+      - .env.dev
+
   backend:
     build:
       context: .
       dockerfile: dev.Dockerfile
-    ports:
-      - "8080:8000"
     volumes:
       - ./web_service:/service/web_service
 
-    command: >
-      sh -c "python manage.py migrate&python manage.py runserver 0.0.0.0:8000"
+    command: ../entrypoint.dev.sh
     environment:
       DJANGO_DATABASE_HOST: database
       DJANGO_REDIS_HOST: redis

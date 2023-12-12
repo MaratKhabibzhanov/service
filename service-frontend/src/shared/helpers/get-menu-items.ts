@@ -9,7 +9,7 @@ const getMenuItems = (role?: UserRole) => {
     return menuItems.filter((item) => item.key !== 'schedule');
   }
 
-  return menuItems.filter((item) => item.key !== 'auto');
+  return menuItems.filter((item) => item.key !== 'cars');
 };
 
 export default getMenuItems;
