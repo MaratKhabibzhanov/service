@@ -101,10 +101,18 @@ class OilViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class EngineViewSet(viewsets.ModelViewSet):
+class EngineView(generics.GenericAPIView):
     queryset = Engine.objects.all()
-    http_method_names = ("get", "head", "options")
     serializer_class = EngineSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        car_model_id = request.query_params.get("car_model_id")
+        if car_model_id:
+            queryset = Engine.objects.filter(carmodels=car_model_id)
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(data="Отсутствует обязательный аргумент: car_model_id",
+                        status=status.HTTP_400_BAD_REQUEST)
 
 

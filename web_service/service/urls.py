@@ -14,6 +14,7 @@ router.register(r'registration', views.RegistrationViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('maintenance/', views.MaintenanceView.as_view(), name='maintenance'),
+    path('engine/', views.EngineView.as_view(), name='engine'),
 ]
 
 urlpatterns += router.urls

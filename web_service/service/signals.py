@@ -10,8 +10,8 @@ def maintenance_post_save(sender, instance, **kwargs):
     working_time = instance.working_time
     working_type = instance.working_type.price
     working_price = working_type * working_time
-    oil_price = instance.car_model.engine.oil.price
-    oil_quantity = instance.car_model.engine.oil_count
+    oil_price = instance.car_model.compatible_engines.oil.price
+    oil_quantity = instance.car_model.compatible_engines.oil_count
     oil_cost = oil_price * oil_quantity
     parts_cost = (Part.objects.filter(maintenances__id=instance.id)
                   .aggregate(Sum('price')).get('price__sum'))
@@ -26,8 +26,8 @@ def maintenances_m2m_changed(sender, instance, action, **kwargs):
         working_time = instance.working_time
         working_type = instance.working_type.price
         working_price = working_type * working_time
-        oil_price = instance.car_model.engine.oil.price
-        oil_quantity = instance.car_model.engine.oil_count
+        oil_price = instance.car_model.compatible_engines.oil.price
+        oil_quantity = instance.car_model.compatible_engines.oil_count
         oil_cost = oil_price * oil_quantity
         parts_cost = (sender.objects.filter(maintenance_id=instance.id)
                       .aggregate(Sum('part__price')).get('part__price__sum'))
