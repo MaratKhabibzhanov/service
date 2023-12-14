@@ -58,8 +58,8 @@ class CarModel(models.Model):
     """Модель автомобиля"""
     model = models.CharField("Модель", max_length=50, unique=True)
     image = models.ImageField(upload_to='image')
-    engine = models.ForeignKey(Engine, verbose_name="Двигатель",
-                               related_name="carmodels", on_delete=models.PROTECT)
+    compatible_engines = models.ManyToManyField(Engine, verbose_name="Двигатель",
+                                                related_name="carmodels")
 
     def __str__(self):
         return self.model
@@ -100,9 +100,6 @@ class Maintenance(models.Model):
         return f"{self.operation} - {self.car_model}"
 
 
-
-
-
 class Avto(models.Model):
     """Автомобиль"""
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Собственник",
@@ -114,6 +111,8 @@ class Avto(models.Model):
     mileage = models.IntegerField("Пробег", blank=True)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",
                                   related_name="avtos", on_delete=models.PROTECT)
+    engine = models.ForeignKey(Engine, verbose_name="Двигатель", null=True,
+                               related_name="avtos", on_delete=models.PROTECT)
 
     def __str__(self):
         return self.vin
