@@ -13,20 +13,23 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     VitePWA({
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
+        theme_color: '#f69435',
+        background_color: '#f69435',
+        display: 'standalone',
+        scope: '/',
+        start_url: '/',
+        short_name: 'Habib pwa',
+        description: 'Habib testing vite pwa',
         name: 'Habib Service',
-        short_name: 'MyApp',
-        description: 'Habib Service description',
-        theme_color: '#ffffff',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: '/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'pwa-512x512.png',
+            src: '/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
