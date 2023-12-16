@@ -58,7 +58,7 @@ class CarModel(models.Model):
     """Модель автомобиля"""
     model = models.CharField("Модель", max_length=50, unique=True)
     image = models.ImageField(upload_to='image')
-    compatible_engines = models.ManyToManyField(Engine, verbose_name="Двигатель",
+    compatible_engines = models.ManyToManyField(Engine, verbose_name="Совместимые двигатели",
                                                 related_name="carmodels")
 
     def __str__(self):
