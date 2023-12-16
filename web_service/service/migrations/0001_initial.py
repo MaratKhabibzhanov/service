@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('vin', models.CharField(max_length=17, unique=True, verbose_name='VIN')),
                 ('number', models.CharField(blank=True, max_length=9, unique=True, verbose_name='Госномер')),
-                ('sts', models.CharField(blank=True, max_length=10, unique=True, verbose_name='Номер свидетельства о регистрации')),
+                ('vehicle_certificate', models.CharField(blank=True, max_length=10, unique=True, verbose_name='Номер свидетельства о регистрации')),
                 ('sold_date', models.DateField(blank=True, verbose_name='Дата продажи')),
                 ('mileage', models.IntegerField(verbose_name='Пробег')),
             ],

@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
 import { Button, Flex, Typography } from 'antd';
+import { CarInfoCard } from 'features';
 
 const style = {
   fontSize: '2rem',
@@ -38,7 +39,7 @@ const CarsList: FC = () => {
     );
   }
 
-  return <></>;
+  return profile.carsInfo.map((item) => <CarInfoCard key={item.id} carInfo={item} />);
 };
 
 export default observer(CarsList);

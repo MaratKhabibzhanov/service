@@ -110,7 +110,7 @@ const EditCarForm: FC = () => {
       </Form.Item>
       <Form.Item<CarInfoFields>
         label="STS"
-        name="sts"
+        name="vehicle_certificate"
         rules={[{ required: true, message: 'Please input your STS!' }]}
       >
         <Input />

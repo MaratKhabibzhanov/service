@@ -1,7 +1,7 @@
 type CarInfo = {
   vin: string;
   number: string;
-  sts: string;
+  vehicle_certificate: string;
   sold_date: string;
   mileage: number;
   car_model: CarModel;
