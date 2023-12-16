@@ -131,9 +131,21 @@ class AvtoSerializer(AvtoUserSerializer):
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    acceptor = serializers.PrimaryKeyRelatedField(queryset=Acceptor.objects.all())
-    maintenance = serializers.PrimaryKeyRelatedField(queryset=Maintenance.objects.all())
-    avto = serializers.PrimaryKeyRelatedField(queryset=Avto.objects.all())
+    acceptor = serializers.PrimaryKeyRelatedField(
+        queryset=AcceptorSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=AcceptorSerializer),
+        required=True,
+    )
+    maintenance = serializers.PrimaryKeyRelatedField(
+        queryset=MaintenanceSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=MaintenanceSerializer),
+        required=True,
+    )
+    avto = serializers.PrimaryKeyRelatedField(
+        queryset=AvtoSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=AvtoSerializer),
+        required=True,
+    )
 
     class Meta:
         model = Registration
@@ -144,3 +156,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
                   'maintenance',
                   'avto',
                   'canceled']
+
+    def create(self, validated_data: dict) -> Registration:
+        avto = validated_data.get('avto')
+        maintenance = validated_data.get('maintenance')
+        self._validate_maintenance(avto, maintenance)
+        return super(RegistrationSerializer, self).create(validated_data)
+
+    def _validate_maintenance(self, avto: Avto, maintenance: Maintenance) -> None:
+        if (avto.car_model != maintenance.car_model
+                or avto.engine != maintenance.engine):
+            raise (serializers.ValidationError
+                   (f'Тип ремонта {maintenance} не совместим с автомобилем {avto}'))
