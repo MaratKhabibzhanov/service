@@ -12,3 +12,9 @@ type CarModel = {
   model: string;
   image: string;
 };
+
+type Engine = {
+  id: number;
+  model: string;
+  engine_vol: string;
+};
