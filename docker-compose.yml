@@ -3,24 +3,34 @@ services:
     image: nginx:latest
     ports:
       - 80:80
+      - 443:443
     volumes:
-      - ./nginx/templates_dev:/etc/nginx/templates
+      - ./nginx/templates:/etc/nginx/templates
       - ./service-frontend/dist:/usr/share/nginx/service-frontend/dist
       - ./web_service/media:/usr/src/app/media
       - ./web_service/static:/usr/src/app/static
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - backend
     env_file:
       - .env.dev
 
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+
   backend:
     build:
       context: .
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ./web_service:/service/web_service
 
-    command: ../entrypoint.dev.sh
+    command: ../entrypoint.sh
     environment:
       DJANGO_DATABASE_HOST: database
       DJANGO_REDIS_HOST: redis
@@ -29,7 +39,6 @@ services:
 
     depends_on:
       - database
-      - redis
 
   database:
     image: postgres:14.6-alpine
@@ -38,27 +47,6 @@ services:
     volumes:
       - dev_postgres_data:/var/lib/postgresql/data/
       - ./pg_dump:/service/pg_dump
-    env_file:
-      - .env.dev
-
-  redis:
-    image: redis:7.0.5-alpine
-    hostname: redis
-
-  worker:
-    build:
-      context: .
-      dockerfile: dev.Dockerfile
-    hostname: worker
-    entrypoint: celery
-    command: -A celery_app.app worker --loglevel=info
-    volumes:
-      - ./web_service:/service/web_service
-    links:
-      - redis
-    depends_on:
-      - redis
-      - database
     env_file:
       - .env.dev
 

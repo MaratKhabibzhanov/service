@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions, views, status
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, permissions, views, status, generics
 from rest_framework.response import Response
 
 from .models import (Part,
@@ -51,10 +52,21 @@ class AcceptorViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class MaintenanceViewSet(viewsets.ModelViewSet):
+class MaintenanceView(generics.GenericAPIView):
     queryset = Maintenance.objects.all()
     serializer_class = MaintenanceSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        avto_id = request.query_params.get("avto_id")
+        if avto_id:
+            avto = get_object_or_404(Avto, id=avto_id)
+            queryset = Maintenance.objects.filter(car_model_id=avto.car_model_id,
+                                                  engine_id=avto.engine_id)
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(data="Отсутствует обязательный аргумент: avto_id",
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class AvtoViewSet(viewsets.ModelViewSet):
@@ -92,10 +104,18 @@ class OilViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class EngineViewSet(viewsets.ModelViewSet):
+class EngineView(generics.GenericAPIView):
     queryset = Engine.objects.all()
-    http_method_names = ("get", "head", "options")
     serializer_class = EngineSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        car_model_id = request.query_params.get("car_model_id")
+        if car_model_id:
+            queryset = Engine.objects.filter(carmodels=car_model_id)
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(data="Отсутствует обязательный аргумент: car_model_id",
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
