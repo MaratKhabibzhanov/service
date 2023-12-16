@@ -473,7 +473,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/maintenance/?car_model_id=2",
+							"raw": "{{endpoint}}/service/maintenance/?avto_id=16",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -484,8 +484,8 @@
 							],
 							"query": [
 								{
-									"key": "car_model_id",
-									"value": "2"
+									"key": "avto_id",
+									"value": "16"
 								}
 							]
 						}

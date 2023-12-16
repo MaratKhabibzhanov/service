@@ -68,7 +68,6 @@ class AcceptorSerializer(serializers.ModelSerializer):
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
-    car_model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())
 
     class Meta:
         model = Maintenance
@@ -76,6 +75,7 @@ class MaintenanceSerializer(serializers.ModelSerializer):
                   'operation',
                   'working_time',
                   'car_model',
+                  'engine',
                   'total_cost']
 
 

@@ -93,13 +93,13 @@ class Maintenance(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['operation', 'car_model'],
+                fields=['operation', 'car_model', 'engine'],
                 name='maintenance'
             )
         ]
 
     def __str__(self):
-        return f"{self.operation} - {self.car_model}"
+        return f"{self.operation} - {self.car_model} - {self.engine}"
 
 
 class Avto(models.Model):
