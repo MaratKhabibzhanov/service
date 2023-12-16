@@ -198,7 +198,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HHRR3H32FT567609\",\n    \"number\": \"c885ск174\",\n    \"vehicle_certificate\": \"4526941665\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": 2,\n    \"owner\": 6\n}",
+							"raw": "{\n    \"vin\": \"2HHRR3H325T567609\",\n    \"number\": \"c585ск174\",\n    \"vehicle_certificate\": \"4526541665\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 78000,\n    \"car_model\": {\n        \"id\": 2,\n        \"model\": \"RIO(FB)\",\n        \"image\": \"http://127.0.0.1/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n    },\n    \"engine\": {\n        \"id\": 4,\n        \"model\": \"G4LC\",\n        \"engine_vol\": \"1.4\"\n    },\n    \"owner\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -226,7 +226,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vin\": \"2HKRM3H32FH507909\",\n    \"number\": \"c456еп174\",\n    \"vehicle_certificate\": \"4535890765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": 1\n}",
+							"raw": "{\n    \"vin\": \"2HKRM3432FH507909\",\n    \"number\": \"c446еп174\",\n    \"vehicle_certificate\": \"4535490765\",\n    \"sold_date\": \"2014-10-20\",\n    \"mileage\": 12000,\n    \"car_model\": {\n        \"id\": 2,\n        \"model\": \"RIO(FB)\",\n        \"image\": \"http://127.0.0.1/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n    },\n    \"engine\": {\n        \"id\": 3,\n        \"model\": \"G4FC\",\n        \"engine_vol\": \"1.6\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -253,14 +253,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/avto/6/",
+							"raw": "{{endpoint}}/service/avto/24/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
 								"service",
 								"avto",
-								"6",
+								"24",
 								""
 							]
 						}
@@ -473,7 +473,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/maintenance/?car_model_id=2",
+							"raw": "{{endpoint}}/service/maintenance/?avto_id=16",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -484,8 +484,38 @@
 							],
 							"query": [
 								{
+									"key": "avto_id",
+									"value": "16"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Engine",
+			"item": [
+				{
+					"name": "get_engines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/service/engine/?car_model_id=3",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"service",
+								"engine",
+								""
+							],
+							"query": [
+								{
 									"key": "car_model_id",
-									"value": "2"
+									"value": "3"
 								}
 							]
 						}

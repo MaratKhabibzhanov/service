@@ -58,8 +58,8 @@ class CarModel(models.Model):
     """Модель автомобиля"""
     model = models.CharField("Модель", max_length=50, unique=True)
     image = models.ImageField(upload_to='image')
-    engine = models.ForeignKey(Engine, verbose_name="Двигатель",
-                               related_name="carmodels", on_delete=models.PROTECT)
+    compatible_engines = models.ManyToManyField(Engine, verbose_name="Совместимые двигатели",
+                                                related_name="carmodels")
 
     def __str__(self):
         return self.model
@@ -85,22 +85,21 @@ class Maintenance(models.Model):
                                      related_name="maintenances", on_delete=models.PROTECT)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",
                                   related_name="maintenances", on_delete=models.PROTECT)
+    engine = models.ForeignKey(Engine, verbose_name="Двигатель", null=True,
+                               related_name="maintenances", on_delete=models.PROTECT)
     total_cost = models.DecimalField(verbose_name="Предварительная стоимость",
                                      max_digits=10, decimal_places=2, null=True, blank=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['operation', 'car_model'],
+                fields=['operation', 'car_model', 'engine'],
                 name='maintenance'
             )
         ]
 
     def __str__(self):
-        return f"{self.operation} - {self.car_model}"
-
-
-
+        return f"{self.operation} - {self.car_model} - {self.engine}"
 
 
 class Avto(models.Model):
@@ -114,6 +113,8 @@ class Avto(models.Model):
     mileage = models.IntegerField("Пробег", blank=True)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",
                                   related_name="avtos", on_delete=models.PROTECT)
+    engine = models.ForeignKey(Engine, verbose_name="Двигатель", null=True,
+                               related_name="avtos", on_delete=models.PROTECT)
 
     def __str__(self):
         return self.vin
