@@ -85,6 +85,8 @@ class Maintenance(models.Model):
                                      related_name="maintenances", on_delete=models.PROTECT)
     car_model = models.ForeignKey(CarModel, verbose_name="Модель автомобиля",
                                   related_name="maintenances", on_delete=models.PROTECT)
+    engine = models.ForeignKey(Engine, verbose_name="Двигатель", null=True,
+                               related_name="maintenances", on_delete=models.PROTECT)
     total_cost = models.DecimalField(verbose_name="Предварительная стоимость",
                                      max_digits=10, decimal_places=2, null=True, blank=True)
 
