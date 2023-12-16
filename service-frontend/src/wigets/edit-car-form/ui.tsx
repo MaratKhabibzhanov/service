@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
@@ -6,8 +6,9 @@ import { formItemLayout } from 'shared/consts';
 import { CarsModal } from 'features';
 import { useStore } from 'app/store';
 
-import { Button, DatePicker, Form, Input, Space } from 'antd';
+import { Button, DatePicker, Form, Input, Select, Space } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { AdditionalService } from 'shared/api';
 
 const EditCarForm: FC = () => {
   const { carId } = useParams();
@@ -24,9 +25,18 @@ const EditCarForm: FC = () => {
     [carId, profile.carsInfo]
   );
 
-  const [currentCar, setCurrentCar] = useState<CarModel | null>(
-    initialCarInfo ? initialCarInfo.car_model : null
-  );
+  const [currentCar, setCurrentCar] = useState<CarModel | null>(initialCarInfo?.car_model || null);
+  const [engines, setEngines] = useState<Engine[]>([]);
+
+  useEffect(() => {
+    if (currentCar) {
+      AdditionalService.getEngines(currentCar.id)
+        .then((enginesData) => {
+          setEngines(enginesData);
+        })
+        .catch((e) => console.warn(e));
+    }
+  }, [currentCar]);
 
   const changeCarModel = (model: CarModel) => {
     setCurrentCar(model);
@@ -34,20 +44,29 @@ const EditCarForm: FC = () => {
   };
 
   const onFinish = async (values: CarInfo) => {
+    const engine = engines.find((item) => item.id === values.engine);
+    if (!engine) throw new Error('engine not found');
+
     const currentValues = {
       ...values,
       sold_date: (values.sold_date as unknown as Dayjs).format('YYYY-MM-DD'),
+      engine,
     };
 
     if (carId === 'new') {
       try {
-        const response = await profile.addCar(currentValues);
-        console.log(response);
+        await profile.addCar(currentValues);
+        navigate('../');
       } catch (e) {
         console.warn(e);
       }
     }
   };
+
+  const modifiedEngines = engines.map((item) => ({
+    value: item.id,
+    label: `${item.model}  ${item.engine_vol}`,
+  }));
 
   return (
     <Form
@@ -60,7 +79,7 @@ const EditCarForm: FC = () => {
       onFinish={onFinish}
     >
       <Form.Item<CarInfo>
-        label="CarInfo"
+        label="Car model"
         name="car_model"
         rules={[{ required: true, message: 'Please input your car model!' }]}
       >
@@ -68,6 +87,13 @@ const EditCarForm: FC = () => {
           <Input value={currentCar?.model} disabled />
           <CarsModal currentModel={currentCar} setCurrentCar={changeCarModel} />
         </Space.Compact>
+      </Form.Item>
+      <Form.Item<CarInfo>
+        label="Engine"
+        name="engine"
+        rules={[{ required: true, message: 'Please input your engine!' }]}
+      >
+        <Select disabled={!currentCar} options={modifiedEngines} />
       </Form.Item>
       <Form.Item<CarInfo>
         label="VIN"

@@ -33,7 +33,11 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
         open={open}
         onCancel={() => setOpen(false)}
         width={1028}
-        footer={[<Button onClick={() => setOpen(false)}>Close</Button>]}
+        footer={[
+          <Button key="close" onClick={() => setOpen(false)}>
+            Close
+          </Button>,
+        ]}
       >
         <Flex gap={40} wrap="wrap" justify="center">
           {cars.map((item) => (

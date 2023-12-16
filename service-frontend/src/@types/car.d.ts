@@ -5,6 +5,7 @@ type CarInfo = {
   sold_date: string;
   mileage: number;
   car_model: CarModel;
+  engine: Engine;
 };
 
 type CarModel = {
