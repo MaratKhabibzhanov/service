@@ -11,5 +11,4 @@ type CarModel = {
   id: number;
   model: string;
   image: string;
-  engine: number;
 };

@@ -28,8 +28,14 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>{currentModel ? 'Change' : 'Add'}</Button>
-      <Modal title="Select your car mode:" open={open} onCancel={() => setOpen(false)} width={1028}>
-        <Flex gap={40}>
+      <Modal
+        title="Select your car mode:"
+        open={open}
+        onCancel={() => setOpen(false)}
+        width={1028}
+        footer={[<Button onClick={() => setOpen(false)}>Close</Button>]}
+      >
+        <Flex gap={40} wrap="wrap" justify="center">
           {cars.map((item) => (
             <Card
               hoverable
@@ -40,13 +46,12 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
                   width={300}
                   src={item.image}
                   alt={item.model}
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'cover', objectPosition: 'right' }}
                 />
               }
             >
               <Card.Meta
                 title={<Button onClick={() => handleClickModel(item)}>{item.model}</Button>}
-                description={`Engine type: ${item.engine}`}
               />
             </Card>
           ))}
