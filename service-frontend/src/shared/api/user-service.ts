@@ -23,6 +23,12 @@ export default class UserService {
     const request = await $api.delete('auth/users/me/').json();
     return request;
   }
+
+  static async getCarsInfo() {
+    const request: DRFResponse<CarInfo> = await $api.get('service/avto/').json();
+    return request;
+  }
+
   static async addCar(body: CarInfo) {
     const request: CarInfo = await $api.post('service/avto/', { json: body }).json();
     return request;

@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
 import { Button, Flex, Typography } from 'antd';
@@ -15,6 +16,12 @@ const style = {
 const CarsList: FC = () => {
   const navigate = useNavigate();
   const { profile } = useStore();
+
+  useEffect(() => {
+    if (profile.carsInfo.length === 0) {
+      profile.getCars();
+    }
+  }, [profile]);
 
   if (profile.carsInfo.length === 0) {
     return (
@@ -34,4 +41,4 @@ const CarsList: FC = () => {
   return <></>;
 };
 
-export default CarsList;
+export default observer(CarsList);

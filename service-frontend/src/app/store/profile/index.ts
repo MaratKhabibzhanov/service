@@ -49,4 +49,18 @@ export class Profile {
 
     return response;
   }
+
+  async getCars() {
+    let response = null;
+    try {
+      const carsData = await UserService.getCarsInfo();
+      runInAction(() => {
+        this.carsInfo = carsData.results;
+        response = 'ok';
+      });
+    } catch (e) {
+      console.warn(e);
+      response = (e as Error).message;
+    }
+  }
 }
