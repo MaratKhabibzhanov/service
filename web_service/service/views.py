@@ -1,7 +1,11 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, views, status, generics
+from rest_framework import (viewsets,
+                            permissions,
+                            filters,
+                            status,
+                            generics)
 from rest_framework.response import Response
-
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import (Part,
                      CarModel,
                      WorkingType,
@@ -11,7 +15,7 @@ from .models import (Part,
                      Registration,
                      Oil,
                      Engine)
-from .permissions import IsOwner
+from .permissions import IsOwnerOrManager
 from .serializers import (PartSerializer,
                           CarModelSerializer,
                           WorkingTypeSerializer,
@@ -20,7 +24,8 @@ from .serializers import (PartSerializer,
                           AvtoSerializer,
                           RegistrationSerializer,
                           OilSerializer,
-                          EngineSerializer, AvtoUserSerializer)
+                          EngineSerializer,
+                          AvtoUserSerializer)
 from users.models import CustomUser
 
 
@@ -72,7 +77,7 @@ class MaintenanceView(generics.GenericAPIView):
 class AvtoViewSet(viewsets.ModelViewSet):
     queryset = Avto.objects.all()
     serializer_class = AvtoSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwner]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
 
     def perform_create(self, serializer):
         if self.request.user.role == CustomUser.USER_ROLE:
@@ -94,7 +99,9 @@ class AvtoViewSet(viewsets.ModelViewSet):
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    filterset_fields = ('day', )
 
 
 class OilViewSet(viewsets.ModelViewSet):

@@ -3,7 +3,7 @@ from django.contrib.auth.models import AnonymousUser
 from users.models import CustomUser
 
 
-class IsOwner(permissions.IsAuthenticatedOrReadOnly):
+class IsOwnerOrManager(permissions.IsAuthenticatedOrReadOnly):
     """
     Проверка прав на доступ к данным пользователя
     """

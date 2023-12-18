@@ -11,3 +11,4 @@ drf-spectacular
 Pillow
 djoser
 djangorestframework_simplejwt
+django-filter
