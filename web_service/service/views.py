@@ -15,7 +15,7 @@ from .models import (Part,
                      Registration,
                      Oil,
                      Engine)
-from .permissions import IsOwnerOrManager
+from .permissions import IsOwnerOrManager, OwnerAndManagerCanEditRegistration
 from .serializers import (PartSerializer,
                           CarModelSerializer,
                           WorkingTypeSerializer,
@@ -99,7 +99,8 @@ class AvtoViewSet(viewsets.ModelViewSet):
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
+    permission_classes = [permissions.IsAuthenticated,
+                          OwnerAndManagerCanEditRegistration]
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     filterset_fields = ('day', )
 
