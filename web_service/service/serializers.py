@@ -1,5 +1,8 @@
+from datetime import date, time
+
 from rest_framework import serializers
 
+from config import settings
 from customs.fields import ObjectField
 from users.models import CustomUser
 from .models import (Avto,
@@ -160,6 +163,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data: dict) -> Registration:
         avto = validated_data.get('avto')
         maintenance = validated_data.get('maintenance')
+        day = validated_data.get('day')
+        register_time = validated_data.get('time')
+        self._validate_distinct(day, avto)
+        self._validate_time(register_time)
         self._validate_maintenance(avto, maintenance)
         return super(RegistrationSerializer, self).create(validated_data)
 
@@ -168,3 +175,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
                 or avto.engine != maintenance.engine):
             raise (serializers.ValidationError
                    (f'Тип ремонта {maintenance} не совместим с автомобилем {avto}'))
+
+    def _validate_distinct(self, day: date, avto: Avto) -> None:
+        register = Registration.objects.filter(day=day, avto=avto)
+        if register.exists():
+            raise serializers.ValidationError(f'Автомобиль - {avto} уже записан на {day}')
+
+    def _validate_time(self, register_time: time) -> None:
+        start_work_day = settings.START_WORK_DAY
+        end_work_day = settings.END_WORK_DAY
+        if register_time < start_work_day:
+            raise serializers.ValidationError('Рабочий день ещё не начался')
+        if register_time >= end_work_day:
+            raise serializers.ValidationError('Рабочий день уже закончился')
+        if register_time.minute not in (time(minute=0).minute, time(minute=30).minute):
+            raise serializers.ValidationError('Ошибка при выборе ячейки записи (интервал 30 минут)')
