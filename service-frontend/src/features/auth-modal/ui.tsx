@@ -23,6 +23,7 @@ const AuthModal: FC = () => {
 
   const close = () => {
     setOpen(false);
+    form.resetFields();
   };
 
   const onFinish = (values: FieldType) => {
@@ -44,7 +45,7 @@ const AuthModal: FC = () => {
         title="Auth"
         open={open}
         onOk={() => setOpen(false)}
-        onCancel={() => setOpen(false)}
+        onCancel={close}
         style={{ maxWidth: '400px' }}
         footer={[
           <Button onClick={close} key="close">

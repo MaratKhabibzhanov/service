@@ -13,7 +13,7 @@ const Footer: FC = () => {
       </Flex>
       <Flex align="center" gap={10}>
         <Typography.Text code>Frontend: </Typography.Text>
-        <a href="https://github.com/skrill3901">
+        <a href="https://github.com/skrill3901" target="_blank">
           <Button icon={<GithubOutlined />} shape="circle" />
         </a>
       </Flex>
