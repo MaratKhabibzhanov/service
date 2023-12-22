@@ -62,7 +62,7 @@ const EditCarForm: FC = () => {
     if (carId === 'new') {
       try {
         await profile.addCar(currentValues);
-        navigate('../');
+        navigate('/cars');
       } catch (e) {
         console.warn(e);
       }
