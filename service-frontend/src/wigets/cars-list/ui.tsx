@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
-import { Button, Flex, Typography } from 'antd';
-import { CarInfoCard } from 'features';
+import { RemoveCarButton } from 'features';
+import { CarInfoCard } from 'entities';
+
+import { Button, Flex, Space, Typography } from 'antd';
 
 const style = {
   fontSize: '2rem',
@@ -34,10 +36,16 @@ const CarsList: FC = () => {
   }
 
   return (
-    <Flex gap="large">
+    <Flex gap="large" vertical>
       {profile.carsInfo.map((item) => (
-        <CarInfoCard key={item.id} carInfo={item} />
+        <Space key={item.id} size="large">
+          <CarInfoCard carInfo={item} />
+          <RemoveCarButton carId={item.id} />
+        </Space>
       ))}
+      <Button style={{ alignSelf: 'flex-start' }} type="primary" onClick={() => navigate('new')}>
+        Add car
+      </Button>
     </Flex>
   );
 };

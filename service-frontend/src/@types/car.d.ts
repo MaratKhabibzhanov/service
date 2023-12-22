@@ -1,4 +1,4 @@
-type CarInfo = {
+type NewCarInfo = {
   id?: number;
   vin: string;
   number: string;
@@ -8,6 +8,8 @@ type CarInfo = {
   car_model: CarModel;
   engine: Engine;
 };
+
+type CarInfo = Required<NewCarInfo>;
 
 type CarModel = {
   id: number;

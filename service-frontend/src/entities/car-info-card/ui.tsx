@@ -5,6 +5,10 @@ import { Descriptions, Typography } from 'antd';
 import { CarInfoCardProps } from './types';
 import { carInfoFields } from './consts';
 
+const DescriptionTitle: FC<{ title: string }> = ({ title }) => (
+  <Typography.Title level={3}>{title}</Typography.Title>
+);
+
 const CarInfoCard: FC<CarInfoCardProps> = ({ carInfo }) => {
   const content = carInfoFields.map((item) => {
     let children: ReactNode = null;
@@ -15,10 +19,7 @@ const CarInfoCard: FC<CarInfoCardProps> = ({ carInfo }) => {
   });
 
   return (
-    <Descriptions
-      title={<Typography.Title level={3}>{carInfo.car_model.model}</Typography.Title>}
-      items={content}
-    />
+    <Descriptions title={<DescriptionTitle title={carInfo.car_model.model} />} items={content} />
   );
 };
 

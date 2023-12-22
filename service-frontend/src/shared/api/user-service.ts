@@ -35,7 +35,7 @@ export default class UserService {
   }
 
   static async removeCar(id: number) {
-    const request = await $api.delete(`service/auto/${id}`);
+    const request = await $api.delete(`service/auto/${id}/`);
     return request;
   }
 }

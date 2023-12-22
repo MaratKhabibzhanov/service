@@ -70,4 +70,26 @@ export class Profile {
 
     return response;
   }
+
+  async removeCar(id: number) {
+    this.loadingStatus = 'loading';
+    let response = null;
+
+    try {
+      await UserService.removeCar(id);
+
+      runInAction(() => {
+        this.carsInfo = this.carsInfo.filter((item) => item.id !== id);
+        this.loadingStatus = 'idle';
+
+        response = 'ok';
+      });
+    } catch (e) {
+      console.warn(e);
+      response = (e as Error).message;
+      this.loadingStatus = 'error';
+    }
+
+    return response;
+  }
 }
