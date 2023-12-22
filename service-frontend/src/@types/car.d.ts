@@ -1,4 +1,5 @@
 type CarInfo = {
+  id?: number;
   vin: string;
   number: string;
   vehicle_certificate: string;

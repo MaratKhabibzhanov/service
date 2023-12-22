@@ -51,16 +51,23 @@ export class Profile {
   }
 
   async getCars() {
+    this.loadingStatus = 'loading';
     let response = null;
+
     try {
       const carsData = await UserService.getCarsInfo();
       runInAction(() => {
         this.carsInfo = carsData.results;
+        this.loadingStatus = 'idle';
+
         response = 'ok';
       });
     } catch (e) {
       console.warn(e);
       response = (e as Error).message;
+      this.loadingStatus = 'error';
     }
+
+    return response;
   }
 }

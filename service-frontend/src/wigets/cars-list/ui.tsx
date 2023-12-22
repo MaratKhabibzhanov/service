@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
@@ -18,13 +18,7 @@ const CarsList: FC = () => {
   const navigate = useNavigate();
   const { profile } = useStore();
 
-  useEffect(() => {
-    if (profile.carsInfo.length === 0) {
-      profile.getCars();
-    }
-  }, [profile]);
-
-  if (profile.carsInfo.length === 0) {
+  if (profile.carsInfo.length === 0 && profile.loadingStatus === 'idle') {
     return (
       <Flex vertical align="center" justify="center" style={{ marginTop: '20%' }}>
         <Typography.Text style={style}>You don't have a car yet.</Typography.Text>
@@ -39,7 +33,13 @@ const CarsList: FC = () => {
     );
   }
 
-  return profile.carsInfo.map((item) => <CarInfoCard key={item.id} carInfo={item} />);
+  return (
+    <Flex gap="large">
+      {profile.carsInfo.map((item) => (
+        <CarInfoCard key={item.id} carInfo={item} />
+      ))}
+    </Flex>
+  );
 };
 
 export default observer(CarsList);
