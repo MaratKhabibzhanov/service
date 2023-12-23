@@ -102,7 +102,7 @@ class Maintenance(models.Model):
         return f"{self.operation} - {self.car_model} - {self.engine}"
 
 
-class Avto(models.Model):
+class Car(models.Model):
     """Автомобиль"""
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Собственник",
                               on_delete=models.CASCADE, related_name="avtos")
@@ -128,9 +128,8 @@ class Registration(models.Model):
                                  related_name="registrations", on_delete=models.PROTECT)
     maintenance = models.ForeignKey(Maintenance, verbose_name="Тип ремонта",
                                     related_name="registrations", on_delete=models.PROTECT)
-    avto = models.ForeignKey(Avto, verbose_name="Автомобиль", related_name="registrations",
+    car = models.ForeignKey(Car, verbose_name="Автомобиль", related_name="registrations",
                              on_delete=models.CASCADE)
-    canceled = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.day} {self.time}'
