@@ -5,7 +5,7 @@ from rest_framework import serializers
 from config import settings
 from customs.fields import ObjectField
 from users.models import CustomUser
-from .models import (Avto,
+from .models import (Car,
                      Acceptor,
                      WorkingType,
                      Part,
@@ -82,7 +82,7 @@ class MaintenanceSerializer(serializers.ModelSerializer):
                   'total_cost']
 
 
-class AvtoUserSerializer(serializers.ModelSerializer):
+class CarUserSerializer(serializers.ModelSerializer):
     car_model = serializers.PrimaryKeyRelatedField(
         queryset=CarModelSerializer.Meta.model.objects.all(),
         pk_field=ObjectField(serializer=CarModelSerializer),
@@ -95,7 +95,7 @@ class AvtoUserSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = Avto
+        model = Car
         fields = ['id',
                   'vin',
                   'number',
@@ -105,11 +105,11 @@ class AvtoUserSerializer(serializers.ModelSerializer):
                   'car_model',
                   'engine']
 
-    def create(self, validated_data: dict) -> Avto:
+    def create(self, validated_data: dict) -> Car:
         car_model = validated_data.get('car_model')
         engine = validated_data.get('engine')
         self._validate_engine(car_model, engine)
-        return super(AvtoUserSerializer, self).create(validated_data)
+        return super(CarUserSerializer, self).create(validated_data)
 
     def _validate_engine(self, car_model: CarModel, engine: Engine) -> None:
         compatibility = CarModel.objects.filter(id=car_model.id, compatible_engines=engine.id)
@@ -117,11 +117,11 @@ class AvtoUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f'Двигатель {engine} не совместим с автомобилем {car_model}')
 
 
-class AvtoSerializer(AvtoUserSerializer):
+class CarSerializer(CarUserSerializer):
     owner = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
     class Meta:
-        model = Avto
+        model = Car
         fields = ['id',
                   'owner',
                   'vin',
@@ -144,9 +144,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         pk_field=ObjectField(serializer=MaintenanceSerializer),
         required=True,
     )
-    avto = serializers.PrimaryKeyRelatedField(
-        queryset=AvtoSerializer.Meta.model.objects.all(),
-        pk_field=ObjectField(serializer=AvtoSerializer),
+    car = serializers.PrimaryKeyRelatedField(
+        queryset=CarSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=CarSerializer),
         required=True,
     )
 
@@ -157,29 +157,28 @@ class RegistrationSerializer(serializers.ModelSerializer):
                   'time',
                   'acceptor',
                   'maintenance',
-                  'avto',
-                  'canceled']
+                  'car']
 
     def create(self, validated_data: dict) -> Registration:
-        avto = validated_data.get('avto')
+        car = validated_data.get('car')
         maintenance = validated_data.get('maintenance')
         day = validated_data.get('day')
         register_time = validated_data.get('time')
-        self._validate_distinct(day, avto)
+        self._validate_distinct(day, car)
         self._validate_time(register_time)
-        self._validate_maintenance(avto, maintenance)
+        self._validate_maintenance(car, maintenance)
         return super(RegistrationSerializer, self).create(validated_data)
 
-    def _validate_maintenance(self, avto: Avto, maintenance: Maintenance) -> None:
-        if (avto.car_model != maintenance.car_model
-                or avto.engine != maintenance.engine):
+    def _validate_maintenance(self, car: Car, maintenance: Maintenance) -> None:
+        if (car.car_model != maintenance.car_model
+                or car.engine != maintenance.engine):
             raise (serializers.ValidationError
-                   (f'Тип ремонта {maintenance} не совместим с автомобилем {avto}'))
+                   (f'Тип ремонта {maintenance} не совместим с автомобилем {car}'))
 
-    def _validate_distinct(self, day: date, avto: Avto) -> None:
-        register = Registration.objects.filter(day=day, avto=avto)
+    def _validate_distinct(self, day: date, car: Car) -> None:
+        register = Registration.objects.filter(day=day, car=car)
         if register.exists():
-            raise serializers.ValidationError(f'Автомобиль - {avto} уже записан на {day}')
+            raise serializers.ValidationError(f'Автомобиль - {car} уже записан на {car}')
 
     def _validate_time(self, register_time: time) -> None:
         start_work_day = settings.START_WORK_DAY

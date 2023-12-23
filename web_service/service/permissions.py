@@ -18,7 +18,7 @@ class OwnerAndManagerCanEditRegistration(permissions.IsAuthenticatedOrReadOnly):
         role = request.user.role if type(request.user) != AnonymousUser else None
         if request.method != "POST":
             return True
-        owner = request.data.get("avto").get("owner")
+        owner = request.data.get("car").get("owner")
         if role != CustomUser.MANAGER_ROLE and request.user.id != owner:
             return False
         return True
@@ -27,8 +27,6 @@ class OwnerAndManagerCanEditRegistration(permissions.IsAuthenticatedOrReadOnly):
         role = request.user.role if type(request.user) != AnonymousUser else None
         if role == CustomUser.MANAGER_ROLE:
             return True
-        if request.method == "DELETE":
-            return False
-        if request.user != obj.avto.owner and request.method not in permissions.SAFE_METHODS:
+        if request.user != obj.car.owner and request.method not in permissions.SAFE_METHODS:
             return False
         return True
