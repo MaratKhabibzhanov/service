@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'djoser',
     'drf_spectacular',
     'service',
+    'mailing',
 ]
 
 MIDDLEWARE = [
@@ -208,3 +209,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+SERVER_EMAIL = os.environ.get('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
+REDIS_HOST = os.getenv('DJANGO_REDIS_HOST') or 'redis'
+REDIS_PORT = 6379
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'

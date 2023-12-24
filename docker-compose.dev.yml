@@ -51,7 +51,7 @@ services:
       dockerfile: dev.Dockerfile
     hostname: worker
     entrypoint: celery
-    command: -A celery_app.app worker --loglevel=info
+    command: -A config worker --loglevel=info
     volumes:
       - ./web_service:/service/web_service
     links:
