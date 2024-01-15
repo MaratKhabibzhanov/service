@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { EditCarForm } from 'wigets';
+import { EditCarForm } from 'widgets';
 
 import { Space, Typography } from 'antd';
 

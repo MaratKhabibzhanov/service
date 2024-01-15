@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Space, Typography } from 'antd';
-import { RegistrationForm } from 'wigets';
+import { RegistrationForm } from 'widgets';
 
 const RegistrationPage: FC = () => {
   return (

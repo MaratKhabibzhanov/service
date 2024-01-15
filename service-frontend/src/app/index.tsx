@@ -10,7 +10,7 @@ import enUS from 'antd/locale/en_US';
 
 import { darkTheme, lightTheme } from 'shared/theme';
 import { getRefreshTokens } from 'shared/helpers';
-import { Footer, Header } from 'wigets';
+import { Footer, Header } from 'widgets';
 
 import { useStore } from './store';
 import MediaQuery from 'react-responsive';

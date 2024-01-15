@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { UserProfile } from 'wigets';
+import { UserProfile } from 'widgets';
 
 import { Space, Typography } from 'antd';
 

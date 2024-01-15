@@ -1,7 +1,7 @@
 import { FC, useLayoutEffect } from 'react';
 
 import { useStore } from 'app/store';
-import { CarsList } from 'wigets';
+import { CarsList } from 'widgets';
 
 import { Space, Spin, Typography } from 'antd';
 import { observer } from 'mobx-react-lite';
