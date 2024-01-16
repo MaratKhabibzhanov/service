@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useStore } from 'app/store';
 
-import { Button, Checkbox, Form, Input, Modal } from 'antd';
+import { Button, Checkbox, Form, Input, Modal, Typography } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 type FieldType = {
@@ -20,6 +20,7 @@ const AuthModal: FC = () => {
   const { auth, profile } = useStore();
 
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
 
   const close = () => {
     setOpen(false);
@@ -27,11 +28,13 @@ const AuthModal: FC = () => {
   };
 
   const onFinish = (values: FieldType) => {
-    auth.logIn(values).then((status) => {
-      if (status === 'idle') {
+    auth.logIn(values).then((response) => {
+      if (response === 'ok') {
         setOpen(false);
         profile.getProfile();
         navigate('/');
+      } else {
+        setError(response);
       }
     });
   };
@@ -73,6 +76,7 @@ const AuthModal: FC = () => {
               placeholder="Password"
             />
           </Form.Item>
+          {error && <Typography.Text type="danger">{error}</Typography.Text>}
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>

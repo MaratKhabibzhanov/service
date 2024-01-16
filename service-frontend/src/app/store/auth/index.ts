@@ -37,24 +37,31 @@ export class Auth {
     }
   }
 
-  async logIn(authData: LogIn & { remember: boolean }): Promise<LoadingStatus> {
+  async logIn(authData: LogIn & { remember: boolean }): Promise<string> {
     this.loadingStatus = 'loading';
     this.remember = authData.remember;
 
+    let response = 'ok';
+
     try {
       const tokens = await AuthService.auth(authData);
+      response = 'ok';
       runInAction(() => {
         this.loadingStatus = 'idle';
         this.setAuth(tokens);
       });
     } catch (e) {
+      if (e instanceof Error) {
+        response = e.message;
+      }
+
       runInAction(() => {
         this.isAuth = false;
         this.loadingStatus = 'error';
       });
     }
 
-    return this.loadingStatus;
+    return response;
   }
 
   async refreshTokens() {

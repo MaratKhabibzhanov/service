@@ -11,8 +11,10 @@ export class Profile {
     makeAutoObservable(this);
   }
 
-  async getProfile(): Promise<LoadingStatus> {
+  async getProfile(): Promise<string> {
     this.loadingStatus = 'loading';
+
+    let response = 'ok';
 
     try {
       const profile = await UserService.getMe();
@@ -21,12 +23,16 @@ export class Profile {
         this.loadingStatus = 'idle';
       });
     } catch (e) {
+      if (e instanceof Error) {
+        response = e.message;
+      }
+
       runInAction(() => {
         this.loadingStatus = 'error';
       });
     }
 
-    return this.loadingStatus;
+    return response;
   }
 
   setProfile(profile: User) {
