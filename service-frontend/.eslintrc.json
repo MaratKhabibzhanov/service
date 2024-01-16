@@ -45,7 +45,7 @@
       "error",
       {
         "props": true,
-        "ignorePropertyModificationsFor": ["state", "item", "socket", "data", "ws"]
+        "ignorePropertyModificationsFor": ["state", "item", "socket", "data", "ws", "error"]
       }
     ],
     "no-void": ["error", { "allowAsStatement": true }],

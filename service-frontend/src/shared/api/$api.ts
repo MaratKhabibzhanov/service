@@ -27,5 +27,18 @@ export const $api = ky.create({ prefixUrl: import.meta.env.VITE_API_ENDPOINT }).
         return undefined;
       },
     ],
+
+    beforeError: [
+      async (error) => {
+        const { response } = error;
+        if (response && response.body) {
+          const responseWithError = await response.json();
+          error.name = 'Error';
+          error.message = responseWithError.detail;
+        }
+
+        return error;
+      },
+    ],
   },
 });
