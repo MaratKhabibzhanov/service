@@ -24,6 +24,7 @@ const AuthModal: FC = () => {
 
   const close = () => {
     setOpen(false);
+    setError('');
     form.resetFields();
   };
 
