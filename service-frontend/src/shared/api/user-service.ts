@@ -25,17 +25,17 @@ export default class UserService {
   }
 
   static async getCarsInfo() {
-    const request: DRFResponse<CarInfo> = await $api.get('service/avto/').json();
+    const request: DRFResponse<CarInfo> = await $api.get('service/car/').json();
     return request;
   }
 
   static async addCar(body: CarInfo) {
-    const request: CarInfo = await $api.post('service/avto/', { json: body }).json();
+    const request: CarInfo = await $api.post('service/car/', { json: body }).json();
     return request;
   }
 
   static async removeCar(id: number) {
-    const request = await $api.delete(`service/auto/${id}/`);
+    const request = await $api.delete(`service/car/${id}/`);
     return request;
   }
 }

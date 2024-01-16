@@ -2,7 +2,7 @@ import { $api } from './$api';
 
 export default class AdditionalService {
   static async getCarModels() {
-    const request: DRFResponse<CarModel> = await $api.get('service/carmodel/').json();
+    const request: DRFResponse<CarModel> = await $api.get('service/car_model/').json();
     return request;
   }
 
