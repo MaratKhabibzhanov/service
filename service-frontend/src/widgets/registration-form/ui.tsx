@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Button, Form, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Button, Form, Input, notification } from 'antd';
 
 import { RegistrationService } from 'shared/api';
 import { formItemLayout } from 'shared/consts';
@@ -9,17 +10,21 @@ type FieldType = NewUser & {
 };
 
 export const RegistrationForm: FC = () => {
-  const [form] = Form.useForm<FieldType>();
+  const navigate = useNavigate();
 
-  const sendForm = (values: FieldType) => {
+  const [form] = Form.useForm<FieldType>();
+  const [notifyApi, contextHolder] = notification.useNotification();
+
+  const sendForm = async (values: FieldType) => {
     const { confirm: _unusedKey, ...dataToSend } = values;
-    RegistrationService.registration(dataToSend)
-      .then((data) => {
-        // TDOD: snackbar
-        console.log('success');
-        console.log(data);
-      })
-      .catch((e) => console.log(e));
+
+    try {
+      await RegistrationService.registration(dataToSend);
+      notifyApi.success({ message: 'Success', description: 'You can now log in' });
+      navigate('/');
+    } catch (e) {
+      notifyApi.error({ message: 'Registration error', description: (e as Error).message });
+    }
   };
 
   return (
@@ -31,6 +36,7 @@ export const RegistrationForm: FC = () => {
       style={{ maxWidth: 600 }}
       onFinish={sendForm}
     >
+      {contextHolder}
       <Form.Item<FieldType>
         label="Username"
         name="username"
