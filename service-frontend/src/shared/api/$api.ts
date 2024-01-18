@@ -15,7 +15,7 @@ export const $api = ky.create({ prefixUrl: import.meta.env.VITE_API_ENDPOINT }).
     afterResponse: [
       async (request, _options, response) => {
         if (
-          response.status === 401 &&
+          response.status === 403 &&
           rootStore.auth.refreshToken &&
           !response.url.includes('refresh')
         ) {
