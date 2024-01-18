@@ -46,8 +46,8 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
               key={item.id}
               cover={
                 <Image
-                  height={280}
-                  width={300}
+                  height={220}
+                  width={240}
                   src={item.image}
                   alt={item.model}
                   style={{ objectFit: 'cover', objectPosition: 'right' }}
