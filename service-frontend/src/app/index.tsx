@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 
@@ -23,21 +23,23 @@ export const App: FC = () => {
 
   const initialRender = useRef(false);
 
-  useLayoutEffect(() => {
+  const firstUpdate = useCallback(async () => {
     if (!initialRender.current) {
       const { local, session } = getRefreshTokens();
 
       if ((local || session) && !auth.isAuth) {
-        profile.getProfile().then(() => {
-          setLoading(false);
-        });
-      } else {
-        setLoading(false);
+        await auth.refreshTokens();
+        await profile.getProfile();
       }
 
+      setLoading(false);
       initialRender.current = true;
     }
-  }, [profile, auth.isAuth]);
+  }, [auth, profile]);
+
+  useLayoutEffect(() => {
+    firstUpdate();
+  }, [firstUpdate]);
 
   return (
     <ConfigProvider
