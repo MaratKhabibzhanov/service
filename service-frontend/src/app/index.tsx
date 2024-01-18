@@ -24,21 +24,18 @@ export const App: FC = () => {
   const initialRender = useRef(false);
 
   const firstUpdate = useCallback(async () => {
-    if (!initialRender.current) {
-      const { local, session } = getRefreshTokens();
-
-      if ((local || session) && !auth.isAuth) {
-        await auth.refreshTokens();
-        await profile.getProfile();
-      }
-
-      setLoading(false);
-      initialRender.current = true;
+    if (auth.isAuth) {
+      await profile.getProfile();
     }
+
+    setLoading(false);
   }, [auth, profile]);
 
   useLayoutEffect(() => {
-    firstUpdate();
+    if (!initialRender.current) {
+      firstUpdate();
+      initialRender.current = true;
+    }
   }, [firstUpdate]);
 
   return (

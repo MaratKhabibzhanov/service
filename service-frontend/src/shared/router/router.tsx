@@ -2,12 +2,19 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import App from 'app';
 import { EditCarPage, CarsPage, ProfilePage, RegistrationPage } from 'pages';
+import { rootStore } from 'app/store';
 
 export const router = createBrowserRouter([
   {
+    id: 'root',
     path: '/',
+    loader: () => rootStore.auth.refreshTokens(),
     element: <App />,
     children: [
+      // {
+      //   index: true,
+      //   element: <App />,
+      // },
       {
         index: true,
         element: <>content</>,
