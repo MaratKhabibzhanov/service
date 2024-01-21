@@ -20,7 +20,7 @@ const RemoveCarButton: FC<{ carId: number }> = ({ carId }) => {
       okText="Yes"
       cancelText="No"
     >
-      <Button danger icon={<DeleteOutlined />} />
+      <Button danger icon={<DeleteOutlined />} style={{ marginBottom: '20px' }} />
     </Popconfirm>
   );
 };

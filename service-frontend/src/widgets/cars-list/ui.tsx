@@ -38,7 +38,7 @@ const CarsList: FC = () => {
   return (
     <Flex gap="large" vertical>
       {profile.carsInfo.map((item) => (
-        <Space key={item.id} size="large">
+        <Space key={item.id} size="large" align="end">
           <CarInfoCard carInfo={item} />
           <RemoveCarButton carId={item.id} />
         </Space>
