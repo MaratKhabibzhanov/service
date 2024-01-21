@@ -1,11 +1,11 @@
 import { FC, useLayoutEffect, useMemo, useState } from 'react';
+import { Dayjs } from 'dayjs';
 
 import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getFullName, range } from 'shared/helpers';
 
 import { DatePicker, Form, Select } from 'antd';
-import { Dayjs } from 'dayjs';
 
 type FieldsType = {
   acceptor: Acceptor;
