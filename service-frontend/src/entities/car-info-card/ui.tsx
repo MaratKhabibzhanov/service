@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { Descriptions, Divider, Typography } from 'antd';
+import { Descriptions, Divider, Flex, Space, Typography } from 'antd';
 
 import { CarInfoCardProps } from './types';
 import { carInfoFields } from './consts';
@@ -19,10 +19,10 @@ const CarInfoCard: FC<CarInfoCardProps> = ({ carInfo }) => {
   });
 
   return (
-    <>
+    <Flex vertical>
       <Descriptions title={<DescriptionTitle title={carInfo.car_model.model} />} items={content} />
       <Divider />
-    </>
+    </Flex>
   );
 };
 

@@ -38,10 +38,15 @@ const CarsList: FC = () => {
   return (
     <Flex gap="large" vertical>
       {profile.carsInfo.map((item) => (
-        <Space key={item.id} size="large" align="end">
+        <Flex key={item.id} gap="20px">
           <CarInfoCard carInfo={item} />
-          <RemoveCarButton carId={item.id} />
-        </Space>
+          <Flex vertical justify="space-between" align="end" style={{ paddingTop: '26px' }}>
+            <Button onClick={() => navigate(`/registration_for_repairs/${item.id}`)}>
+              Registration for repairs
+            </Button>
+            <RemoveCarButton carId={item.id} />
+          </Flex>
+        </Flex>
       ))}
       <Button style={{ alignSelf: 'flex-start' }} type="primary" onClick={() => navigate('new')}>
         Add car
