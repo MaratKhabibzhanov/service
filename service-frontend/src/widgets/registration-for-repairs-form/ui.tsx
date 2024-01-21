@@ -1,12 +1,14 @@
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useLayoutEffect, useMemo, useState } from 'react';
 
-import { Form, Select } from 'antd';
-import { formItemLayout } from 'shared/consts';
+import { dayMilliseconds, formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getFullName } from 'shared/helpers';
 
+import { DatePicker, Form, Select } from 'antd';
+
 type FieldsType = {
   acceptor: Acceptor;
+  day: string;
 };
 
 export const RegistrationForRepairsForm: FC = () => {
@@ -29,6 +31,12 @@ export const RegistrationForRepairsForm: FC = () => {
     label: getFullName(item),
   }));
 
+  const disableDates = useMemo(() => {
+    const currentDate = new Date();
+    currentDate.setTime(currentDate.getTime());
+    return currentDate;
+  }, []);
+
   return (
     <Form
       name="registration-for-repair"
@@ -44,6 +52,13 @@ export const RegistrationForRepairsForm: FC = () => {
         rules={[{ required: true, message: 'Please select your acceptor!' }]}
       >
         <Select options={acceptorsToSelect} />
+      </Form.Item>
+      <Form.Item<FieldsType>
+        name="day"
+        label="Date"
+        rules={[{ required: true, message: 'Please input date!' }]}
+      >
+        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} />
       </Form.Item>
     </Form>
   );
