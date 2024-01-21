@@ -1,10 +1,12 @@
-type NewUser = {
-  username: string;
-  password: string;
-  email: string;
+type FullName = {
   last_name: string;
   first_name: string;
   patronim: string;
+};
+type NewUser = FullName & {
+  username: string;
+  password: string;
+  email: string;
 };
 
 type User = NewUser & { role: UserRole };
