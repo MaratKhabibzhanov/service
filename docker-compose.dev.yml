@@ -29,7 +29,6 @@ services:
 
     depends_on:
       - database
-      - redis
 
   database:
     image: postgres:14.6-alpine
@@ -38,27 +37,6 @@ services:
     volumes:
       - dev_postgres_data:/var/lib/postgresql/data/
       - ./pg_dump:/service/pg_dump
-    env_file:
-      - .env.dev
-
-  redis:
-    image: redis:7.0.5-alpine
-    hostname: redis
-
-  worker:
-    build:
-      context: .
-      dockerfile: dev.Dockerfile
-    hostname: worker
-    entrypoint: celery
-    command: -A config worker --loglevel=info
-    volumes:
-      - ./web_service:/service/web_service
-    links:
-      - redis
-    depends_on:
-      - redis
-      - database
     env_file:
       - .env.dev
 

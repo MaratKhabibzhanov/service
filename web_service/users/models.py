@@ -10,6 +10,8 @@ class CustomUser(AbstractUser):
         ('MANAGER', 'manager'),
         ('USER', 'user'),
     )
+    bot_user_id = models.IntegerField("id пользователя телеграм",
+                                      null=True, blank=True)
     first_name = models.CharField("Имя", max_length=50)
     last_name = models.CharField("Фамилия", max_length=50)
     patronim = models.CharField("Отчество", max_length=50)
