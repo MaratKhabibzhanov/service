@@ -17,7 +17,7 @@ const RegistrationForRepairs: FC = () => {
   if (!carId) throw new Error('No car ID found');
 
   useLayoutEffect(() => {
-    if (profile.carsInfo.length === 0) {
+    if (profile.carsLoadingStatus === 'not_loaded') {
       setLoading(true);
       profile.getCars().finally(() => setLoading(false));
     }
@@ -25,13 +25,15 @@ const RegistrationForRepairs: FC = () => {
 
   const auto = profile.carsInfo.find((car) => car.id === Number(carId));
 
+  if (profile.carsLoadingStatus === 'loading' && !auto) {
+    throw new Error('Car not found');
+  }
+
   return (
     <Spin spinning={loading}>
       <Space direction="vertical" style={{ width: '100%' }}>
-        <Typography.Title>
-          {!loading && `Registration for repairs ${auto?.car_model.model} ${auto?.number}`}
-        </Typography.Title>
-        <RegistrationForRepairsForm />
+        <Typography.Title>Registration for repairs</Typography.Title>
+        {profile.carsLoadingStatus === 'idle' && <RegistrationForRepairsForm />}
       </Space>
     </Spin>
   );

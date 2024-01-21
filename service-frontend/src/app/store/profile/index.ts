@@ -5,7 +5,8 @@ export class Profile {
   profile: User | null = null;
   carsInfo: CarInfo[] = [];
 
-  loadingStatus: LoadingStatus = 'idle';
+  loadingStatus: LoadingStatus = 'not_loaded';
+  carsLoadingStatus: LoadingStatus = 'not_loaded';
 
   constructor() {
     makeAutoObservable(this);
@@ -64,14 +65,14 @@ export class Profile {
       const carsData = await UserService.getCarsInfo();
       runInAction(() => {
         this.carsInfo = carsData.results;
-        this.loadingStatus = 'idle';
+        this.carsLoadingStatus = 'idle';
 
         response = 'ok';
       });
     } catch (e) {
       console.warn(e);
       response = (e as Error).message;
-      this.loadingStatus = 'error';
+      this.carsLoadingStatus = 'error';
     }
 
     return response;

@@ -1,1 +1,1 @@
-export { RegistrationForRepairsForm } from './ui';
+export { default as RegistrationForRepairsForm } from './ui';
