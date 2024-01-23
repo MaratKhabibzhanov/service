@@ -103,7 +103,7 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated,
                           OwnerAndManagerCanEditRegistration]
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    filterset_fields = ('day', )
+    filterset_fields = ('day', 'acceptor_id')
 
 
 class OilViewSet(viewsets.ModelViewSet):

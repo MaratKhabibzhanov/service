@@ -66,8 +66,8 @@ class AcceptorSerializer(serializers.ModelSerializer):
         model = Acceptor
         fields = ['id',
                   'first_name',
-                  'second_name',
-                  'patronim']
+                  'last_name',
+                  'patronymic']
 
 
 class MaintenanceSerializer(serializers.ModelSerializer):
