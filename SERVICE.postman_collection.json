@@ -359,7 +359,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna\"\n}",
+							"raw": "{\n    \"first_name\": \"Anna\",\n    \"patronymic\": \"Annovna\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -388,7 +388,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"{{manager_username}}\",\n    \"email\": \"manager@mail.com\",\n    \"last_name\": \"Annova\",\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna2\"\n}",
+							"raw": "{\n    \"username\": \"{{manager_username}}\",\n    \"email\": \"manager@mail.com\",\n    \"last_name\": \"Annova\",\n    \"first_name\": \"Anna\",\n    \"patronymic\": \"Annovna2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -539,7 +539,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/registration/",
+							"raw": "{{endpoint}}/service/registration/?acceptor_id=2",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -553,6 +553,10 @@
 									"key": "day",
 									"value": "2023-12-17",
 									"disabled": true
+								},
+								{
+									"key": "acceptor_id",
+									"value": "2"
 								}
 							]
 						}
@@ -566,7 +570,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"day\": \"2023-12-18\",\n    \"time\": \"15:00\",\n    \"acceptor\": {\n        \"id\": 1,\n        \"first_name\": \"Петр\",\n        \"second_name\": \"Петров\",\n        \"patronim\": \"Петрович\"\n    },\n    \"maintenance\": {\n        \"id\": 1,\n        \"operation\": \"ТО-1\",\n        \"working_time\": \"2.5\",\n        \"car_model\": 2,\n        \"engine\": 4,\n        \"total_cost\": \"7355.00\"\n    },\n    \"car\": {\n        \"id\": 16,\n        \"vin\": \"2HKRM3H32FH507909\",\n        \"number\": \"c456еп174\",\n        \"vehicle_certificate\": \"4535890765\",\n        \"sold_date\": \"2014-10-20\",\n        \"mileage\": 12000,\n        \"car_model\": {\n            \"id\": 2,\n            \"model\": \"RIO(FB)\",\n            \"image\": \"/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n        },\n        \"engine\": {\n            \"id\": 4,\n            \"model\": \"G4LC\",\n            \"engine_vol\": \"1.4\"\n        }\n    }\n}",
+							"raw": "{\n    \"day\": \"2024-01-22\",\n    \"time\": \"15:00\",\n    \"acceptor\": {\n        \"id\": 2,\n        \"first_name\": \"Иван\",\n        \"last_name\": \"Иванов\",\n        \"patronymic\": \"Иванович\"\n    },\n    \"maintenance\": {\n        \"id\": 1,\n        \"operation\": \"ТО-1\",\n        \"working_time\": \"2.5\",\n        \"car_model\": 2,\n        \"engine\": 4,\n        \"total_cost\": \"7355.00\"\n    },\n    \"car\": {\n        \"id\": 16,\n        \"vin\": \"2HKRM3H32FH507909\",\n        \"number\": \"c456еп174\",\n        \"vehicle_certificate\": \"4535890765\",\n        \"sold_date\": \"2014-10-20\",\n        \"mileage\": 12000,\n        \"car_model\": {\n            \"id\": 2,\n            \"model\": \"RIO(FB)\",\n            \"image\": \"/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n        },\n        \"engine\": {\n            \"id\": 4,\n            \"model\": \"G4LC\",\n            \"engine_vol\": \"1.4\"\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -625,6 +629,39 @@
 							"path": [
 								"service",
 								"acceptor",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mailing",
+			"item": [
+				{
+					"name": "mailing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"theme\": \"Заголовок\",\n    \"body\": \"Будем присылать мнооого спама\",\n    \"email\": \"skylinegtr_r34@mail.ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/mailing/send_mail/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"mailing",
+								"send_mail",
 								""
 							]
 						}

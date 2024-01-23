@@ -8,5 +8,5 @@ class CustomUserViewSet(UserViewSet):
     search_fields = ['username',
                      'first_name',
                      'last_name',
-                     'patronim',
+                     'patronymic',
                      'email']
