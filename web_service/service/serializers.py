@@ -178,7 +178,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def _validate_distinct(self, day: date, car: Car) -> None:
         register = Registration.objects.filter(day=day, car=car)
         if register.exists():
-            raise serializers.ValidationError(f'Автомобиль - {car} уже записан на {car}')
+            raise serializers.ValidationError(f'Автомобиль - {car} уже записан на {day}')
 
     def _validate_time(self, register_time: time) -> None:
         start_work_day = settings.START_WORK_DAY
