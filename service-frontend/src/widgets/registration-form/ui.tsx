@@ -99,8 +99,8 @@ export const RegistrationForm: FC = () => {
       </Form.Item>
       <Form.Item<FieldType>
         label="Patronim"
-        name="patronim"
-        rules={[{ required: true, message: 'Please input your patronim!' }]}
+        name="patronymic"
+        rules={[{ required: true, message: 'Please input your patronymic!' }]}
       >
         <Input />
       </Form.Item>

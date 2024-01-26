@@ -25,7 +25,7 @@ const RegistrationForRepairs: FC = () => {
 
   const auto = profile.carsInfo.find((car) => car.id === Number(carId));
 
-  if (profile.carsLoadingStatus === 'loading' && !auto) {
+  if (profile.carsLoadingStatus === 'idle' && !auto) {
     throw new Error('Car not found');
   }
 

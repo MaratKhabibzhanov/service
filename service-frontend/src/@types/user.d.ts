@@ -1,7 +1,7 @@
 type FullName = {
   last_name: string;
   first_name: string;
-  patronim: string;
+  patronymic: string;
 };
 type NewUser = FullName & {
   username: string;

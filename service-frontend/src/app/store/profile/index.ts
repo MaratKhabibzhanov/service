@@ -58,7 +58,7 @@ export class Profile {
   }
 
   async getCars() {
-    this.loadingStatus = 'loading';
+    this.carsLoadingStatus = 'loading';
     let response = null;
 
     try {
