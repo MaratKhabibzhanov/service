@@ -8,7 +8,7 @@ import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getFullName, range } from 'shared/helpers';
 
-import { Button, DatePicker, Form, Select, notification } from 'antd';
+import { Button, DatePicker, Form, Select, App } from 'antd';
 
 type FieldsType = {
   car: { label: string; value: number };
@@ -22,7 +22,7 @@ const RegistrationForRepairsForm: FC = () => {
   const { carId } = useParams();
   const navigate = useNavigate();
   const { profile } = useStore();
-  const [notifyApi, contextHolder] = notification.useNotification();
+  const { notification } = App.useApp();
   const [form] = Form.useForm<FieldsType>();
 
   const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
@@ -47,7 +47,7 @@ const RegistrationForRepairsForm: FC = () => {
   };
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
-    notifyApi[variant]({
+    notification[variant]({
       message: variant === 'success' ? 'Success' : 'Error',
       description,
     });
@@ -67,6 +67,7 @@ const RegistrationForRepairsForm: FC = () => {
       openNotification('success', 'Your entry has been sent');
       navigate('/');
     } catch (e) {
+      console.log(e);
       openNotification('error', (e as Error).message);
     }
   };
@@ -121,7 +122,6 @@ const RegistrationForRepairsForm: FC = () => {
       initialValues={initialValues}
       onFinish={sendForm}
     >
-      {contextHolder}
       <Form.Item<FieldsType> name="car" label="Car" rules={[{ required: true }]}>
         <Select options={carsToSelect} />
       </Form.Item>

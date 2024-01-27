@@ -4,12 +4,11 @@ import { Outlet } from 'react-router-dom';
 
 import './app.css';
 
-import { ConfigProvider, Layout, Spin } from 'antd';
+import { ConfigProvider, Layout, Spin, App as AntdApp } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import enUS from 'antd/locale/en_US';
 
 import { darkTheme, lightTheme } from 'shared/theme';
-import { getRefreshTokens } from 'shared/helpers';
 import { Footer, Header } from 'widgets';
 
 import { useStore } from './store';
@@ -46,9 +45,11 @@ export const App: FC = () => {
       <Spin spinning={loading}>
         <Layout className="layout" style={{ minHeight: '100vh' }}>
           <Header />
-          <Layout.Content className="container">
-            <Outlet />
-          </Layout.Content>
+          <AntdApp>
+            <Layout.Content className="container">
+              <Outlet />
+            </Layout.Content>
+          </AntdApp>
           <MediaQuery minWidth={769}>
             <Footer />
           </MediaQuery>
