@@ -10,4 +10,11 @@ export default class RepairService {
     const request: Maintenance[] = await $api.get(`service/maintenance/?car_id=${carId}`).json();
     return request;
   }
+
+  static async registrationForRepairs(body: RegistrationForRepairs) {
+    const request: RegistrationForRepairs = await $api
+      .post('service/registration/', { json: body })
+      .json();
+    return request;
+  }
 }

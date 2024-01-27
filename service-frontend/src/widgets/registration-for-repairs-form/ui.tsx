@@ -1,6 +1,6 @@
 import { FC, useLayoutEffect, useMemo, useState } from 'react';
 import { Dayjs } from 'dayjs';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
@@ -8,23 +8,27 @@ import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getFullName, range } from 'shared/helpers';
 
-import { DatePicker, Form, Select } from 'antd';
+import { Button, DatePicker, Form, Select, notification } from 'antd';
 
 type FieldsType = {
   car: { label: string; value: number };
-  acceptor: Acceptor;
+  acceptor: number;
   day: Dayjs;
   time: Dayjs;
-  maintenance: { label: string; value: number };
+  maintenance: number;
 };
 
 const RegistrationForRepairsForm: FC = () => {
   const { carId } = useParams();
+  const navigate = useNavigate();
   const { profile } = useStore();
+  const [notifyApi, contextHolder] = notification.useNotification();
   const [form] = Form.useForm<FieldsType>();
 
   const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
+
+  const [currentMaintenance, setCurrentMaintenance] = useState<Maintenance | null>(null);
 
   if (!carId) throw new Error('No car ID found');
 
@@ -42,8 +46,29 @@ const RegistrationForRepairsForm: FC = () => {
     console.log(date?.format('YYYY-MM-DD'));
   };
 
-  const sendForm = (values: FieldsType) => {
-    console.log(values);
+  const openNotification = (variant: 'success' | 'error', description: string) => {
+    notifyApi[variant]({
+      message: variant === 'success' ? 'Success' : 'Error',
+      description,
+    });
+  };
+
+  const sendForm = async (values: FieldsType) => {
+    const dataToSend: RegistrationForRepairs = {
+      day: values.day.format('YYYY-MM-DD'),
+      time: values.time.format('HH:mm'),
+      acceptor: acceptors.find((item) => item.id === values.acceptor) || acceptors[0],
+      maintenance: currentMaintenance || maintenances[0],
+      car: profile.carsInfo.find((item) => item.id === values.car.value) || profile.carsInfo[0],
+    };
+
+    try {
+      await RepairService.registrationForRepairs(dataToSend);
+      openNotification('success', 'Your entry has been sent');
+      navigate('/');
+    } catch (e) {
+      openNotification('error', (e as Error).message);
+    }
   };
 
   const disableDates = useMemo(() => {
@@ -96,6 +121,7 @@ const RegistrationForRepairsForm: FC = () => {
       initialValues={initialValues}
       onFinish={sendForm}
     >
+      {contextHolder}
       <Form.Item<FieldsType> name="car" label="Car" rules={[{ required: true }]}>
         <Select options={carsToSelect} />
       </Form.Item>
@@ -111,25 +137,31 @@ const RegistrationForRepairsForm: FC = () => {
         label="Date"
         rules={[{ required: true, message: 'Please input date!' }]}
       >
-        <DatePicker
-          disabledDate={(d) => !d || d.isBefore(disableDates)}
-          onChange={changeDate}
-          disabled={!form.getFieldValue('acceptor')}
-        />
+        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} onChange={changeDate} />
       </Form.Item>
       <Form.Item
         name="time"
         label="Time"
         rules={[{ required: true, message: 'Please input time!' }]}
       >
-        <DatePicker.TimePicker
-          disabledTime={disabledTimes}
-          showSecond={false}
-          disabled={!form.getFieldValue('day')}
-        />
+        <DatePicker.TimePicker disabledTime={disabledTimes} showSecond={false} />
       </Form.Item>
       <Form.Item<FieldsType> name="maintenance" label="Maintenance">
-        <Select options={maintenancesToSelect} />
+        <Select
+          options={maintenancesToSelect}
+          onChange={(value) =>
+            setCurrentMaintenance(maintenances.find((item) => item.id === value) || null)
+          }
+        />
+      </Form.Item>
+      <Form.Item label="Price">
+        <span>{currentMaintenance?.total_cost}</span>
+      </Form.Item>
+
+      <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
+        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+          Submit
+        </Button>
       </Form.Item>
     </Form>
   );

@@ -10,3 +10,11 @@ type Maintenance = {
   engine: number;
   total_cost: string;
 };
+
+type RegistrationForRepairs = {
+  day: string;
+  time: string;
+  acceptor: Acceptor;
+  maintenance: Maintenance;
+  car: CarInfo;
+};
