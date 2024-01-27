@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 import { ProfileSkeleton } from 'shared/ui';
@@ -12,6 +13,7 @@ import { ChangePasswordModal } from 'features';
 type FieldType = UserToUpdate & { username?: string };
 
 const UserProfile: FC = () => {
+  const { t } = useTranslation();
   const { profile } = useStore();
   const { profile: userProfile } = profile;
 
@@ -45,10 +47,10 @@ const UserProfile: FC = () => {
       onFinish={updateProfile}
     >
       <Form.Item<FieldType>
-        label="Username"
+        label={t('Username')}
         name="username"
         initialValue={profile.profile?.username}
-        rules={[{ required: true, message: 'Please input your username!' }]}
+        rules={[{ required: true, message: t('Please input your username!') }]}
       >
         <Input disabled={true} />
       </Form.Item>
@@ -59,32 +61,32 @@ const UserProfile: FC = () => {
         rules={[
           {
             type: 'email',
-            message: 'The input is not valid email!',
+            message: t('The input is not valid email!'),
           },
-          { required: true, message: 'Please input your email!' },
+          { required: true, message: t('Please input your email!') },
         ]}
       >
         <Input disabled={loading} />
       </Form.Item>
 
       <Form.Item<FieldType>
-        label="First name"
+        label={t('First name')}
         name="first_name"
-        rules={[{ required: true, message: 'Please input your First name!' }]}
+        rules={[{ required: true, message: t('Please input your first name!') }]}
       >
         <Input disabled={loading} />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Last name"
+        label={t('Last name')}
         name="last_name"
-        rules={[{ required: true, message: 'Please input your Last name!' }]}
+        rules={[{ required: true, message: t('Please input your last name!') }]}
       >
         <Input disabled={loading} />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Patronim"
+        label={t('Patronymic')}
         name="patronymic"
-        rules={[{ required: true, message: 'Please input your patronymic!' }]}
+        rules={[{ required: true, message: t('Please input your patronymic!') }]}
       >
         <Input disabled={loading} />
       </Form.Item>
@@ -93,7 +95,7 @@ const UserProfile: FC = () => {
         <Flex style={{ width: '100%', justifyContent: 'space-between' }}>
           <ChangePasswordModal disabled={loading} />
           <Button type="primary" htmlType="submit" loading={loading}>
-            Save
+            {t('Save')}
           </Button>
         </Flex>
       </Form.Item>

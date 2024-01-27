@@ -1,3 +1,28 @@
-const enEN: Messages = {};
+const enEN: Messages = {
+  Profile: 'Profile',
+  Username: 'Username',
+  'First name': 'First name',
+  'Last name': 'Last name',
+  Patronymic: 'Patronymic',
+  Save: 'Save',
+  'Change password': 'Change password',
+  'Current password': 'Current password',
+  'New password': 'New password',
+  'Confirm new password': 'Confirm new password',
+  'Please input your username!': 'Please input your username!',
+  'The input is not valid email!': 'The input is not valid email!',
+  'Please input your password!': 'Please input your password!',
+  'Please input your new password!': 'Please input your new password!',
+  'Please confirm your new password!': 'Please confirm your new password!',
+  'Passwords are not the same!': 'Passwords are not the same!',
+  'Incorrect password!': 'Incorrect password!',
+  'Incorrect username or password!': 'Incorrect username or password!',
+  'User already exists!': 'User already exists!',
+  'Please input your first name!': 'Please input your first name!',
+  'Please input your last name!': 'Please input your last name!',
+  'Please input your patronymic!': 'Please input your patronymic!',
+  'Please input your email!': 'Please input your email!',
+  Add: 'Add',
+};
 
 export default enEN;

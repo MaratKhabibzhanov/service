@@ -1,1 +1,26 @@
-type Messages = {};
+type Messages = {
+  Profile: string;
+  Username: string;
+  'First name': string;
+  'Last name': string;
+  Patronymic: string;
+  Save: string;
+  'Change password': string;
+  'Current password': string;
+  'New password': string;
+  'Confirm new password': string;
+  'Please input your username!': string;
+  'The input is not valid email!': string;
+  'Please input your password!': string;
+  'Please input your new password!': string;
+  'Please confirm your new password!': string;
+  'Passwords are not the same!': string;
+  'Incorrect password!': string;
+  'Incorrect username or password!': string;
+  'User already exists!': string;
+  'Please input your first name!': string;
+  'Please input your last name!': string;
+  'Please input your patronymic!': string;
+  'Please input your email!': string;
+  Add: string;
+};
