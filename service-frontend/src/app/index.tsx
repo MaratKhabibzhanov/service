@@ -42,19 +42,19 @@ export const App: FC = () => {
       theme={settings.theme === 'dark' ? darkTheme : lightTheme}
       locale={locales[settings.locale]}
     >
-      <Spin spinning={loading}>
-        <Layout className="layout" style={{ minHeight: '100vh' }}>
-          <Header />
-          <AntdApp>
+      <AntdApp>
+        <Spin spinning={loading}>
+          <Layout className="layout" style={{ minHeight: '100vh' }}>
+            <Header />
             <Layout.Content className="container">
               <Outlet />
             </Layout.Content>
-          </AntdApp>
-          <MediaQuery minWidth={769}>
-            <Footer />
-          </MediaQuery>
-        </Layout>
-      </Spin>
+            <MediaQuery minWidth={769}>
+              <Footer />
+            </MediaQuery>
+          </Layout>
+        </Spin>
+      </AntdApp>
     </ConfigProvider>
   );
 };
