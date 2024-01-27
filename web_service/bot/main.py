@@ -15,7 +15,7 @@ bot = TeleBot(token=settings.BOT_TOKEN,
 
 
 def start_bot():
-    print("Starting bot...")
+    print("Start bot...")
     bot.add_custom_filter(custom_filters.StateFilter(bot))
     authentication_handlers(bot)
     registration_handlers(bot)
@@ -25,10 +25,10 @@ def start_bot():
 @bot.message_handler(commands=['start'])
 def start(message: types.Message):
     if CustomUser.objects.filter(bot_user_id=message.from_user.id).exists():
-        markup = keyboard(["/registration", "/logout"])
+        markup = keyboard(["/запись_на_ремонт", "/выйти"])
         msg = "Можете записать свой авто!"
     else:
-        markup = keyboard(["/login"])
+        markup = keyboard(["/войти"])
         msg = "Для начала, авторизуйтесь"
     bot.send_message(chat_id=message.chat.id,
                      text=msg,

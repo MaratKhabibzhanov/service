@@ -114,7 +114,7 @@ class CarUserSerializer(serializers.ModelSerializer):
     def _validate_engine(self, car_model: CarModel, engine: Engine) -> None:
         compatibility = CarModel.objects.filter(id=car_model.id, compatible_engines=engine.id)
         if not compatibility.exists():
-            raise serializers.ValidationError(f'Двигатель {engine} не совместим с автомобилем {car_model}')
+            raise serializers.ValidationError({"detail": f'Двигатель {engine} не совместим с автомобилем {car_model}'})
 
 
 class CarSerializer(CarUserSerializer):
@@ -173,19 +173,19 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if (car.car_model != maintenance.car_model
                 or car.engine != maintenance.engine):
             raise (serializers.ValidationError
-                   (f'Тип ремонта {maintenance} не совместим с автомобилем {car}'))
+                   ({"detail": f'Тип ремонта {maintenance} не совместим с автомобилем {car}'}))
 
     def _validate_distinct(self, day: date, car: Car) -> None:
         register = Registration.objects.filter(day=day, car=car)
         if register.exists():
-            raise serializers.ValidationError(f'Автомобиль - {car} уже записан на {day}')
+            raise serializers.ValidationError({"detail": f'Автомобиль - {car} уже записан на {day}'})
 
     def _validate_time(self, register_time: time) -> None:
         start_work_day = settings.START_WORK_DAY
         end_work_day = settings.END_WORK_DAY
         if register_time < start_work_day:
-            raise serializers.ValidationError('Рабочий день ещё не начался')
+            raise serializers.ValidationError({"detail": 'Рабочий день ещё не начался'})
         if register_time >= end_work_day:
-            raise serializers.ValidationError('Рабочий день уже закончился')
+            raise serializers.ValidationError({"detail": 'Рабочий день уже закончился'})
         if register_time.minute not in (time(minute=0).minute, time(minute=30).minute):
-            raise serializers.ValidationError('Ошибка при выборе ячейки записи (интервал 30 минут)')
+            raise serializers.ValidationError({"detail": 'Ошибка при выборе ячейки записи (интервал 30 минут)'})

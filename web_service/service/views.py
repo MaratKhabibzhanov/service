@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import (viewsets,
                             permissions,
@@ -6,6 +7,8 @@ from rest_framework import (viewsets,
                             generics)
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+
+from .filters import RegistrationFilter
 from .models import (Part,
                      CarModel,
                      WorkingType,
@@ -70,8 +73,8 @@ class MaintenanceView(generics.GenericAPIView):
                                                   engine_id=car.engine_id)
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(data="Отсутствует обязательный аргумент: car_id",
-                        status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data={"detail": "Отсутствует обязательный аргумент: car_id"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class CarViewSet(viewsets.ModelViewSet):
@@ -98,12 +101,11 @@ class CarViewSet(viewsets.ModelViewSet):
 
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
-    http_method_names = ("get", "head", "options", "post", "delete")
     serializer_class = RegistrationSerializer
     permission_classes = [permissions.IsAuthenticated,
                           OwnerAndManagerCanEditRegistration]
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    filterset_fields = ('day', 'acceptor_id')
+    filterset_class = RegistrationFilter
 
 
 class OilViewSet(viewsets.ModelViewSet):
@@ -124,7 +126,7 @@ class EngineView(generics.GenericAPIView):
             queryset = Engine.objects.filter(carmodels=car_model_id)
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(data="Отсутствует обязательный аргумент: car_model_id",
-                        status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data={"detail": "Отсутствует обязательный аргумент: car_model_id"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
