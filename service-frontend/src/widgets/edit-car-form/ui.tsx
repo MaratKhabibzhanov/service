@@ -5,6 +5,7 @@ import { Dayjs } from 'dayjs';
 import { useStore } from 'app/store';
 import { AdditionalService } from 'shared/api';
 import { formItemLayout } from 'shared/consts';
+import { useCatch } from 'shared/hooks';
 import { CarsModal } from 'features';
 
 import { Button, DatePicker, Form, Input, Select, Space } from 'antd';
@@ -17,6 +18,7 @@ type CarInfoFields = Omit<CarInfo, 'engine'> & {
 const EditCarForm: FC = () => {
   const { carId } = useParams();
   const navigate = useNavigate();
+  const { catchCallback } = useCatch();
 
   const { profile } = useStore();
   const [form] = Form.useForm<CarInfoFields>();
@@ -40,9 +42,9 @@ const EditCarForm: FC = () => {
         .then((enginesData) => {
           setEngines(enginesData);
         })
-        .catch((e) => console.warn(e));
+        .catch(catchCallback);
     }
-  }, [currentCar]);
+  }, [currentCar, catchCallback]);
 
   const changeCarModel = (model: CarModel) => {
     setCurrentCar(model);

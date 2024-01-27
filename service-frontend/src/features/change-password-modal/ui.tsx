@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { UserService } from 'shared/api';
 
 import { Button, Form, Input, Modal } from 'antd';
+import { useCatch } from 'shared/hooks';
 
 type FieldType = {
   current_password: string;
@@ -11,6 +12,7 @@ type FieldType = {
 };
 
 const ChangePasswordModal: FC<{ disabled?: boolean }> = ({ disabled }) => {
+  const { catchCallback } = useCatch();
   const [form] = Form.useForm<FieldType>();
 
   const [open, setOpen] = useState(false);
@@ -25,7 +27,7 @@ const ChangePasswordModal: FC<{ disabled?: boolean }> = ({ disabled }) => {
       await UserService.changePassword(values);
       close();
     } catch (e) {
-      console.warn(3);
+      catchCallback(e as Error);
     }
   };
 

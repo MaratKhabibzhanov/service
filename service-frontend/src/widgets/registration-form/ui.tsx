@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, Input, notification } from 'antd';
+import { App, Button, Form, Input } from 'antd';
 
 import { RegistrationService } from 'shared/api';
 import { formItemLayout } from 'shared/consts';
+import { useCatch } from 'shared/hooks';
 
 type FieldType = NewUser & {
   confirm?: string;
@@ -11,19 +12,20 @@ type FieldType = NewUser & {
 
 export const RegistrationForm: FC = () => {
   const navigate = useNavigate();
+  const { catchCallback } = useCatch();
+  const { notification } = App.useApp();
 
   const [form] = Form.useForm<FieldType>();
-  const [notifyApi, contextHolder] = notification.useNotification();
 
   const sendForm = async (values: FieldType) => {
     const { confirm: _unusedKey, ...dataToSend } = values;
 
     try {
       await RegistrationService.registration(dataToSend);
-      notifyApi.success({ message: 'Success', description: 'You can now log in' });
+      notification.success({ message: 'Success', description: 'You can now log in' });
       navigate('/');
     } catch (e) {
-      notifyApi.error({ message: 'Registration error', description: (e as Error).message });
+      catchCallback(e as Error);
     }
   };
 
@@ -36,7 +38,6 @@ export const RegistrationForm: FC = () => {
       style={{ maxWidth: 600 }}
       onFinish={sendForm}
     >
-      {contextHolder}
       <Form.Item<FieldType>
         label="Username"
         name="username"
@@ -98,7 +99,7 @@ export const RegistrationForm: FC = () => {
         <Input />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Patronim"
+        label="Patronymic"
         name="patronymic"
         rules={[{ required: true, message: 'Please input your patronymic!' }]}
       >

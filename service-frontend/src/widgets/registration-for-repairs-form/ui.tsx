@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
+import { useCatch } from 'shared/hooks';
 import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getFullName, range } from 'shared/helpers';
@@ -21,6 +22,8 @@ type FieldsType = {
 const RegistrationForRepairsForm: FC = () => {
   const { carId } = useParams();
   const navigate = useNavigate();
+  const { catchCallback } = useCatch();
+
   const { profile } = useStore();
   const { notification } = App.useApp();
   const [form] = Form.useForm<FieldsType>();
@@ -67,7 +70,7 @@ const RegistrationForRepairsForm: FC = () => {
       openNotification('success', 'Your entry has been sent');
       navigate('/');
     } catch (e) {
-      openNotification('error', (e as Error).message);
+      catchCallback(e as Error);
     }
   };
 

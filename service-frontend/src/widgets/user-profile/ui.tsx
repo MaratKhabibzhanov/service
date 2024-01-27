@@ -4,14 +4,17 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from 'app/store';
 import { ProfileSkeleton } from 'shared/ui';
 import { formItemLayout } from 'shared/consts';
-
-import { Button, Flex, Form, Input } from 'antd';
+import { useCatch } from 'shared/hooks';
 import { UserService } from 'shared/api';
 import { ChangePasswordModal } from 'features';
+
+import { Button, Flex, Form, Input } from 'antd';
 
 type FieldType = UserToUpdate & { username?: string };
 
 const UserProfile: FC = () => {
+  const { catchCallback } = useCatch();
+
   const { profile } = useStore();
   const { profile: userProfile } = profile;
 
@@ -28,7 +31,7 @@ const UserProfile: FC = () => {
       const newProfile = await UserService.updateProfile(value);
       profile.setProfile(newProfile);
     } catch (e) {
-      console.warn(e);
+      catchCallback(e as Error);
     } finally {
       setLoading(false);
     }
@@ -82,7 +85,7 @@ const UserProfile: FC = () => {
         <Input disabled={loading} />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Patronim"
+        label="Patronymic"
         name="patronymic"
         rules={[{ required: true, message: 'Please input your patronymic!' }]}
       >
