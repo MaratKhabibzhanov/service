@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { Descriptions, Divider, Flex, Space, Typography } from 'antd';
+import { Descriptions, Divider, Flex, Typography } from 'antd';
 
 import { CarInfoCardProps } from './types';
 import { carInfoFields } from './consts';

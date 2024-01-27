@@ -6,7 +6,7 @@ import { useStore } from 'app/store';
 import { RemoveCarButton } from 'features';
 import { CarInfoCard } from 'entities';
 
-import { Button, Flex, Space, Typography } from 'antd';
+import { Button, Flex, Typography } from 'antd';
 
 const style = {
   fontSize: '2rem',
