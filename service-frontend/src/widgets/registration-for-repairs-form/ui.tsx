@@ -67,7 +67,6 @@ const RegistrationForRepairsForm: FC = () => {
       openNotification('success', 'Your entry has been sent');
       navigate('/');
     } catch (e) {
-      console.log(e);
       openNotification('error', (e as Error).message);
     }
   };
