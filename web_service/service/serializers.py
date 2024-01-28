@@ -5,6 +5,7 @@ from rest_framework import serializers
 from config import settings
 from customs.fields import ObjectField
 from users.models import CustomUser
+from users.serializers import UsersSerializer
 from .models import (Car,
                      Acceptor,
                      WorkingType,
@@ -133,6 +134,24 @@ class CarSerializer(CarUserSerializer):
                   'engine']
 
 
+class CarForManagerRegistrationSerializer(CarUserSerializer):
+    owner = serializers.PrimaryKeyRelatedField(
+        pk_field=ObjectField(serializer=UsersSerializer),
+        read_only=True)
+
+    class Meta:
+        model = Car
+        fields = ['id',
+                  'owner',
+                  'vin',
+                  'number',
+                  'vehicle_certificate',
+                  'sold_date',
+                  'mileage',
+                  'car_model',
+                  'engine']
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
     acceptor = serializers.PrimaryKeyRelatedField(
         queryset=AcceptorSerializer.Meta.model.objects.all(),
@@ -189,3 +208,20 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"detail": 'Рабочий день уже закончился'})
         if register_time.minute not in (time(minute=0).minute, time(minute=30).minute):
             raise serializers.ValidationError({"detail": 'Ошибка при выборе ячейки записи (интервал 30 минут)'})
+
+
+class RegistrationForManagerSerializer(RegistrationSerializer):
+    car = serializers.PrimaryKeyRelatedField(
+        queryset=CarForManagerRegistrationSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=CarForManagerRegistrationSerializer),
+        required=True,
+    )
+
+    class Meta:
+        model = Registration
+        fields = ['id',
+                  'day',
+                  'time',
+                  'acceptor',
+                  'maintenance',
+                  'car']
