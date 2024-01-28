@@ -30,7 +30,7 @@ def cancelling_registration(message: types.Message, bot: TeleBot) -> None:
     if not registrations:
         bot.send_message(message.from_user.id,
                          text='Нет актуальных записей',
-                         reply_markup=keyboard(["/записаться", "/выйти"]))
+                         reply_markup=keyboard(["/записаться", "/прервать"]))
         return
     buttons = list()
     for registration in registrations:
@@ -163,9 +163,9 @@ def get_maintenance(callback: types.CallbackQuery, bot: TeleBot) -> None:
 
 def cancel(message: types.Message, bot: TeleBot) -> None:
     bot.delete_state(message.from_user.id)
-    bot.edit_message_text("Запись на ремонт прервана",
-                          message.chat.id,
-                          message.message_id)
+    bot.send_message(message.from_user.id,
+                     text="Запись на ремонт прервана",
+                     reply_markup=keyboard(["/записаться", "/отменить_запись"]))
 
 
 def registration_handlers(bot: TeleBot):
