@@ -76,6 +76,7 @@ const enEN: Messages = {
   'Please input your engine!': 'Please input your engine!',
   'Select your car model': 'Select your car model',
   Change: 'Change',
+  Registration: 'Registration',
 };
 
 export default enEN;

@@ -77,6 +77,7 @@ const ruRU: Messages = {
   'Please input your engine!': 'Пожалуйста, выберите модель двигателя!',
   Change: 'Изменить',
   'Select your car model': 'Выберите модель машины',
+  Registration: 'Регистрация',
 };
 
 export default ruRU;

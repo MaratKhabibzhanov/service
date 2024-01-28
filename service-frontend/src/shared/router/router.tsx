@@ -7,6 +7,7 @@ import {
   ProfilePage,
   RegistrationPage,
   RegistrationForRepairs,
+  SchedulePage,
 } from 'pages';
 import { rootStore } from 'app/store';
 
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: 'registration_for_repairs/:carId',
         element: <RegistrationForRepairs />,
+      },
+      {
+        path: 'schedule',
+        element: <SchedulePage />,
       },
 
       {
