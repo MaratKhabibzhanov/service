@@ -5,3 +5,4 @@ export { Logout } from './logout-button';
 export { ChangePasswordModal } from './change-password-modal';
 export { CarsModal } from './cars-modal';
 export { RemoveCarButton } from './remove-car-button';
+export { Schedule } from './schedule';
