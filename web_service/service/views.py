@@ -28,7 +28,7 @@ from .serializers import (PartSerializer,
                           RegistrationSerializer,
                           OilSerializer,
                           EngineSerializer,
-                          CarUserSerializer)
+                          CarUserSerializer, RegistrationForManagerSerializer)
 from users.models import CustomUser
 
 
@@ -106,6 +106,11 @@ class RegistrationViewSet(viewsets.ModelViewSet):
                           OwnerAndManagerCanEditRegistration]
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     filterset_class = RegistrationFilter
+
+    def get_serializer_class(self):
+        if self.request.user.role == CustomUser.MANAGER_ROLE:
+            return RegistrationForManagerSerializer
+        return super().get_serializer_class()
 
 
 class OilViewSet(viewsets.ModelViewSet):
