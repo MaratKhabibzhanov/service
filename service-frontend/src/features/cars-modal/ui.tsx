@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { AdditionalService } from 'shared/api';
 
 import { Button, Card, Flex, Image, Modal } from 'antd';
-import { AdditionalService } from 'shared/api';
 
 type CarsModalProps = {
   currentModel: CarModel | null;
@@ -9,6 +11,8 @@ type CarsModalProps = {
 };
 
 const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [cars, setCars] = useState<CarModel[]>([]);
 
@@ -27,15 +31,15 @@ const CarsModal: FC<CarsModalProps> = ({ currentModel, setCurrentCar }) => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>{currentModel ? 'Change' : 'Add'}</Button>
+      <Button onClick={() => setOpen(true)}>{currentModel ? t('Change') : t('Add')}</Button>
       <Modal
-        title="Select your car mode:"
+        title={t('Select your car model')}
         open={open}
         onCancel={() => setOpen(false)}
         width={1028}
         footer={[
           <Button key="close" onClick={() => setOpen(false)}>
-            Close
+            {t('Close')}
           </Button>,
         ]}
       >

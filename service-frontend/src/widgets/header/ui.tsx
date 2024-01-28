@@ -2,20 +2,22 @@ import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 import { AuthModal, Logout, MobileMenu, ThemeSwitcher } from 'features';
 
 import { Button, Flex, Layout, Menu, Space } from 'antd';
-import { getMenuItems } from 'shared/helpers';
+import { useGetMenuItems } from 'shared/hooks';
 
 const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { auth, profile } = useStore();
 
-  const menuItems = getMenuItems(profile.profile?.role);
+  const menuItems = useGetMenuItems(profile.profile?.role);
 
   return (
     <Layout.Header className="header">
@@ -47,7 +49,7 @@ const Header: FC = () => {
         {auth.isAuth ? (
           <Flex gap={20}>
             <Button type="primary" onClick={() => navigate('profile')}>
-              Profile
+              {t('Profile')}
             </Button>
             <MediaQuery minWidth={769}>
               <Logout />

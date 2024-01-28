@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 
@@ -15,6 +16,7 @@ type FieldType = {
 
 const AuthModal: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [form] = Form.useForm<FieldType>();
 
   const { auth, profile } = useStore();
@@ -43,47 +45,47 @@ const AuthModal: FC = () => {
   return (
     <>
       <Button type="primary" onClick={() => setOpen(true)}>
-        Log In
+        {t('Sign In')}
       </Button>
       <Modal
-        title="Auth"
+        title={t('Authorization')}
         open={open}
         onOk={() => setOpen(false)}
         onCancel={close}
         style={{ maxWidth: '400px' }}
         footer={[
           <Button onClick={close} key="close">
-            Close
+            {t('Close')}
           </Button>,
         ]}
       >
         <Form name="auth_form" form={form} initialValues={{ remember: true }} onFinish={onFinish}>
           <Form.Item
             name="username"
-            rules={[{ required: true, message: 'Please input your Username!' }]}
+            rules={[{ required: true, message: t('Please input your username!') }]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              placeholder={t('Username')}
             />
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: t('Please input your password!') }]}
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder={t('Password')}
             />
           </Form.Item>
           {error && <Typography.Text type="danger">{error}</Typography.Text>}
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox>{t('Remember me')}</Checkbox>
             </Form.Item>
             <Link to="/" style={{ float: 'right' }} onClick={close}>
-              Forgot password
+              {t('Forgot password')}
             </Link>
           </Form.Item>
           <Form.Item>
@@ -93,12 +95,12 @@ const AuthModal: FC = () => {
               style={{ width: '100%' }}
               loading={auth.loadingStatus === 'loading'}
             >
-              Log in
+              {t('Sign In')}
             </Button>
           </Form.Item>
-          Or{' '}
+          {`${t('Or')} `}
           <Link to="/registration" onClick={close}>
-            register now!
+            {t('register now!')}
           </Link>
         </Form>
       </Modal>

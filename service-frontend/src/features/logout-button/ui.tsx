@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { rootStore } from 'app/store';
 import { Button } from 'antd';
 
 const LogoutButton = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const logout = () => {
@@ -13,7 +15,7 @@ const LogoutButton = () => {
 
   return (
     <Button type="primary" danger onClick={logout}>
-      Log out
+      {t('Sign Out')}
     </Button>
   );
 };

@@ -2,6 +2,7 @@ import { FC, useLayoutEffect, useMemo, useState } from 'react';
 import { Dayjs } from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
@@ -23,6 +24,7 @@ const RegistrationForRepairsForm: FC = () => {
   const { carId } = useParams();
   const navigate = useNavigate();
   const { catchCallback } = useCatch();
+  const { t } = useTranslation();
 
   const { profile } = useStore();
   const { notification } = App.useApp();
@@ -124,31 +126,39 @@ const RegistrationForRepairsForm: FC = () => {
       initialValues={initialValues}
       onFinish={sendForm}
     >
-      <Form.Item<FieldsType> name="car" label="Car" rules={[{ required: true }]}>
+      <Form.Item<FieldsType>
+        name="car"
+        label={t('Car')}
+        rules={[{ required: true, message: t('Please select car!') }]}
+      >
         <Select options={carsToSelect} />
       </Form.Item>
       <Form.Item<FieldsType>
-        label="Acceptor"
+        label={t('Acceptor')}
         name="acceptor"
-        rules={[{ required: true, message: 'Please select your acceptor!' }]}
+        rules={[{ required: true, message: t('Please select your acceptor!') }]}
       >
         <Select options={acceptorsToSelect} />
       </Form.Item>
       <Form.Item<FieldsType>
         name="day"
-        label="Date"
-        rules={[{ required: true, message: 'Please input date!' }]}
+        label={t('Date')}
+        rules={[{ required: true, message: t('Please input date!') }]}
       >
         <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} onChange={changeDate} />
       </Form.Item>
       <Form.Item
         name="time"
-        label="Time"
-        rules={[{ required: true, message: 'Please input time!' }]}
+        label={t('Time')}
+        rules={[{ required: true, message: t('Please input time!') }]}
       >
         <DatePicker.TimePicker disabledTime={disabledTimes} showSecond={false} />
       </Form.Item>
-      <Form.Item<FieldsType> name="maintenance" label="Maintenance">
+      <Form.Item<FieldsType>
+        name="maintenance"
+        label={t('Type of maintenance')}
+        rules={[{ required: true, message: t('Please select type of maintenance!') }]}
+      >
         <Select
           options={maintenancesToSelect}
           onChange={(value) =>
@@ -156,13 +166,13 @@ const RegistrationForRepairsForm: FC = () => {
           }
         />
       </Form.Item>
-      <Form.Item label="Price">
+      <Form.Item label={t('Price')}>
         <span>{currentMaintenance?.total_cost}</span>
       </Form.Item>
 
       <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
         <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-          Submit
+          {t('Submit')}
         </Button>
       </Form.Item>
     </Form>

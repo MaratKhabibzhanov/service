@@ -2,11 +2,11 @@ import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Logout, ThemeSwitcher } from 'features';
-import { getMenuItems } from 'shared/helpers';
 import { useStore } from 'app/store';
 
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Drawer, Flex, Space } from 'antd';
+import { useGetMenuItems } from 'shared/hooks';
 
 export const MobileMenu: FC = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export const MobileMenu: FC = () => {
     setOpen(false);
   };
 
-  const menuItems = getMenuItems(profile.profile?.role);
+  const menuItems = useGetMenuItems(profile.profile?.role);
 
   return (
     <>

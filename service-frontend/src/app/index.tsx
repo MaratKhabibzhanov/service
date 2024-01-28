@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 
 import './app.css';
+import 'shared/libs/i18n';
 
 import { ConfigProvider, Layout, Spin, App as AntdApp } from 'antd';
 import ruRU from 'antd/locale/ru_RU';

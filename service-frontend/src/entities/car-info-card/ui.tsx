@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Descriptions, Divider, Flex, Typography } from 'antd';
 
@@ -10,12 +11,16 @@ const DescriptionTitle: FC<{ title: string }> = ({ title }) => (
 );
 
 const CarInfoCard: FC<CarInfoCardProps> = ({ carInfo }) => {
+  const { t } = useTranslation();
+
   const content = carInfoFields.map((item) => {
     let children: ReactNode = null;
     if (item.key === 'engine') children = `${carInfo.engine.model} ${carInfo.engine.engine_vol}`;
     else children = carInfo[item.key];
 
-    return { ...item, children };
+    const label = t(item.label);
+
+    return { label, children };
   });
 
   return (

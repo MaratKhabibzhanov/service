@@ -1,10 +1,13 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useStore } from 'app/store';
 
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
-import { useStore } from 'app/store';
 
 const RemoveCarButton: FC<{ carId: number }> = ({ carId }) => {
+  const { t } = useTranslation();
   const { profile } = useStore();
 
   const confirm = () => {
@@ -13,12 +16,12 @@ const RemoveCarButton: FC<{ carId: number }> = ({ carId }) => {
 
   return (
     <Popconfirm
-      title="Delete the car"
-      description="Are you sure to delete this car?"
+      title={t('Delete the car')}
+      description={t('Are you sure to delete this car?')}
       onConfirm={confirm}
       onCancel={undefined}
-      okText="Yes"
-      cancelText="No"
+      okText={t('Yes')}
+      cancelText={t('No')}
     >
       <Button danger icon={<DeleteOutlined />} style={{ marginBottom: '20px' }} />
     </Popconfirm>

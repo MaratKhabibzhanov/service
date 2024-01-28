@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 import { RemoveCarButton } from 'features';
@@ -18,16 +19,17 @@ const style = {
 
 const CarsList: FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { profile } = useStore();
 
   if (profile.carsInfo.length === 0 && profile.carsLoadingStatus === 'idle') {
     return (
       <Flex vertical align="center" justify="center" style={{ marginTop: '20%' }}>
-        <Typography.Text style={style}>You don't have a car yet.</Typography.Text>
+        <Typography.Text style={style}>{t("You don't have a car yet.")}</Typography.Text>
         <Typography.Text style={style}>
-          Want to{' '}
+          {`${t('Want to')} `}
           <Button type="primary" onClick={() => navigate('new')}>
-            add
+            {`${t('Add').toLowerCase()}`}
           </Button>{' '}
           ?
         </Typography.Text>
@@ -42,14 +44,14 @@ const CarsList: FC = () => {
           <CarInfoCard carInfo={item} />
           <Flex vertical justify="space-between" align="end" style={{ paddingTop: '26px' }}>
             <Button onClick={() => navigate(`/registration_for_repairs/${item.id}`)}>
-              Registration for repairs
+              {t('Registration for repairs')}
             </Button>
             <RemoveCarButton carId={item.id} />
           </Flex>
         </Flex>
       ))}
       <Button style={{ alignSelf: 'flex-start' }} type="primary" onClick={() => navigate('new')}>
-        Add car
+        {t('Add car')}
       </Button>
     </Flex>
   );
