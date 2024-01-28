@@ -65,7 +65,7 @@ export class Auth {
   }
 
   async refreshTokens() {
-    if (!this.refreshToken) return undefined;
+    if (!this.refreshToken) return null;
 
     try {
       const tokens = await AuthService.refreshTokens(this.refreshToken);

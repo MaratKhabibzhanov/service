@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
   {
     id: 'root',
     path: '/',
-    loader: () => rootStore.auth.refreshTokens(),
+    loader: async () => rootStore.auth.refreshTokens(),
     element: <App />,
     children: [
       // {
