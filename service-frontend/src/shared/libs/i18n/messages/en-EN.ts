@@ -50,6 +50,18 @@ const enEN: Messages = {
   'Are you sure to delete this car?': 'Are you sure to delete this car?',
   Yes: 'Yes',
   No: 'No',
+  Car: 'Car',
+  'Pleas select car!': 'Pleas select car!',
+  Acceptor: 'Acceptor',
+  'Please select your acceptor!': 'Please select your acceptor!',
+  Date: 'Date',
+  'Please input date!': 'Please input date!',
+  Time: 'Time',
+  'Please input time!': 'Please input time!',
+  'Type of maintenance': 'Type of maintenance',
+  'Please select type of maintenance!': 'Please select type of maintenance!',
+  Price: 'Price',
+  Submit: 'Submit',
 };
 
 export default enEN;

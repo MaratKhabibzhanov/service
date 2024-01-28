@@ -50,4 +50,16 @@ type Messages = {
   'Are you sure to delete this car?': string;
   Yes: string;
   No: string;
+  Car: string;
+  'Pleas select car!': string;
+  Acceptor: string;
+  'Please select your acceptor!': string;
+  Date: string;
+  'Please input date!': string;
+  Time: string;
+  'Please input time!': string;
+  Submit: string;
+  'Type of maintenance': string;
+  'Please select type of maintenance!': string;
+  Price: string;
 };

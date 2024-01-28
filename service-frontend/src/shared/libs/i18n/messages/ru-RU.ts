@@ -51,6 +51,18 @@ const ruRU: Messages = {
   'Are you sure to delete this car?': 'Вы уверены, что хотите удалить эту машину?',
   Yes: 'Да',
   No: 'Нет',
+  Car: 'Машина',
+  'Pleas select car!': 'Пожалуйста, выберите машину!',
+  Acceptor: 'Мастер-приёмщик',
+  'Please select your acceptor!': 'Пожалуйста, выберите вашего мастера-приёмщика!',
+  Date: 'Дата',
+  'Please input date!': 'Пожалуйста, введите дату!',
+  Time: 'Время',
+  'Please input time!': 'Пожалуйста, введите время!',
+  Submit: 'Отправить',
+  'Type of maintenance': 'Вид обслуживания',
+  'Please select type of maintenance!': 'Пожалуйста, выберите вид обслуживания!',
+  Price: 'Цена',
 };
 
 export default ruRU;
