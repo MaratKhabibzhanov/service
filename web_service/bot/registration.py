@@ -34,8 +34,8 @@ def cancelling_registration(message: types.Message, bot: TeleBot) -> None:
         return
     buttons = list()
     for registration in registrations:
-        text = (f"Авто - {registration.car.car_model} "
-                f"Госномер - {registration.car.number} "
+        text = (f"Авто - {registration.car.car_model}\n"
+                f"Госномер - {registration.car.number}\n"
                 f"Дата - {registration.day}")
         pk = registration.id
         buttons.append({'text': text, 'callback_data': f"registration_pk={pk}"})
@@ -47,7 +47,7 @@ def cancelling_registration(message: types.Message, bot: TeleBot) -> None:
 
 def del_registration(callback: types.CallbackQuery, bot: TeleBot) -> None:
     reg_id = callback.data
-    registration = Registration.objects.get(pk=reg_id.lstrip("pk="))
+    registration = Registration.objects.get(pk=reg_id.lstrip("registration_pk="))
     reg_car = registration.car.car_model
     reg_car_number = registration.car.number
     reg_day = registration.day
@@ -119,7 +119,7 @@ def get_time(callback: types.CallbackQuery, bot: TeleBot) -> None:
     my_cars = Car.objects.filter(owner__bot_user_id=callback.from_user.id)
     buttons = list()
     for car in my_cars:
-        text = (f"Модель - {car.car_model}"
+        text = (f"Модель - {car.car_model} "
                 f"Госномер - {car.number}")
         pk = car.id
         buttons.append({'text': text, 'callback_data': f"car_pk={pk}"})
