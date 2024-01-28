@@ -44,7 +44,7 @@ type Messages = {
   Engine: string;
   STS: string;
   Number: string;
-  Millage: string;
+  Mileage: string;
   'Sold date': string;
   'Delete the car': string;
   'Are you sure to delete this car?': string;
@@ -62,4 +62,18 @@ type Messages = {
   'Type of maintenance': string;
   'Please select type of maintenance!': string;
   Price: string;
+  'Adding a car': string;
+  'My car': string;
+  'Car model': string;
+  'Please input your car model!': string;
+  'Please input your VIN!': string;
+  'Please input your STS!': string;
+  'Please input your number!': string;
+  'Please input your mileage!': string;
+  'Commissioning date': string;
+  'Date the car was purchased at the dealership': string;
+  'Please input your commissioning date!': string;
+  'Please input your engine!': string;
+  'Select your car model': string;
+  Change: string;
 };

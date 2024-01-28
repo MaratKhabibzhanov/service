@@ -1,6 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 import { AdditionalService } from 'shared/api';
@@ -15,6 +16,7 @@ type CarInfoFields = Omit<CarInfo, 'engine'> & {
 };
 
 const EditCarForm: FC = () => {
+  const { t } = useTranslation();
   const { carId } = useParams();
   const navigate = useNavigate();
 
@@ -85,9 +87,9 @@ const EditCarForm: FC = () => {
       onFinish={onFinish}
     >
       <Form.Item<CarInfoFields>
-        label="Car model"
+        label={t('Car model')}
         name="car_model"
-        rules={[{ required: true, message: 'Please input your car model!' }]}
+        rules={[{ required: true, message: t('Please input your car model!') }]}
       >
         <Space.Compact style={{ width: '100%' }}>
           <Input value={currentCar?.model} disabled />
@@ -95,52 +97,52 @@ const EditCarForm: FC = () => {
         </Space.Compact>
       </Form.Item>
       <Form.Item<CarInfoFields>
-        label="Engine"
+        label={t('Engine')}
         name="engine"
-        rules={[{ required: true, message: 'Please input your engine!' }]}
+        rules={[{ required: true, message: t('Please input your engine!') }]}
       >
         <Select disabled={!currentCar} options={modifiedEngines} />
       </Form.Item>
       <Form.Item<CarInfoFields>
         label="VIN"
         name="vin"
-        rules={[{ required: true, message: 'Please input your VIN!' }]}
+        rules={[{ required: true, message: t('Please input your VIN!') }]}
       >
         <Input />
       </Form.Item>
       <Form.Item<CarInfoFields>
-        label="STS"
+        label={t('STS')}
         name="vehicle_certificate"
-        rules={[{ required: true, message: 'Please input your STS!' }]}
+        rules={[{ required: true, message: t('Please input your STS!') }]}
       >
         <Input />
       </Form.Item>
       <Form.Item<CarInfoFields>
-        label="Number"
+        label={t('Number')}
         name="number"
-        rules={[{ required: true, message: 'Please input your number!' }]}
+        rules={[{ required: true, message: t('Please input your number!') }]}
       >
         <Input />
       </Form.Item>
       <Form.Item<CarInfoFields>
-        label="Milage"
+        label={t('Mileage')}
         name="mileage"
-        rules={[{ required: true, message: 'Please input your milage!' }]}
+        rules={[{ required: true, message: t('Please input your mileage!') }]}
       >
         <Input type="number" />
       </Form.Item>
       <Form.Item<CarInfoFields>
-        label="Commissioning date"
+        label={t('Commissioning date')}
         name="sold_date"
         tooltip={{
-          title: 'Date the car was purchased at the dealership',
+          title: t('Date the car was purchased at the dealership'),
           icon: <InfoCircleOutlined />,
         }}
         rules={[
           {
             type: 'object' as const,
             required: true,
-            message: 'Please input your commissioning date!',
+            message: t('Please input your commissioning date!'),
           },
         ]}
       >
@@ -149,7 +151,7 @@ const EditCarForm: FC = () => {
 
       <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
         <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-          Submit
+          {t('Save')}
         </Button>
       </Form.Item>
     </Form>
