@@ -17,4 +17,12 @@ export default class RepairService {
       .json();
     return request;
   }
+
+  static async getRepairNotes(day: string) {
+    const request: DRFResponse<RegistrationForRepairs> = await $api
+      .get(`service/registration/?day=${day}`)
+      .json();
+
+    return request;
+  }
 }

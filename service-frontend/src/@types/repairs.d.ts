@@ -12,6 +12,7 @@ type Maintenance = {
 };
 
 type RegistrationForRepairs = {
+  id?: number;
   day: string;
   time: string;
   acceptor: Acceptor;
