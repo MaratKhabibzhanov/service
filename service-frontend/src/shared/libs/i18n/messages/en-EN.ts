@@ -23,6 +23,14 @@ const enEN: Messages = {
   'Please input your patronymic!': 'Please input your patronymic!',
   'Please input your email!': 'Please input your email!',
   Add: 'Add',
+  'Sign In': 'Sign In',
+  Close: 'Close',
+  Authorization: 'Authorization',
+  Password: 'Password',
+  'Remember me': 'Remember me',
+  'register now!': 'register now!',
+  'Forgot password': 'Forgot password',
+  Or: 'Or',
 };
 
 export default enEN;

@@ -23,4 +23,12 @@ type Messages = {
   'Please input your patronymic!': string;
   'Please input your email!': string;
   Add: string;
+  'Sign In': string;
+  Close: string;
+  Authorization: string;
+  Password: string;
+  'Remember me': string;
+  'register now!': string;
+  'Forgot password': string;
+  Or: string;
 };

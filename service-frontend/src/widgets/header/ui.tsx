@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
 import { AuthModal, Logout, MobileMenu, ThemeSwitcher } from 'features';
@@ -12,6 +13,7 @@ import { getMenuItems } from 'shared/helpers';
 const Header: FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { auth, profile } = useStore();
 
@@ -47,7 +49,7 @@ const Header: FC = () => {
         {auth.isAuth ? (
           <Flex gap={20}>
             <Button type="primary" onClick={() => navigate('profile')}>
-              Profile
+              {t('Profile')}
             </Button>
             <MediaQuery minWidth={769}>
               <Logout />

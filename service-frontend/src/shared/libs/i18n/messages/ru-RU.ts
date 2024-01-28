@@ -24,6 +24,14 @@ const ruRU: Messages = {
   'Please input your patronymic!': 'Пожалуйста, введите ваше отчество!',
   'Please input your email!': 'Пожалуйста, введите ваш адрес электронной почты!',
   Add: 'Добавить',
+  'Sign In': 'Войти',
+  Close: 'Закрыть',
+  Authorization: 'Авторизация',
+  Password: 'Пароль',
+  'Remember me': 'Запомнить меня',
+  'register now!': '  зарегистрироваться!',
+  'Forgot password': 'Забыл пароль',
+  Or: 'Или',
 };
 
 export default ruRU;
