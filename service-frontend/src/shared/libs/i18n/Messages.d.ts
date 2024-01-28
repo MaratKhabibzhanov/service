@@ -36,4 +36,18 @@ type Messages = {
   Home: string;
   Schedule: string;
   Cars: string;
+  'Your cars:': string;
+  "You don't have a car yet.": string;
+  'Want to': string;
+  'Registration for repairs': string;
+  'Add car': string;
+  Engine: string;
+  STS: string;
+  Number: string;
+  Millage: string;
+  'Sold date': string;
+  'Delete the car': string;
+  'Are you sure to delete this car?': string;
+  Yes: string;
+  No: string;
 };

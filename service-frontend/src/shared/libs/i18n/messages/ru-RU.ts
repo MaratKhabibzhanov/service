@@ -37,6 +37,20 @@ const ruRU: Messages = {
   Home: 'Главная',
   Schedule: 'Расписание',
   Cars: 'Машины',
+  'Your cars:': 'Ваши машины:',
+  "You don't have a car yet.": 'У вас пока нет машины.',
+  'Want to': 'Хотите',
+  'Registration for repairs': 'Регистрация на ремонт',
+  'Add car': 'Добавить машину',
+  Engine: 'Двигатель',
+  STS: 'СТС',
+  Number: 'Номер',
+  Millage: 'Пробег',
+  'Sold date': 'Дата продажи',
+  'Delete the car': 'Удалить машину',
+  'Are you sure to delete this car?': 'Вы уверены, что хотите удалить эту машину?',
+  Yes: 'Да',
+  No: 'Нет',
 };
 
 export default ruRU;

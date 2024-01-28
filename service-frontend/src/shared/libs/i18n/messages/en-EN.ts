@@ -36,6 +36,20 @@ const enEN: Messages = {
   Home: 'Home',
   Schedule: 'Schedule',
   Cars: 'Cars',
+  'Your cars:': 'Your cars:',
+  "You don't have a car yet.": "You don't have a car yet.",
+  'Want to': 'Want to',
+  'Registration for repairs': 'Registration for repairs',
+  'Add car': 'Add car',
+  Engine: 'Engine',
+  STS: 'STS',
+  Number: 'Number',
+  Millage: 'Millage',
+  'Sold date': 'Sold date',
+  'Delete the car': 'Delete the car',
+  'Are you sure to delete this car?': 'Are you sure to delete this car?',
+  Yes: 'Yes',
+  No: 'No',
 };
 
 export default enEN;
