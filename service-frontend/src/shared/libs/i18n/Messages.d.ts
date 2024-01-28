@@ -31,4 +31,9 @@ type Messages = {
   'register now!': string;
   'Forgot password': string;
   Or: string;
+  'Dark mode': string;
+  'Sign Out': string;
+  Home: string;
+  Schedule: string;
+  Cars: string;
 };

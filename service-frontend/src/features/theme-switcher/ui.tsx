@@ -1,10 +1,14 @@
+import { FC } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
+
+import { useStore } from 'app/store';
+
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Space, Switch, Typography } from 'antd';
-import { useStore } from 'app/store';
-import { observer } from 'mobx-react-lite';
-import { FC } from 'react';
 
 const ThemeSwitcher: FC = () => {
+  const { t } = useTranslation();
   const { settings } = useStore();
 
   const changeThemeMode = (value: boolean) => {
@@ -13,7 +17,7 @@ const ThemeSwitcher: FC = () => {
 
   return (
     <Space>
-      <Typography.Text style={{ color: '#fff' }}>Dark mode:</Typography.Text>
+      <Typography.Text style={{ color: '#fff' }}>{`${t('Dark mode')}:`}</Typography.Text>
       <Switch
         checkedChildren={<CheckOutlined />}
         unCheckedChildren={<CloseOutlined />}

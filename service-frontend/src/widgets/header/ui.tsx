@@ -8,7 +8,7 @@ import { useStore } from 'app/store';
 import { AuthModal, Logout, MobileMenu, ThemeSwitcher } from 'features';
 
 import { Button, Flex, Layout, Menu, Space } from 'antd';
-import { getMenuItems } from 'shared/helpers';
+import { useGetMenuItems } from 'shared/hooks';
 
 const Header: FC = () => {
   const { pathname } = useLocation();
@@ -17,7 +17,7 @@ const Header: FC = () => {
 
   const { auth, profile } = useStore();
 
-  const menuItems = getMenuItems(profile.profile?.role);
+  const menuItems = useGetMenuItems(profile.profile?.role);
 
   return (
     <Layout.Header className="header">

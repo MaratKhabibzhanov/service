@@ -31,6 +31,11 @@ const enEN: Messages = {
   'register now!': 'register now!',
   'Forgot password': 'Forgot password',
   Or: 'Or',
+  'Dark mode': 'Dark mode',
+  'Sign Out': 'Sign Out',
+  Home: 'Home',
+  Schedule: 'Schedule',
+  Cars: 'Cars',
 };
 
 export default enEN;

@@ -32,6 +32,11 @@ const ruRU: Messages = {
   'register now!': '  зарегистрироваться!',
   'Forgot password': 'Забыл пароль',
   Or: 'Или',
+  'Dark mode': 'Темная тема',
+  'Sign Out': 'Выйти',
+  Home: 'Главная',
+  Schedule: 'Расписание',
+  Cars: 'Машины',
 };
 
 export default ruRU;
