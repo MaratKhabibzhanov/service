@@ -20,11 +20,18 @@ type FieldsType = {
   maintenance: number;
 };
 
-const RegistrationForRepairsForm: FC = () => {
+type RegistrationForRepairsFormProps = {
+  initialData?: RegistrationForRepairs;
+  inModal?: boolean;
+};
+
+const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
   const { carId } = useParams();
   const navigate = useNavigate();
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
+
+  const { initialData, inModal } = props;
 
   const { profile } = useStore();
   const { notification } = App.useApp();
@@ -35,17 +42,19 @@ const RegistrationForRepairsForm: FC = () => {
 
   const [currentMaintenance, setCurrentMaintenance] = useState<Maintenance | null>(null);
 
-  if (!carId) throw new Error('No car ID found');
-
   useLayoutEffect(() => {
     RepairService.getAcceptors().then((response) => {
       setAcceptors(response.results);
     });
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!initialData && !carId) return;
 
     RepairService.getMaintenances(Number(carId)).then((response) => {
       setMaintenances(response);
     });
-  }, [carId]);
+  }, [carId, initialData]);
 
   const changeDate = (date: Dayjs | null) => {
     console.log(date?.format('YYYY-MM-DD'));
@@ -112,9 +121,11 @@ const RegistrationForRepairsForm: FC = () => {
   );
 
   const initialValues = useMemo(() => {
+    if (initialData) return initialData;
+
     const currentCar = carsToSelect.find((item) => item.value === Number(carId));
     return { car: currentCar };
-  }, [carId, carsToSelect]);
+  }, [carId, carsToSelect, initialData]);
 
   return (
     <Form
@@ -170,11 +181,13 @@ const RegistrationForRepairsForm: FC = () => {
         <span>{currentMaintenance?.total_cost}</span>
       </Form.Item>
 
-      <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-          {t('Submit')}
-        </Button>
-      </Form.Item>
+      {!inModal && (
+        <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            {t('Submit')}
+          </Button>
+        </Form.Item>
+      )}
     </Form>
   );
 };
