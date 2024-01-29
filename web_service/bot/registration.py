@@ -34,8 +34,7 @@ def cancelling_registration(message: types.Message, bot: TeleBot) -> None:
         return
     buttons = list()
     for registration in registrations:
-        text = (f"Авто - {registration.car.car_model}\n"
-                f"Госномер - {registration.car.number}\n"
+        text = (f"{registration.car.car_model} {registration.car.number}\n"
                 f"Дата - {registration.day}")
         pk = registration.id
         buttons.append({'text': text, 'callback_data': f"registration_pk={pk}"})
@@ -119,8 +118,7 @@ def get_time(callback: types.CallbackQuery, bot: TeleBot) -> None:
     my_cars = Car.objects.filter(owner__bot_user_id=callback.from_user.id)
     buttons = list()
     for car in my_cars:
-        text = (f"Модель - {car.car_model} "
-                f"Госномер - {car.number}")
+        text = f"{car.car_model} {car.number}"
         pk = car.id
         buttons.append({'text': text, 'callback_data': f"car_pk={pk}"})
     kb = Keyboa(items=buttons, items_in_row=1)
@@ -136,10 +134,12 @@ def get_car(callback: types.CallbackQuery, bot: TeleBot) -> None:
     car_pk = callback.data.lstrip("car_pk=")
     with bot.retrieve_data(callback.from_user.id) as data:
         data['car_pk'] = car_pk
-    maintenances = Maintenance.objects.filter(car_model__avtos__id=car_pk)
+    car = Car.objects.get(pk=car_pk)
+    maintenances = Maintenance.objects.filter(car_model_id=car.car_model_id,
+                                              engine_id=car.engine_id)
     buttons = list()
     for maintenance in maintenances:
-        text = f"{maintenance.operation}"
+        text = f"{maintenance.operation} {maintenance.car_model} {maintenance.engine}"
         pk = maintenance.id
         buttons.append({'text': text, 'callback_data': f"maintenance_pk={pk}"})
     kb = Keyboa(items=buttons, items_in_row=1)
