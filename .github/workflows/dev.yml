@@ -34,4 +34,9 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "cd /home/web/service/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
+          ssh target "cd /home/web/service/ 
+          && docker-compose down 
+          && git pull 
+          && docker-compose build 
+          && docker-compose up -d --force-recreate
+          && docker exec service-backend-1 python manage.py telegram_bot"
