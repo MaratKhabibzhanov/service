@@ -7,12 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
 import { formItemLayout } from 'shared/consts';
-import { RepairService } from 'shared/api';
+import { AdditionalService, RepairService } from 'shared/api';
 import { getFullName, range } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App } from 'antd';
 
 type FieldsType = {
+  userId?: number;
   car: { label: string; value: number };
   acceptor: number;
   day: Dayjs;
@@ -37,10 +38,19 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const { notification } = App.useApp();
   const [form] = Form.useForm<FieldsType>();
 
+  const [clients, setClients] = useState<Client[]>([]);
   const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
 
   const [currentMaintenance, setCurrentMaintenance] = useState<Maintenance | null>(null);
+
+  useLayoutEffect(() => {
+    if (!inModal) return;
+
+    AdditionalService.getUsers().then((response) => {
+      setClients(response.results);
+    });
+  }, [inModal]);
 
   useLayoutEffect(() => {
     RepairService.getAcceptors().then((response) => {
@@ -51,14 +61,12 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   useLayoutEffect(() => {
     if (!initialData && !carId) return;
 
-    RepairService.getMaintenances(Number(carId)).then((response) => {
+    const currentCarId = initialData ? initialData.car.id : Number(carId);
+
+    RepairService.getMaintenances(currentCarId).then((response) => {
       setMaintenances(response);
     });
   }, [carId, initialData]);
-
-  const changeDate = (date: Dayjs | null) => {
-    console.log(date?.format('YYYY-MM-DD'));
-  };
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
     notification[variant]({
@@ -120,6 +128,11 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
     [profile.carsInfo]
   );
 
+  const clientsToSelect = clients.map((item) => ({
+    value: item.id,
+    label: getFullName(item),
+  }));
+
   const initialValues = useMemo(() => {
     if (initialData) return initialData;
 
@@ -137,6 +150,15 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
       initialValues={initialValues}
       onFinish={sendForm}
     >
+      {inModal && (
+        <Form.Item<FieldsType>
+          name="userId"
+          label={t('Client')}
+          rules={[{ required: true, message: t('Please select client!') }]}
+        >
+          <Select options={clientsToSelect} />
+        </Form.Item>
+      )}
       <Form.Item<FieldsType>
         name="car"
         label={t('Car')}
@@ -156,7 +178,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
         label={t('Date')}
         rules={[{ required: true, message: t('Please input date!') }]}
       >
-        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} onChange={changeDate} />
+        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} />
       </Form.Item>
       <Form.Item
         name="time"

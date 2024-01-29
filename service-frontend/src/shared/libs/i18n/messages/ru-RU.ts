@@ -78,6 +78,8 @@ const ruRU: Messages = {
   Change: 'Изменить',
   'Select your car model': 'Выберите модель машины',
   Registration: 'Регистрация',
+  'Please select client!': 'Пожалуйста, выберите клиента!',
+  Client: 'Клиент',
 };
 
 export default ruRU;

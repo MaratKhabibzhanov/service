@@ -10,4 +10,11 @@ export default class AdditionalService {
     const request: Engine[] = await $api.get(`service/engine/?car_model_id=${carId}`).json();
     return request;
   }
+
+  static async getUsers(search?: string) {
+    const request: DRFResponse<Client> = await $api
+      .get(`auth/users/?search=${search || ''}`)
+      .json();
+    return request;
+  }
 }

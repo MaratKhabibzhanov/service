@@ -16,3 +16,9 @@ type UserToUpdate = Omit<NewUser, 'username' | 'password'>;
 type UserRole = 'USER' | 'MANAGER';
 
 type LogIn = { username: string; password: string };
+
+type Client = FullName & {
+  id: number;
+  username: string;
+  email: string;
+};

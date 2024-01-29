@@ -77,4 +77,6 @@ type Messages = {
   'Select your car model': string;
   Change: string;
   Registration: string;
+  'Please select client!': string;
+  Client: string;
 };
