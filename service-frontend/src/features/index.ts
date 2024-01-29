@@ -6,3 +6,5 @@ export { ChangePasswordModal } from './change-password-modal';
 export { CarsModal } from './cars-modal';
 export { RemoveCarButton } from './remove-car-button';
 export { ScheduleList } from './schedule-list';
+export { RegistrationForRepairsForm } from './registration-for-repairs-form';
+export { RegistrationForm } from './registration-form';

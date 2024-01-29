@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { RegistrationForm } from 'widgets';
+import { RegistrationForm } from 'features';
 
 import { Space, Typography } from 'antd';
 

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
-import { RegistrationForRepairsForm } from 'widgets';
+import { RegistrationForRepairsForm } from 'features';
 
 import { Space, Spin, Typography } from 'antd';
 

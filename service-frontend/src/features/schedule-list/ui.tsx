@@ -19,10 +19,10 @@ const ScheduleList: FC<ScheduleProps> = ({ items }) => {
       const currentItem = items.find((item) => item.time.slice(0, 5) === time);
 
       if (currentItem) {
-        return <ScheduleItem data={currentItem} key={currentItem.id} time={time} />;
+        return <ScheduleItem data={currentItem} key={time} time={time} />;
       }
 
-      return <ScheduleItem time={time} />;
+      return <ScheduleItem time={time} key={time} />;
     });
   };
 

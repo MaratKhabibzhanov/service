@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 
 import { ScheduleList } from 'features';
 
-import { DatePicker, Flex, Space } from 'antd';
+import { DatePicker, Space } from 'antd';
 import { RepairService } from 'shared/api';
 
 const Schedule: FC = () => {
