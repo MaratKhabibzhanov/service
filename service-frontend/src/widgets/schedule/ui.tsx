@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 
 import { ScheduleList } from 'features';
 
-import { DatePicker, Flex } from 'antd';
+import { DatePicker, Flex, Space } from 'antd';
 import { RepairService } from 'shared/api';
 
 const Schedule: FC = () => {
@@ -19,10 +19,10 @@ const Schedule: FC = () => {
   }, [date]);
 
   return (
-    <Flex>
+    <Space align="start" size="large">
       <DatePicker value={date} onChange={setDate} />
       <ScheduleList items={notes} />
-    </Flex>
+    </Space>
   );
 };
 
