@@ -154,13 +154,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/carmodel/",
+							"raw": "{{endpoint}}/service/car_model/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
 								"service",
-								"carmodel",
+								"car_model",
 								""
 							]
 						}
@@ -170,21 +170,21 @@
 			]
 		},
 		{
-			"name": "Avto",
+			"name": "Car",
 			"item": [
 				{
-					"name": "get_avtos",
+					"name": "get_cars",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/avto/",
+							"raw": "{{endpoint}}/service/car/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
 								"service",
-								"avto",
+								"car",
 								""
 							]
 						}
@@ -192,7 +192,7 @@
 					"response": []
 				},
 				{
-					"name": "add_avto_from_manager",
+					"name": "add_car_from_manager",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -206,13 +206,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{endpoint}}/service/avto/",
+							"raw": "{{endpoint}}/service/car/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
 								"service",
-								"avto",
+								"car",
 								""
 							]
 						}
@@ -220,7 +220,7 @@
 					"response": []
 				},
 				{
-					"name": "add_avto_from_user",
+					"name": "add_car_from_user",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -234,13 +234,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{endpoint}}/service/avto/",
+							"raw": "{{endpoint}}/service/car/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
 								"service",
-								"avto",
+								"car",
 								""
 							]
 						}
@@ -248,18 +248,18 @@
 					"response": []
 				},
 				{
-					"name": "delete_avto",
+					"name": "delete_car",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/avto/24/",
+							"raw": "{{endpoint}}/service/car/24/",
 							"host": [
 								"{{endpoint}}"
 							],
 							"path": [
 								"service",
-								"avto",
+								"car",
 								"24",
 								""
 							]
@@ -278,7 +278,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/auth/users/",
+							"raw": "{{endpoint}}/auth/users/?search=user",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -286,6 +286,12 @@
 								"auth",
 								"users",
 								""
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "user"
+								}
 							]
 						}
 					},
@@ -353,7 +359,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna\"\n}",
+							"raw": "{\n    \"first_name\": \"Anna\",\n    \"patronymic\": \"Annovna\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -382,7 +388,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"{{manager_username}}\",\n    \"email\": \"manager@mail.com\",\n    \"last_name\": \"Annova\",\n    \"first_name\": \"Anna\",\n    \"patronim\": \"Annovna2\"\n}",
+							"raw": "{\n    \"username\": \"{{manager_username}}\",\n    \"email\": \"manager@mail.com\",\n    \"last_name\": \"Annova\",\n    \"first_name\": \"Anna\",\n    \"patronymic\": \"Annovna2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -473,7 +479,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/maintenance/?avto_id=16",
+							"raw": "{{endpoint}}/service/maintenance/?car_id=16",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -484,7 +490,7 @@
 							],
 							"query": [
 								{
-									"key": "avto_id",
+									"key": "car_id",
 									"value": "16"
 								}
 							]
@@ -525,7 +531,147 @@
 			]
 		},
 		{
-			"name": "registration",
+			"name": "Registration_for_repairs",
+			"item": [
+				{
+					"name": "registration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/service/registration/?acceptor_id=2",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"service",
+								"registration",
+								""
+							],
+							"query": [
+								{
+									"key": "day",
+									"value": "2023-12-17",
+									"disabled": true
+								},
+								{
+									"key": "acceptor_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"day\": \"2024-01-22\",\n    \"time\": \"15:00\",\n    \"acceptor\": {\n        \"id\": 2,\n        \"first_name\": \"Иван\",\n        \"last_name\": \"Иванов\",\n        \"patronymic\": \"Иванович\"\n    },\n    \"maintenance\": {\n        \"id\": 1,\n        \"operation\": \"ТО-1\",\n        \"working_time\": \"2.5\",\n        \"car_model\": 2,\n        \"engine\": 4,\n        \"total_cost\": \"7355.00\"\n    },\n    \"car\": {\n        \"id\": 16,\n        \"vin\": \"2HKRM3H32FH507909\",\n        \"number\": \"c456еп174\",\n        \"vehicle_certificate\": \"4535890765\",\n        \"sold_date\": \"2014-10-20\",\n        \"mileage\": 12000,\n        \"car_model\": {\n            \"id\": 2,\n            \"model\": \"RIO(FB)\",\n            \"image\": \"/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n        },\n        \"engine\": {\n            \"id\": 4,\n            \"model\": \"G4LC\",\n            \"engine_vol\": \"1.4\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/service/registration/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"service",
+								"registration",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registration",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/service/registration/3/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"service",
+								"registration",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Acceptor",
+			"item": [
+				{
+					"name": "acceptor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/service/acceptor/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"service",
+								"acceptor",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mailing",
+			"item": [
+				{
+					"name": "mailing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"theme\": \"Заголовок\",\n    \"body\": \"Будем присылать мнооого спама\",\n    \"email\": \"skylinegtr_r34@mail.ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/mailing/send_mail/",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"mailing",
+								"send_mail",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user_registration",
 			"request": {
 				"auth": {
 					"type": "noauth"

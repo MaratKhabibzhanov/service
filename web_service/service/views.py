@@ -1,26 +1,34 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, views, status, generics
+from rest_framework import (viewsets,
+                            permissions,
+                            filters,
+                            status,
+                            generics)
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
+from .filters import RegistrationFilter
 from .models import (Part,
                      CarModel,
                      WorkingType,
                      Acceptor,
-                     Avto,
+                     Car,
                      Maintenance,
                      Registration,
                      Oil,
                      Engine)
-from .permissions import IsOwner
+from .permissions import IsOwnerOrManager, OwnerAndManagerCanEditRegistration
 from .serializers import (PartSerializer,
                           CarModelSerializer,
                           WorkingTypeSerializer,
                           AcceptorSerializer,
                           MaintenanceSerializer,
-                          AvtoSerializer,
+                          CarSerializer,
                           RegistrationSerializer,
                           OilSerializer,
-                          EngineSerializer, AvtoUserSerializer)
+                          EngineSerializer,
+                          CarUserSerializer, RegistrationForManagerSerializer)
 from users.models import CustomUser
 
 
@@ -58,21 +66,21 @@ class MaintenanceView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        avto_id = request.query_params.get("avto_id")
-        if avto_id:
-            avto = get_object_or_404(Avto, id=avto_id)
-            queryset = Maintenance.objects.filter(car_model_id=avto.car_model_id,
-                                                  engine_id=avto.engine_id)
+        car_id = request.query_params.get("car_id")
+        if car_id:
+            car = get_object_or_404(Car, id=car_id)
+            queryset = Maintenance.objects.filter(car_model_id=car.car_model_id,
+                                                  engine_id=car.engine_id)
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(data="Отсутствует обязательный аргумент: avto_id",
-                        status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data={"detail": "Отсутствует обязательный аргумент: car_id"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
-class AvtoViewSet(viewsets.ModelViewSet):
-    queryset = Avto.objects.all()
-    serializer_class = AvtoSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwner]
+class CarViewSet(viewsets.ModelViewSet):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
 
     def perform_create(self, serializer):
         if self.request.user.role == CustomUser.USER_ROLE:
@@ -82,19 +90,27 @@ class AvtoViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.user.role == CustomUser.USER_ROLE:
-            return AvtoUserSerializer
+            return CarUserSerializer
         return super().get_serializer_class()
 
     def get_queryset(self):
         if self.request.user.role == CustomUser.USER_ROLE:
-            return Avto.objects.filter(owner=self.request.user.id)
+            return Car.objects.filter(owner=self.request.user.id)
         return super().get_queryset()
 
 
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated,
+                          OwnerAndManagerCanEditRegistration]
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    filterset_class = RegistrationFilter
+
+    def get_serializer_class(self):
+        if self.request.user.role == CustomUser.MANAGER_ROLE:
+            return RegistrationForManagerSerializer
+        return super().get_serializer_class()
 
 
 class OilViewSet(viewsets.ModelViewSet):
@@ -115,7 +131,7 @@ class EngineView(generics.GenericAPIView):
             queryset = Engine.objects.filter(carmodels=car_model_id)
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(data="Отсутствует обязательный аргумент: car_model_id",
-                        status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data={"detail": "Отсутствует обязательный аргумент: car_model_id"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
