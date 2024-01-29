@@ -1,6 +1,9 @@
-import { Card, Typography } from 'antd';
 import { FC } from 'react';
+
 import { getFullName } from 'shared/helpers';
+
+import { cyan } from '@ant-design/colors';
+import { Card, Typography } from 'antd';
 
 type ScheduleItemProps = {
   data?: RegistrationForRepairs;
@@ -10,7 +13,7 @@ type ScheduleItemProps = {
 const ScheduleItem: FC<ScheduleItemProps> = ({ data, time }) => {
   return (
     <Card
-      style={{ width: 200, padding: 0, height: '80px' }}
+      style={{ width: 200, padding: 0, height: '80px', backgroundColor: data && cyan[6] }}
       hoverable
       size="small"
       bodyStyle={{ padding: '5px' }}

@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/colors": "^7.0.2",
     "@ant-design/icons": "^5.2.6",
     "antd": "^5.13.3",
     "dayjs": "^1.11.10",
