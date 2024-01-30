@@ -81,6 +81,8 @@ class CarViewSet(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    filterset_fields = ('owner',)
 
     def perform_create(self, serializer):
         if self.request.user.role == CustomUser.USER_ROLE:
