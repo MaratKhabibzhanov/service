@@ -176,9 +176,16 @@
 					"name": "get_cars",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "{{endpoint}}/service/car/",
+							"raw": "{{endpoint}}/service/car/?owner=6",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -186,6 +193,12 @@
 								"service",
 								"car",
 								""
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "6"
+								}
 							]
 						}
 					},
@@ -479,7 +492,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/maintenance/?car_id=16",
+							"raw": "{{endpoint}}/service/maintenance/",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -491,7 +504,8 @@
 							"query": [
 								{
 									"key": "car_id",
-									"value": "16"
+									"value": "9",
+									"disabled": true
 								}
 							]
 						}
@@ -539,7 +553,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{endpoint}}/service/registration/?acceptor_id=2",
+							"raw": "{{endpoint}}/service/registration/",
 							"host": [
 								"{{endpoint}}"
 							],
@@ -551,12 +565,18 @@
 							"query": [
 								{
 									"key": "day",
-									"value": "2023-12-17",
+									"value": "2024-02-02",
 									"disabled": true
 								},
 								{
 									"key": "acceptor_id",
-									"value": "2"
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "for_me",
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -570,7 +590,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"day\": \"2024-01-22\",\n    \"time\": \"15:00\",\n    \"acceptor\": {\n        \"id\": 2,\n        \"first_name\": \"Иван\",\n        \"last_name\": \"Иванов\",\n        \"patronymic\": \"Иванович\"\n    },\n    \"maintenance\": {\n        \"id\": 1,\n        \"operation\": \"ТО-1\",\n        \"working_time\": \"2.5\",\n        \"car_model\": 2,\n        \"engine\": 4,\n        \"total_cost\": \"7355.00\"\n    },\n    \"car\": {\n        \"id\": 16,\n        \"vin\": \"2HKRM3H32FH507909\",\n        \"number\": \"c456еп174\",\n        \"vehicle_certificate\": \"4535890765\",\n        \"sold_date\": \"2014-10-20\",\n        \"mileage\": 12000,\n        \"car_model\": {\n            \"id\": 2,\n            \"model\": \"RIO(FB)\",\n            \"image\": \"/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n        },\n        \"engine\": {\n            \"id\": 4,\n            \"model\": \"G4LC\",\n            \"engine_vol\": \"1.4\"\n        }\n    }\n}",
+							"raw": "{\n    \"day\": \"2024-02-07\",\n    \"time\": \"15:00\",\n    \"acceptor\": {\n        \"id\": 1,\n        \"first_name\": \"Петров\",\n        \"last_name\": \"Петр\",\n        \"patronymic\": \"Петрович\"\n    },\n    \"maintenance\": {\n        \"id\": 3,\n        \"operation\": \"ТО-2\",\n        \"working_time\": \"3.3\",\n        \"car_model\": 2,\n        \"engine\": 3,\n        \"total_cost\": \"11400.00\"\n    },\n    \"car\": {\n            \"id\": 9,\n            \"vin\": \"2HHRM3H32FT567609\",\n            \"number\": \"c875ск174\",\n            \"vehicle_certificate\": \"4526941765\",\n            \"sold_date\": \"2014-10-20\",\n            \"mileage\": 78000,\n            \"car_model\": {\n                \"id\": 2,\n                \"model\": \"RIO(FB)\",\n                \"image\": \"/api/media/image/5f3dc26c3f46dc3461788ad193d2c40cd404d1b4_sATNoyW.jpg\"\n            },\n            \"engine\": {\n                \"id\": 3,\n                \"model\": \"G4FC\",\n                \"engine_vol\": \"1.6\"\n            }\n        }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
