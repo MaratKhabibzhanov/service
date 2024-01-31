@@ -15,10 +15,10 @@ const ScheduleItem: FC<ScheduleItemProps> = ({ data, time, onClick }) => {
   return (
     <Card
       style={{ width: 200, padding: 0, height: '80px', backgroundColor: data?.id ? cyan[6] : '' }}
-      hoverable
+      hoverable={!!data?.day}
       size="small"
       bodyStyle={{ padding: '5px' }}
-      onClick={onClick}
+      onClick={data?.day ? onClick : undefined}
     >
       <Typography>{time}</Typography>
       {data?.acceptor && <Typography>{getFullName(data.acceptor)}</Typography>}

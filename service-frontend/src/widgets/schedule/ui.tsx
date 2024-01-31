@@ -6,6 +6,8 @@ import { ScheduleList } from 'features';
 import { DatePicker, Space } from 'antd';
 import { RepairService } from 'shared/api';
 
+// TODO: state in mobx
+
 const Schedule: FC = () => {
   const [date, setDate] = useState<Dayjs | null>(null);
   const [notes, setNotes] = useState<RegistrationForRepairs[]>([]);
