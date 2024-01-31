@@ -1,7 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
 from config import settings
 
 
@@ -35,11 +32,11 @@ class WorkingType(models.Model):
 class Acceptor(models.Model):
     """Мастер - приемщик"""
     first_name = models.CharField("Имя", max_length=50)
-    second_name = models.CharField("Фамилия", max_length=50)
-    patronim = models.CharField("Отчество", max_length=50)
+    last_name = models.CharField("Фамилия", max_length=50)
+    patronymic = models.CharField("Отчество", max_length=50)
 
     def __str__(self):
-        return f'{self.second_name} {self.first_name}'
+        return f'{self.last_name} {self.first_name}'
 
 
 class Engine(models.Model):
@@ -102,7 +99,7 @@ class Maintenance(models.Model):
         return f"{self.operation} - {self.car_model} - {self.engine}"
 
 
-class Avto(models.Model):
+class Car(models.Model):
     """Автомобиль"""
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Собственник",
                               on_delete=models.CASCADE, related_name="avtos")
@@ -128,9 +125,8 @@ class Registration(models.Model):
                                  related_name="registrations", on_delete=models.PROTECT)
     maintenance = models.ForeignKey(Maintenance, verbose_name="Тип ремонта",
                                     related_name="registrations", on_delete=models.PROTECT)
-    avto = models.ForeignKey(Avto, verbose_name="Автомобиль", related_name="registrations",
+    car = models.ForeignKey(Car, verbose_name="Автомобиль", related_name="registrations",
                              on_delete=models.CASCADE)
-    canceled = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.day} {self.time}'
