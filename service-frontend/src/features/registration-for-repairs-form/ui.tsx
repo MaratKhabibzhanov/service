@@ -19,6 +19,8 @@ type RegistrationForRepairsFormProps = {
   action?: () => void;
 };
 
+// TODO: state in mobx
+
 const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
   const { carId } = useParams();
   const navigate = useNavigate();
@@ -31,6 +33,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const { notification } = App.useApp();
   const [form] = Form.useForm<RegistrationFoeRepairsFields>();
   const currentCarId = Form.useWatch('car', form);
+  const currentDay = Form.useWatch('day', form);
 
   const [clients, setClients] = useState<Client[]>([]);
   const [currentClientId, setCurrentClientId] = useState<number | null>(null);
@@ -215,7 +218,11 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
         label={t('Time')}
         rules={[{ required: true, message: t('Please input time!') }]}
       >
-        <DatePicker.TimePicker disabledTime={disabledTimes} showSecond={false} />
+        <DatePicker.TimePicker
+          disabledTime={disabledTimes}
+          showSecond={false}
+          disabled={!currentDay}
+        />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         name="maintenance"
