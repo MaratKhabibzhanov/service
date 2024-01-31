@@ -19,11 +19,8 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
 
   const [open, setOpen] = useState(false);
 
-  const [currentData, setCurrentData] = useState<undefined | RegistrationForRepairs>(data);
-
   const onClose = () => {
     setOpen(false);
-    setCurrentData(data);
   };
 
   return (
@@ -43,7 +40,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           </Button>,
         ]}
       >
-        <RegistrationForRepairsForm initialData={currentData} inModal />
+        <RegistrationForRepairsForm initialData={data} inModal />
       </Modal>
     </>
   );

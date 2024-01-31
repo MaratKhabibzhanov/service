@@ -19,3 +19,12 @@ type RegistrationForRepairs = {
   maintenance: Maintenance;
   car: CarInfo;
 };
+
+type RegistrationFoeRepairsFields = {
+  userId?: number;
+  car?: { label: string; value: number };
+  acceptor?: number;
+  day: Dayjs | null;
+  time: Dayjs | null;
+  maintenance?: number;
+};

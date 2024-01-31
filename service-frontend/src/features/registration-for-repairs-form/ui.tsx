@@ -1,5 +1,4 @@
 import { FC, useLayoutEffect, useMemo, useState } from 'react';
-import { Dayjs } from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
@@ -11,15 +10,7 @@ import { AdditionalService, RepairService } from 'shared/api';
 import { getFullName, range } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App } from 'antd';
-
-type FieldsType = {
-  userId?: number;
-  car: { label: string; value: number };
-  acceptor: number;
-  day: Dayjs;
-  time: Dayjs;
-  maintenance: number;
-};
+import { createInitialData } from './helpers';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
@@ -36,7 +27,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
 
   const { profile } = useStore();
   const { notification } = App.useApp();
-  const [form] = Form.useForm<FieldsType>();
+  const [form] = Form.useForm<RegistrationFoeRepairsFields>();
 
   const [clients, setClients] = useState<Client[]>([]);
   const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
@@ -59,9 +50,9 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   }, []);
 
   useLayoutEffect(() => {
-    if (!initialData && !carId) return;
+    if (!initialData?.car?.id && !carId) return;
 
-    const currentCarId = initialData ? initialData.car.id : Number(carId);
+    const currentCarId = initialData?.car?.id ? initialData.car.id : Number(carId);
 
     RepairService.getMaintenances(currentCarId).then((response) => {
       setMaintenances(response);
@@ -75,13 +66,13 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
     });
   };
 
-  const sendForm = async (values: FieldsType) => {
+  const sendForm = async (values: RegistrationFoeRepairsFields) => {
     const dataToSend: RegistrationForRepairs = {
       day: values.day.format('YYYY-MM-DD'),
       time: values.time.format('HH:mm'),
       acceptor: acceptors.find((item) => item.id === values.acceptor) || acceptors[0],
       maintenance: currentMaintenance || maintenances[0],
-      car: profile.carsInfo.find((item) => item.id === values.car.value) || profile.carsInfo[0],
+      car: profile.carsInfo.find((item) => item.id === values.car?.value) || profile.carsInfo[0],
     };
 
     try {
@@ -101,7 +92,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
 
   const disabledTimes = () => {
     const hours = range(0, 24);
-    const currentDisabledHours = [...hours.slice(0, 9), ...hours.slice(20, 24)];
+    const currentDisabledHours = [...hours.slice(0, 8), ...hours.slice(20, 24)];
 
     return {
       disabledHours: () => currentDisabledHours,
@@ -134,7 +125,8 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   }));
 
   const initialValues = useMemo(() => {
-    if (initialData) return initialData;
+    // TODO: refactor, как будет готов бэк
+    if (initialData) return createInitialData(initialData);
 
     const currentCar = carsToSelect.find((item) => item.value === Number(carId));
     return { car: currentCar };
@@ -142,7 +134,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
 
   return (
     <Form
-      name="registration-for-repair"
+      name={`registration-for-repairs-${carId}`}
       form={form}
       scrollToFirstError
       {...formItemLayout}
@@ -151,7 +143,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
       onFinish={sendForm}
     >
       {inModal && (
-        <Form.Item<FieldsType>
+        <Form.Item<RegistrationFoeRepairsFields>
           name="userId"
           label={t('Client')}
           rules={[{ required: true, message: t('Please select client!') }]}
@@ -159,21 +151,21 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
           <Select options={clientsToSelect} />
         </Form.Item>
       )}
-      <Form.Item<FieldsType>
+      <Form.Item<RegistrationFoeRepairsFields>
         name="car"
         label={t('Car')}
         rules={[{ required: true, message: t('Please select car!') }]}
       >
         <Select options={carsToSelect} />
       </Form.Item>
-      <Form.Item<FieldsType>
+      <Form.Item<RegistrationFoeRepairsFields>
         label={t('Acceptor')}
         name="acceptor"
         rules={[{ required: true, message: t('Please select your acceptor!') }]}
       >
         <Select options={acceptorsToSelect} />
       </Form.Item>
-      <Form.Item<FieldsType>
+      <Form.Item<RegistrationFoeRepairsFields>
         name="day"
         label={t('Date')}
         rules={[{ required: true, message: t('Please input date!') }]}
@@ -187,7 +179,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
       >
         <DatePicker.TimePicker disabledTime={disabledTimes} showSecond={false} />
       </Form.Item>
-      <Form.Item<FieldsType>
+      <Form.Item<RegistrationFoeRepairsFields>
         name="maintenance"
         label={t('Type of maintenance')}
         rules={[{ required: true, message: t('Please select type of maintenance!') }]}

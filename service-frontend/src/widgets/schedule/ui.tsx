@@ -21,7 +21,7 @@ const Schedule: FC = () => {
   return (
     <Space align="start" size="large">
       <DatePicker value={date} onChange={setDate} />
-      <ScheduleList items={notes} />
+      <ScheduleList items={notes} date={date?.format('YYYY-MM-DD')} />
     </Space>
   );
 };
