@@ -2,6 +2,7 @@ import { FC, useLayoutEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
+import debounce from 'debounce';
 
 import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
@@ -11,11 +12,11 @@ import { getCarTitle, getFullName, range } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App } from 'antd';
 import { createInitialData } from './helpers';
-import debounce from 'debounce';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
   formId?: string;
+  action?: () => void;
 };
 
 const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
@@ -24,7 +25,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
-  const { initialData, formId } = props;
+  const { initialData, formId, action } = props;
 
   const { profile } = useStore();
   const { notification } = App.useApp();
@@ -97,6 +98,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
       await RepairService.registrationForRepairs(dataToSend);
       openNotification('success', 'Your entry has been sent');
       if (carId) navigate('/');
+      if (action) action();
     } catch (e) {
       catchCallback(e as Error);
     }

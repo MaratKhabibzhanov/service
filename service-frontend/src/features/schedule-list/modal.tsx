@@ -40,7 +40,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           </Button>,
         ]}
       >
-        <RegistrationForRepairsForm initialData={data} formId={time} />
+        <RegistrationForRepairsForm initialData={data} formId={time} action={onClose} />
       </Modal>
     </>
   );
