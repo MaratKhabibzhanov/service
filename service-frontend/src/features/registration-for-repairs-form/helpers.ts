@@ -10,7 +10,6 @@ export const createInitialData = (data?: RegistrationForRepairs): RegistrationFo
     : null;
 
   return {
-    userId: undefined,
     car: data?.car ? { label: getCarTitle(data.car), value: data.car.id } : undefined,
     acceptor: data?.acceptor?.id || undefined,
     day: data?.day ? dayjs(new Date(data.day)) : null,

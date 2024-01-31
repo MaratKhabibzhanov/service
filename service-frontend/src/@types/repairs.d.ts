@@ -22,7 +22,7 @@ type RegistrationForRepairs = {
 
 type RegistrationFoeRepairsFields = {
   userId?: number;
-  car?: { label: string; value: number };
+  car?: number;
   acceptor?: number;
   day: Dayjs | null;
   time: Dayjs | null;

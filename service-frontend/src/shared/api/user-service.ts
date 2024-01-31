@@ -24,11 +24,6 @@ export default class UserService {
     return request;
   }
 
-  static async getCarsInfo() {
-    const request: DRFResponse<CarInfo> = await $api.get('service/car/').json();
-    return request;
-  }
-
   static async addCar(body: CarInfo) {
     const request: CarInfo = await $api.post('service/car/', { json: body }).json();
     return request;

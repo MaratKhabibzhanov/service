@@ -35,12 +35,12 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           <Button key="back" onClick={onClose}>
             {t('Close')}
           </Button>,
-          <Button key="submit" type="primary" onClick={undefined}>
+          <Button key="submit" type="primary" onClick={undefined} htmlType="submit" form={time}>
             {t('Save')}
           </Button>,
         ]}
       >
-        <RegistrationForRepairsForm initialData={data} inModal />
+        <RegistrationForRepairsForm initialData={data} formId={time} />
       </Modal>
     </>
   );

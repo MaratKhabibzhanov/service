@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { UserService } from 'shared/api';
+import { AdditionalService, UserService } from 'shared/api';
 
 export class Profile {
   profile: User | null = null;
@@ -62,7 +62,7 @@ export class Profile {
     let response = null;
 
     try {
-      const carsData = await UserService.getCarsInfo();
+      const carsData = await AdditionalService.getCarsInfo();
       runInAction(() => {
         this.carsInfo = carsData.results;
         this.carsLoadingStatus = 'idle';

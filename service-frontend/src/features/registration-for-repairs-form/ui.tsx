@@ -7,14 +7,15 @@ import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
 import { formItemLayout } from 'shared/consts';
 import { AdditionalService, RepairService } from 'shared/api';
-import { getFullName, range } from 'shared/helpers';
+import { getCarTitle, getFullName, range } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App } from 'antd';
 import { createInitialData } from './helpers';
+import debounce from 'debounce';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
-  inModal?: boolean;
+  formId?: string;
 };
 
 const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
@@ -23,25 +24,38 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
-  const { initialData, inModal } = props;
+  const { initialData, formId } = props;
 
   const { profile } = useStore();
   const { notification } = App.useApp();
   const [form] = Form.useForm<RegistrationFoeRepairsFields>();
+  const currentCarId = Form.useWatch('car', form);
 
   const [clients, setClients] = useState<Client[]>([]);
+  const [currentClientId, setCurrentClientId] = useState<number | null>(null);
+  const [searchClient, setSearchClient] = useState('');
+  const [cars, setCars] = useState<CarInfo[]>([]);
+
   const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
 
   const [currentMaintenance, setCurrentMaintenance] = useState<Maintenance | null>(null);
 
   useLayoutEffect(() => {
-    if (!inModal) return;
+    if (!formId) return;
 
-    AdditionalService.getUsers().then((response) => {
+    AdditionalService.getUsers(searchClient).then((response) => {
       setClients(response.results);
     });
-  }, [inModal]);
+  }, [formId, searchClient]);
+
+  useLayoutEffect(() => {
+    if (!currentClientId) return;
+
+    AdditionalService.getCarsInfo(currentClientId).then((response) => {
+      setCars(response.results);
+    });
+  }, [currentClientId]);
 
   useLayoutEffect(() => {
     RepairService.getAcceptors().then((response) => {
@@ -50,14 +64,12 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   }, []);
 
   useLayoutEffect(() => {
-    if (!initialData?.car?.id && !carId) return;
+    if (!currentCarId && !carId) return;
 
-    const currentCarId = initialData?.car?.id ? initialData.car.id : Number(carId);
-
-    RepairService.getMaintenances(currentCarId).then((response) => {
+    RepairService.getMaintenances(currentCarId || Number(carId)).then((response) => {
       setMaintenances(response);
     });
-  }, [carId, initialData]);
+  }, [carId, currentCarId]);
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
     notification[variant]({
@@ -67,18 +79,24 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   };
 
   const sendForm = async (values: RegistrationFoeRepairsFields) => {
+    const car = formId
+      ? cars.find((item) => item.id === currentCarId)
+      : profile.carsInfo.find((item) => item.id === values.car);
+
+    if (!car) throw new Error('Car not found');
+
     const dataToSend: RegistrationForRepairs = {
       day: values.day.format('YYYY-MM-DD'),
       time: values.time.format('HH:mm'),
       acceptor: acceptors.find((item) => item.id === values.acceptor) || acceptors[0],
       maintenance: currentMaintenance || maintenances[0],
-      car: profile.carsInfo.find((item) => item.id === values.car?.value) || profile.carsInfo[0],
+      car,
     };
 
     try {
       await RepairService.registrationForRepairs(dataToSend);
       openNotification('success', 'Your entry has been sent');
-      navigate('/');
+      if (carId) navigate('/');
     } catch (e) {
       catchCallback(e as Error);
     }
@@ -110,31 +128,43 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
     label: item.operation,
   }));
 
-  const carsToSelect = useMemo(
-    () =>
-      profile.carsInfo.map((item) => ({
-        value: item.id,
-        label: `${item.car_model.model} ${item.number}`,
-      })),
-    [profile.carsInfo]
-  );
+  const carsToSelect = useMemo(() => {
+    if (!carId) {
+      return cars.map((car) => ({ value: car.id, label: getCarTitle(car) }));
+    }
 
-  const clientsToSelect = clients.map((item) => ({
-    value: item.id,
-    label: getFullName(item),
-  }));
+    return profile.carsInfo.map((item) => ({
+      value: item.id,
+      label: getCarTitle(item),
+    }));
+  }, [carId, cars, profile.carsInfo]);
+
+  const clientsToSelect = useMemo(
+    () =>
+      clients.map((item) => ({
+        value: item.id,
+        label: getFullName(item),
+      })),
+    [clients]
+  );
 
   const initialValues = useMemo(() => {
     // TODO: refactor, как будет готов бэк
     if (initialData) return createInitialData(initialData);
 
-    const currentCar = carsToSelect.find((item) => item.value === Number(carId));
-    return { car: currentCar };
+    const modifiedCar = carsToSelect.find((item) => item.value === Number(carId));
+    return { car: modifiedCar };
   }, [carId, carsToSelect, initialData]);
+
+  const filterOption = (input: string, option?: { label: string; value: number }) =>
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
+  const debouncedSearch = debounce((value: string) => setSearchClient(value), 500);
 
   return (
     <Form
-      name={`registration-for-repairs-${carId}`}
+      name={'registration-for-repairs'}
+      id={formId || 'registration-for-repairs'}
       form={form}
       scrollToFirstError
       {...formItemLayout}
@@ -142,13 +172,19 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
       initialValues={initialValues}
       onFinish={sendForm}
     >
-      {inModal && (
+      {formId && (
         <Form.Item<RegistrationFoeRepairsFields>
           name="userId"
           label={t('Client')}
           rules={[{ required: true, message: t('Please select client!') }]}
         >
-          <Select options={clientsToSelect} />
+          <Select
+            options={clientsToSelect}
+            filterOption={filterOption}
+            showSearch
+            onSearch={debouncedSearch}
+            onChange={(value) => setCurrentClientId(value)}
+          />
         </Form.Item>
       )}
       <Form.Item<RegistrationFoeRepairsFields>
@@ -195,7 +231,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
         <span>{currentMaintenance?.total_cost}</span>
       </Form.Item>
 
-      {!inModal && (
+      {!formId && (
         <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             {t('Submit')}
