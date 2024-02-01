@@ -28,7 +28,8 @@ from .serializers import (PartSerializer,
                           RegistrationSerializer,
                           OilSerializer,
                           EngineSerializer,
-                          CarUserSerializer, RegistrationForManagerSerializer)
+                          CarUserSerializer,
+                          RegistrationShortSerializer)
 from users.models import CustomUser
 
 
@@ -110,8 +111,8 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     filterset_class = RegistrationFilter
 
     def get_serializer_class(self):
-        if self.request.user.role == CustomUser.MANAGER_ROLE:
-            return RegistrationForManagerSerializer
+        if self.action == 'list':
+            return RegistrationShortSerializer
         return super().get_serializer_class()
 
 
