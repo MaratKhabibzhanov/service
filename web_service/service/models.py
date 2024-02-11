@@ -126,7 +126,15 @@ class Registration(models.Model):
     maintenance = models.ForeignKey(Maintenance, verbose_name="Тип ремонта",
                                     related_name="registrations", on_delete=models.PROTECT)
     car = models.ForeignKey(Car, verbose_name="Автомобиль", related_name="registrations",
-                             on_delete=models.CASCADE)
+                            on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['day', 'time', 'acceptor'],
+                name='unique_registration'
+            )
+        ]
 
     def __str__(self):
         return f'{self.day} {self.time}'

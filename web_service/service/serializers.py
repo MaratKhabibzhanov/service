@@ -1,6 +1,7 @@
 from datetime import date, time
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from config import settings
 from customs.fields import ObjectField
@@ -180,6 +181,13 @@ class RegistrationSerializer(serializers.ModelSerializer):
                   'acceptor',
                   'maintenance',
                   'car']
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Registration.objects.all(),
+                fields=('day', 'time', 'acceptor'),
+                message='У выбранного мастера-приемщика это время уже занято'
+            )
+        ]
 
     def create(self, validated_data: dict) -> Registration:
         car = validated_data.get('car')
