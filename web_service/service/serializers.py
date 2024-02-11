@@ -181,19 +181,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
                   'acceptor',
                   'maintenance',
                   'car']
-        validators = [
-            UniqueTogetherValidator(
-                queryset=Registration.objects.all(),
-                fields=('day', 'time', 'acceptor'),
-                message='У выбранного мастера-приемщика это время уже занято'
-            )
-        ]
 
     def create(self, validated_data: dict) -> Registration:
         car = validated_data.get('car')
         maintenance = validated_data.get('maintenance')
         day = validated_data.get('day')
         register_time = validated_data.get('time')
+        acceptor = validated_data.get('acceptor')
+        self._validate_distinct_acceptor_time(day, register_time, acceptor)
         self._validate_distinct(day, car)
         self._validate_time(register_time)
         self._validate_maintenance(car, maintenance)
@@ -219,6 +214,16 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"detail": 'Рабочий день уже закончился'})
         if register_time.minute not in (time(minute=0).minute, time(minute=30).minute):
             raise serializers.ValidationError({"detail": 'Ошибка при выборе ячейки записи (интервал 30 минут)'})
+
+    def _validate_distinct_acceptor_time(self, day: date,
+                                         register_time: time,
+                                         acceptor: Acceptor) -> None:
+        register = Registration.objects.filter(day=day,
+                                               time=register_time,
+                                               acceptor=acceptor)
+        if register.exists():
+            raise serializers.ValidationError({"detail": f'У мастера-приемщика "{acceptor}" '
+                                                         f'в {register_time} уже есть запись'})
 
 
 class RegistrationShortSerializer(RegistrationSerializer):
