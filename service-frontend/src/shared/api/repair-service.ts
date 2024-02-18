@@ -1,5 +1,7 @@
 import { $api } from './$api';
 
+type GetRepairNotesParams = { day: string; acceptorId: number };
+
 export default class RepairService {
   static async getAcceptors() {
     const request: DRFResponse<Acceptor> = await $api.get('service/acceptor/').json();
@@ -18,9 +20,11 @@ export default class RepairService {
     return request;
   }
 
-  static async getRepairNotes(day: string) {
+  static async getRepairNotes(params: GetRepairNotesParams) {
+    const { day, acceptorId } = params;
+
     const request: DRFResponse<RegistrationForRepairs> = await $api
-      .get(`service/registration/?day=${day}`)
+      .get(`service/registration/?day=${day}&acceptor_id=${acceptorId}`)
       .json();
 
     return request;

@@ -79,4 +79,5 @@ type Messages = {
   Registration: string;
   'Please select client!': string;
   Client: string;
+  'Select acceptor': string;
 };
