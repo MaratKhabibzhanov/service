@@ -42,7 +42,6 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
 
   const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
-
   const [currentMaintenance, setCurrentMaintenance] = useState<Maintenance | null>(null);
 
   useLayoutEffect(() => {
