@@ -104,6 +104,18 @@ class RegistrationForRepairs {
 
     return response;
   }
+
+  clearStore() {
+    this.date = null;
+    this.clients = [];
+    this.currentClientId = null;
+    this.searchClient = '';
+    this.cars = [];
+    this.acceptors = [];
+    this.currentAcceptorId = null;
+    this.maintenances = [];
+    this.currentMaintenance = null;
+  }
 }
 
 export const registrationForRepairsState = new RegistrationForRepairs();

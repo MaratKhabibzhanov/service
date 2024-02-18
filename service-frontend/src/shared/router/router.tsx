@@ -1,14 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from 'app';
-import {
-  EditCarPage,
-  CarsPage,
-  ProfilePage,
-  RegistrationPage,
-  RegistrationForRepairs,
-  SchedulePage,
-} from 'pages';
+import { EditCarPage, CarsPage, ProfilePage, RegistrationPage, SchedulePage } from 'pages';
 import { rootStore } from 'app/store';
 
 export const router = createBrowserRouter([
@@ -43,11 +36,11 @@ export const router = createBrowserRouter([
         element: <EditCarPage />,
       },
       {
-        path: 'registration_for_repairs/:carId',
-        element: <RegistrationForRepairs />,
+        path: 'schedule',
+        element: <SchedulePage />,
       },
       {
-        path: 'schedule',
+        path: 'manage/schedule',
         element: <SchedulePage />,
       },
 

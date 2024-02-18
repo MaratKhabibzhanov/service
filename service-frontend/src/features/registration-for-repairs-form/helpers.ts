@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { getCarTitle } from 'shared/helpers';
 
 export const createInitialData = (data?: RegistrationForRepairs): RegistrationFoeRepairsFields => {
   const time = data?.time
@@ -10,7 +9,7 @@ export const createInitialData = (data?: RegistrationForRepairs): RegistrationFo
     : null;
 
   return {
-    car: data?.car ? { label: getCarTitle(data.car), value: data.car.id } : undefined,
+    car: data?.car ? data.car.id : undefined,
     acceptor: data?.acceptor?.id || undefined,
     day: data?.day ? dayjs(new Date(data.day)) : null,
     time,

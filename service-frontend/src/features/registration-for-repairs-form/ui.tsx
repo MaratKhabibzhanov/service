@@ -1,5 +1,5 @@
 import { FC, useLayoutEffect, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import debounce from 'debounce';
@@ -22,7 +22,6 @@ type RegistrationForRepairsFormProps = {
 
 const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
   const { carId } = useParams();
-  const navigate = useNavigate();
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
@@ -32,9 +31,8 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const { notification } = App.useApp();
   const [form] = Form.useForm<RegistrationFoeRepairsFields>();
   const currentCarId = Form.useWatch('car', form);
-  const currentDay = Form.useWatch('day', form);
 
-  const { clients, cars, acceptors, maintenances, currentMaintenance } =
+  const { clients, cars, acceptors, maintenances, currentMaintenance, currentAcceptorId, date } =
     registrationForRepairsState;
 
   useLayoutEffect(() => {
@@ -73,7 +71,6 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
     try {
       await RepairService.registrationForRepairs(dataToSend);
       openNotification('success', 'Your entry has been sent');
-      if (carId) navigate('/');
       if (action) action();
     } catch (e) {
       catchCallback(e as Error);
@@ -128,11 +125,12 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
 
   const initialValues = useMemo(() => {
     // TODO: refactor, как будет готов бэк
+
     if (initialData) return createInitialData(initialData);
 
     const modifiedCar = carsToSelect.find((item) => item.value === Number(carId));
-    return { car: modifiedCar };
-  }, [carId, carsToSelect, initialData]);
+    return { car: modifiedCar, acceptor: currentAcceptorId, date };
+  }, [initialData, carsToSelect, currentAcceptorId, date, carId]);
 
   const filterOption = (input: string, option?: { label: string; value: number }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -187,18 +185,14 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
         label={t('Date')}
         rules={[{ required: true, message: t('Please input date!') }]}
       >
-        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} />
+        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} disabled />
       </Form.Item>
       <Form.Item
         name="time"
         label={t('Time')}
         rules={[{ required: true, message: t('Please input time!') }]}
       >
-        <DatePicker.TimePicker
-          disabledTime={disabledTimes}
-          showSecond={false}
-          disabled={!currentDay}
-        />
+        <DatePicker.TimePicker disabledTime={disabledTimes} showSecond={false} disabled />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         name="maintenance"
