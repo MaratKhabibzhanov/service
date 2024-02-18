@@ -20,8 +20,6 @@ type RegistrationForRepairsFormProps = {
   action?: () => void;
 };
 
-// TODO: state in mobx
-
 const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
   const { carId } = useParams();
   const navigate = useNavigate();
@@ -36,31 +34,13 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const currentCarId = Form.useWatch('car', form);
   const currentDay = Form.useWatch('day', form);
 
-  const {
-    clients,
-    cars,
-    acceptors,
-    maintenances,
-    currentClientId,
-    searchClient,
-    currentMaintenance,
-  } = registrationForRepairsState;
+  const { clients, cars, acceptors, maintenances, currentMaintenance } =
+    registrationForRepairsState;
 
   useLayoutEffect(() => {
     registrationForRepairsState.getAcceptors();
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!formId) return;
-
     registrationForRepairsState.getClients();
-  }, [formId, searchClient]);
-
-  useLayoutEffect(() => {
-    if (!currentClientId) return;
-
-    registrationForRepairsState.getCars();
-  }, [currentClientId]);
+  }, []);
 
   useLayoutEffect(() => {
     if (!currentCarId && !carId) return;

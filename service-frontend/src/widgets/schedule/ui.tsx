@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { Dayjs } from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
 import { ScheduleList } from 'features';
@@ -7,22 +6,18 @@ import { RepairService } from 'shared/api';
 import { getFullName } from 'shared/helpers';
 
 import { DatePicker, Flex, Select, Space } from 'antd';
-
-// TODO: state in mobx
+import { registrationForRepairsState } from 'features/registration-for-repairs-form';
+import { observer } from 'mobx-react-lite';
 
 const Schedule: FC = () => {
   const { t } = useTranslation();
 
-  const [date, setDate] = useState<Dayjs | null>(null);
   const [notes, setNotes] = useState<RegistrationForRepairs[]>([]);
 
-  const [acceptors, setAcceptors] = useState<SelectValue[]>([]);
-  const [currentAcceptorId, setCurrentAcceptorId] = useState<number | null>(null);
+  const { acceptors, currentAcceptorId, date } = registrationForRepairsState;
 
   useEffect(() => {
-    RepairService.getAcceptors().then((response) => {
-      setAcceptors(response.results.map((item) => ({ value: item.id, label: getFullName(item) })));
-    });
+    registrationForRepairsState.getAcceptors();
   }, []);
 
   useEffect(() => {
@@ -38,13 +33,18 @@ const Schedule: FC = () => {
     });
   }, [currentAcceptorId, date]);
 
+  const modifiedAcceptors = acceptors.map((item) => ({
+    label: getFullName(item),
+    value: item.id,
+  }));
+
   return (
     <Space align="start" size="large">
       <Flex vertical gap="10px" style={{ width: '220px' }}>
-        <DatePicker value={date} onChange={setDate} />
+        <DatePicker value={date} onChange={(value) => registrationForRepairsState.setDate(value)} />
         <Select
-          options={acceptors}
-          onChange={setCurrentAcceptorId}
+          options={modifiedAcceptors}
+          onChange={(value) => registrationForRepairsState.setCurrentAcceptorId(value)}
           value={currentAcceptorId}
           placeholder={t('Select acceptor')}
         />
@@ -54,4 +54,4 @@ const Schedule: FC = () => {
   );
 };
 
-export default Schedule;
+export default observer(Schedule);

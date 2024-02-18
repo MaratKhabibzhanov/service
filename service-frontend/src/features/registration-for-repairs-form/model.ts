@@ -1,14 +1,17 @@
+import { Dayjs } from 'dayjs';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { AdditionalService, RepairService } from 'shared/api';
 
 class RegistrationForRepairs {
+  date: Dayjs | null = null;
+
   clients: Client[] = [];
   currentClientId: number | null = null;
   searchClient = '';
 
   cars: CarInfo[] = [];
   acceptors: Acceptor[] = [];
-  currentAcceptor: Acceptor | null = null;
+  currentAcceptorId: number | null = null;
 
   maintenances: Maintenance[] = [];
   currentMaintenance: Maintenance | null = null;
@@ -17,16 +20,35 @@ class RegistrationForRepairs {
     makeAutoObservable(this);
   }
 
-  setCurrentClientId(id: number) {
+  setDate(date: Dayjs | null) {
+    this.date = date;
+  }
+
+  async setCurrentClientId(id: number) {
     this.currentClientId = id;
+
+    let response = null;
+
+    try {
+      const carsData = await AdditionalService.getCarsInfo(id);
+      runInAction(() => {
+        this.cars = carsData.results;
+        response = 'ok';
+      });
+    } catch (e) {
+      response = (e as Error).message;
+    }
+
+    return response;
   }
 
   setSearchClient(search: string) {
     this.searchClient = search;
+    this.getClients();
   }
 
-  setCurrentAcceptor(acceptor: Acceptor) {
-    this.currentAcceptor = acceptor;
+  setCurrentAcceptorId(id: number) {
+    this.currentAcceptorId = id;
   }
 
   setCurrentMaintenance(maintenance: Maintenance | null) {
@@ -58,24 +80,6 @@ class RegistrationForRepairs {
 
       runInAction(() => {
         this.clients = clientsData.results;
-        response = 'ok';
-      });
-    } catch (e) {
-      response = (e as Error).message;
-    }
-
-    return response;
-  }
-
-  async getCars() {
-    if (!this.currentClientId) return undefined;
-
-    let response = null;
-
-    try {
-      const carsData = await AdditionalService.getCarsInfo(this.currentClientId);
-      runInAction(() => {
-        this.cars = carsData.results;
         response = 'ok';
       });
     } catch (e) {
