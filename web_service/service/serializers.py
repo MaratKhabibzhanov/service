@@ -1,6 +1,7 @@
 from datetime import date, time
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from config import settings
 from customs.fields import ObjectField
@@ -186,6 +187,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         maintenance = validated_data.get('maintenance')
         day = validated_data.get('day')
         register_time = validated_data.get('time')
+        acceptor = validated_data.get('acceptor')
+        self._validate_distinct_acceptor_time(day, register_time, acceptor)
         self._validate_distinct(day, car)
         self._validate_time(register_time)
         self._validate_maintenance(car, maintenance)
@@ -211,6 +214,16 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"detail": 'Рабочий день уже закончился'})
         if register_time.minute not in (time(minute=0).minute, time(minute=30).minute):
             raise serializers.ValidationError({"detail": 'Ошибка при выборе ячейки записи (интервал 30 минут)'})
+
+    def _validate_distinct_acceptor_time(self, day: date,
+                                         register_time: time,
+                                         acceptor: Acceptor) -> None:
+        register = Registration.objects.filter(day=day,
+                                               time=register_time,
+                                               acceptor=acceptor)
+        if register.exists():
+            raise serializers.ValidationError({"detail": f'У мастера-приемщика "{acceptor}" '
+                                                         f'в {register_time} уже есть запись'})
 
 
 class RegistrationShortSerializer(RegistrationSerializer):
