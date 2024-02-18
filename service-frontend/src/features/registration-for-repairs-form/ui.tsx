@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useMemo, useState } from 'react';
+import { FC, useLayoutEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
@@ -7,11 +7,12 @@ import debounce from 'debounce';
 import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
 import { formItemLayout } from 'shared/consts';
-import { AdditionalService, RepairService } from 'shared/api';
+import { RepairService } from 'shared/api';
 import { getCarTitle, getFullName, range } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App } from 'antd';
 import { createInitialData } from './helpers';
+import { registrationForRepairsState } from './model';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
@@ -35,43 +36,36 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const currentCarId = Form.useWatch('car', form);
   const currentDay = Form.useWatch('day', form);
 
-  const [clients, setClients] = useState<Client[]>([]);
-  const [currentClientId, setCurrentClientId] = useState<number | null>(null);
-  const [searchClient, setSearchClient] = useState('');
-  const [cars, setCars] = useState<CarInfo[]>([]);
+  const {
+    clients,
+    cars,
+    acceptors,
+    maintenances,
+    currentClientId,
+    searchClient,
+    currentMaintenance,
+  } = registrationForRepairsState;
 
-  const [acceptors, setAcceptors] = useState<Acceptor[]>([]);
-  const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
-  const [currentMaintenance, setCurrentMaintenance] = useState<Maintenance | null>(null);
+  useLayoutEffect(() => {
+    registrationForRepairsState.getAcceptors();
+  }, []);
 
   useLayoutEffect(() => {
     if (!formId) return;
 
-    AdditionalService.getUsers(searchClient).then((response) => {
-      setClients(response.results);
-    });
+    registrationForRepairsState.getClients();
   }, [formId, searchClient]);
 
   useLayoutEffect(() => {
     if (!currentClientId) return;
 
-    AdditionalService.getCarsInfo(currentClientId).then((response) => {
-      setCars(response.results);
-    });
+    registrationForRepairsState.getCars();
   }, [currentClientId]);
-
-  useLayoutEffect(() => {
-    RepairService.getAcceptors().then((response) => {
-      setAcceptors(response.results);
-    });
-  }, []);
 
   useLayoutEffect(() => {
     if (!currentCarId && !carId) return;
 
-    RepairService.getMaintenances(currentCarId || Number(carId)).then((response) => {
-      setMaintenances(response);
-    });
+    registrationForRepairsState.getMaintenances(currentCarId || Number(carId));
   }, [carId, currentCarId]);
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
@@ -163,7 +157,10 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
   const filterOption = (input: string, option?: { label: string; value: number }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-  const debouncedSearch = debounce((value: string) => setSearchClient(value), 500);
+  const debouncedSearch = debounce(
+    (value: string) => registrationForRepairsState.setSearchClient(value),
+    500
+  );
 
   return (
     <Form
@@ -187,7 +184,7 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
             filterOption={filterOption}
             showSearch
             onSearch={debouncedSearch}
-            onChange={(value) => setCurrentClientId(value)}
+            onChange={(value) => registrationForRepairsState.setCurrentClientId(value)}
           />
         </Form.Item>
       )}
@@ -231,7 +228,9 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
         <Select
           options={maintenancesToSelect}
           onChange={(value) =>
-            setCurrentMaintenance(maintenances.find((item) => item.id === value) || null)
+            registrationForRepairsState.setCurrentMaintenance(
+              maintenances.find((item) => item.id === value) || null
+            )
           }
         />
       </Form.Item>

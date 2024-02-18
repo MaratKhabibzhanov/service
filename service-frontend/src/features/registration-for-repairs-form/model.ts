@@ -29,7 +29,7 @@ class RegistrationForRepairs {
     this.currentAcceptor = acceptor;
   }
 
-  setCurrentMaintenance(maintenance: Maintenance) {
+  setCurrentMaintenance(maintenance: Maintenance | null) {
     this.currentMaintenance = maintenance;
   }
 
@@ -50,11 +50,11 @@ class RegistrationForRepairs {
     return response;
   }
 
-  async getClients(search?: string) {
+  async getClients() {
     let response = null;
 
     try {
-      const clientsData = await AdditionalService.getUsers(search);
+      const clientsData = await AdditionalService.getUsers(this.searchClient);
 
       runInAction(() => {
         this.clients = clientsData.results;
@@ -67,11 +67,13 @@ class RegistrationForRepairs {
     return response;
   }
 
-  async getCars(clientId: number) {
+  async getCars() {
+    if (!this.currentClientId) return undefined;
+
     let response = null;
 
     try {
-      const carsData = await AdditionalService.getCarsInfo(clientId);
+      const carsData = await AdditionalService.getCarsInfo(this.currentClientId);
       runInAction(() => {
         this.cars = carsData.results;
         response = 'ok';
