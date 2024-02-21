@@ -5,9 +5,8 @@ export { Logout } from './logout-button';
 export { ChangePasswordModal } from './change-password-modal';
 export { CarsModal } from './cars-modal';
 export { RemoveCarButton } from './remove-car-button';
-export { ScheduleList } from './schedule-list';
 export {
-  RegistrationForRepairsForm,
+  RegistrationForRepairsModal,
   registrationForRepairsState,
-} from './registration-for-repairs-form';
+} from './registration-for-repairs-modal';
 export { RegistrationForm } from './registration-form';

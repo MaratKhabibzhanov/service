@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ScheduleItem } from 'entities';
-import { RegistrationForRepairsForm } from 'features';
+import { RegistrationForRepairsForm } from './form';
 
 import { Button, Modal } from 'antd';
 

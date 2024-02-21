@@ -1,1 +1,1 @@
-export { default as Schedule } from './ui';
+export { Schedule } from './ui';

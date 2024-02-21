@@ -11,8 +11,8 @@ import { RepairService } from 'shared/api';
 import { getCarTitle, getFullName, range } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App } from 'antd';
-import { createInitialData } from './helpers';
-import { registrationForRepairsState } from './model';
+import { createInitialData } from '../helpers';
+import { registrationForRepairsState } from '../model';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
@@ -20,7 +20,7 @@ type RegistrationForRepairsFormProps = {
   action?: () => void;
 };
 
-const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) => {
+export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = observer((props) => {
   const { carId } = useParams();
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
@@ -221,6 +221,4 @@ const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = (props) 
       )}
     </Form>
   );
-};
-
-export default observer(RegistrationForRepairsForm);
+});

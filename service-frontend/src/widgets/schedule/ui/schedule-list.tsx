@@ -1,9 +1,9 @@
 import { FC, useCallback } from 'react';
 
-import { TIMES_ONE, TIMES_THREE, TIMES_TWO } from './consts';
+import { TIMES_ONE, TIMES_THREE, TIMES_TWO } from '../consts';
 
 import { Flex } from 'antd';
-import { RegistrationForRepairsModal } from './modal';
+import { RegistrationForRepairsModal } from 'features';
 
 type ScheduleProps = {
   items: RegistrationForRepairs[];

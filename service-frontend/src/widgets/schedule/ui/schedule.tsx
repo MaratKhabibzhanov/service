@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { observer } from 'mobx-react-lite';
 
-import { ScheduleList } from 'features';
 import { RepairService } from 'shared/api';
 import { getFullName } from 'shared/helpers';
+import { registrationForRepairsState } from 'features';
 
 import { DatePicker, Flex, Select, Space } from 'antd';
-import { registrationForRepairsState } from 'features/registration-for-repairs-form';
-import { observer } from 'mobx-react-lite';
+import ScheduleList from './schedule-list';
 
 const Schedule: FC = () => {
   const { t } = useTranslation();
