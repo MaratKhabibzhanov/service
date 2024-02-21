@@ -34,13 +34,27 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const [form] = Form.useForm<RegistrationFoeRepairsFields>();
   const currentCarId = Form.useWatch('car', form);
 
-  const { clients, cars, acceptors, maintenances, currentMaintenance, currentAcceptorId, date } =
-    registrationForRepairsState;
+  const {
+    clients,
+    cars,
+    acceptors,
+    maintenances,
+    currentMaintenance,
+    currentAcceptorId,
+    date,
+    currentClientId,
+  } = registrationForRepairsState;
 
   useLayoutEffect(() => {
     registrationForRepairsState.getAcceptors();
     registrationForRepairsState.getClients();
   }, []);
+
+  useLayoutEffect(() => {
+    if (!currentClientId && initialData?.car.owner.id) {
+      registrationForRepairsState.getCars(initialData.car.owner.id);
+    }
+  }, [currentClientId, initialData]);
 
   useLayoutEffect(() => {
     if (!currentCarId && !carId) return;

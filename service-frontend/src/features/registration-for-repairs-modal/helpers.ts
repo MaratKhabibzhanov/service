@@ -9,6 +9,7 @@ export const createInitialData = (data?: RegistrationForRepairs): RegistrationFo
     : null;
 
   return {
+    userId: data?.car.owner.id,
     car: data?.car ? data.car.id : undefined,
     acceptor: data?.acceptor?.id || undefined,
     day: data?.day ? dayjs(new Date(data.day)) : null,

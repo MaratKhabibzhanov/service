@@ -24,24 +24,6 @@ class RegistrationForRepairs {
     this.date = date;
   }
 
-  async setCurrentClientId(id: number) {
-    this.currentClientId = id;
-
-    let response = null;
-
-    try {
-      const carsData = await AdditionalService.getCarsInfo(id);
-      runInAction(() => {
-        this.cars = carsData.results;
-        response = 'ok';
-      });
-    } catch (e) {
-      response = (e as Error).message;
-    }
-
-    return response;
-  }
-
   setSearchClient(search: string) {
     this.searchClient = search;
     this.getClients();
@@ -53,6 +35,27 @@ class RegistrationForRepairs {
 
   setCurrentMaintenance(maintenance: Maintenance | null) {
     this.currentMaintenance = maintenance;
+  }
+
+  async setCurrentClientId(id: number) {
+    this.currentClientId = id;
+    this.getCars(id);
+  }
+
+  async getCars(clientId: number) {
+    let response = null;
+
+    try {
+      const carsData = await AdditionalService.getCarsInfo(clientId);
+      runInAction(() => {
+        this.cars = carsData.results;
+        response = 'ok';
+      });
+    } catch (e) {
+      response = (e as Error).message;
+    }
+
+    return response;
   }
 
   async getAcceptors() {
