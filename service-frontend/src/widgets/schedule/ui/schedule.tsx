@@ -49,7 +49,7 @@ const Schedule: FC = () => {
           placeholder={t('Select acceptor')}
         />
       </Flex>
-      <ScheduleList items={notes} date={date?.format('YYYY-MM-DD')} />
+      <ScheduleList items={notes} />
     </Space>
   );
 };

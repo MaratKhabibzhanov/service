@@ -1,4 +1,5 @@
 import { FC, useCallback } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import { TIMES_ONE, TIMES_THREE, TIMES_TWO } from '../consts';
 
@@ -7,25 +8,18 @@ import { RegistrationForRepairsModal } from 'features';
 
 type ScheduleProps = {
   items: RegistrationForRepairs[];
-  date?: string;
 };
 
-const ScheduleList: FC<ScheduleProps> = ({ items, date }) => {
+const ScheduleList: FC<ScheduleProps> = ({ items }) => {
   const renderContent = useCallback(
     (times: string[]) => {
       return times.map((time) => {
         const currentItem = items.find((item) => item.time.slice(0, 5) === time);
 
-        if (currentItem) {
-          return <RegistrationForRepairsModal data={currentItem} key={time} time={time} />;
-        }
-
-        const data = { time, day: date || '' } as RegistrationForRepairs;
-
-        return <RegistrationForRepairsModal time={time} key={time} data={data} />;
+        return <RegistrationForRepairsModal initialData={currentItem} key={time} time={time} />;
       });
     },
-    [items, date]
+    [items]
   );
 
   return (
@@ -43,4 +37,4 @@ const ScheduleList: FC<ScheduleProps> = ({ items, date }) => {
   );
 };
 
-export default ScheduleList;
+export default observer(ScheduleList);

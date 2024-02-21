@@ -13,11 +13,13 @@ import { getCarTitle, getFullName, range } from 'shared/helpers';
 import { Button, DatePicker, Form, Select, App } from 'antd';
 import { createInitialData } from '../helpers';
 import { registrationForRepairsState } from '../model';
+import dayjs from 'dayjs';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
   formId?: string;
   action?: () => void;
+  time: string;
 };
 
 export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = observer((props) => {
@@ -25,7 +27,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
-  const { initialData, formId, action } = props;
+  const { initialData, formId, action, time } = props;
 
   const { profile } = useStore();
   const { notification } = App.useApp();
@@ -83,15 +85,15 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     return currentDate;
   }, []);
 
-  const disabledTimes = () => {
-    const hours = range(0, 24);
-    const currentDisabledHours = [...hours.slice(0, 8), ...hours.slice(20, 24)];
+  // const disabledTimes = () => {
+  //   const hours = range(0, 24);
+  //   const currentDisabledHours = [...hours.slice(0, 8), ...hours.slice(20, 24)];
 
-    return {
-      disabledHours: () => currentDisabledHours,
-      disabledMinutes: () => range(30, 60),
-    };
-  };
+  //   return {
+  //     disabledHours: () => currentDisabledHours,
+  //     disabledMinutes: () => range(30, 60),
+  //   };
+  // };
 
   const acceptorsToSelect = acceptors.map((item) => ({
     value: item.id,
@@ -127,10 +129,15 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     // TODO: refactor, как будет готов бэк
 
     if (initialData) return createInitialData(initialData);
+    const currentValues = {
+      time: dayjs(time, 'HH:mm'),
+      day: date,
+      modifiedCar: carsToSelect.find((item) => item.value === Number(carId)),
+      acceptor: currentAcceptorId,
+    };
 
-    const modifiedCar = carsToSelect.find((item) => item.value === Number(carId));
-    return { car: modifiedCar, acceptor: currentAcceptorId, date };
-  }, [initialData, carsToSelect, currentAcceptorId, date, carId]);
+    return currentValues;
+  }, [initialData, time, date, carsToSelect, currentAcceptorId, carId]);
 
   const filterOption = (input: string, option?: { label: string; value: number }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -178,21 +185,21 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         name="acceptor"
         rules={[{ required: true, message: t('Please select your acceptor!') }]}
       >
-        <Select options={acceptorsToSelect} />
+        <Select options={acceptorsToSelect} disabled />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         name="day"
         label={t('Date')}
         rules={[{ required: true, message: t('Please input date!') }]}
       >
-        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} disabled />
+        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} />
       </Form.Item>
       <Form.Item
         name="time"
         label={t('Time')}
         rules={[{ required: true, message: t('Please input time!') }]}
       >
-        <DatePicker.TimePicker disabledTime={disabledTimes} showSecond={false} disabled />
+        <DatePicker.TimePicker format={'HH:mm'} />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         name="maintenance"

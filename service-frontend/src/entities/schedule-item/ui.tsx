@@ -6,23 +6,22 @@ import { cyan } from '@ant-design/colors';
 import { Card, Typography } from 'antd';
 
 type ScheduleItemProps = {
-  data?: RegistrationForRepairs;
-  time: string;
+  data: RegistrationForRepairs;
   onClick: () => void;
 };
 
-const ScheduleItem: FC<ScheduleItemProps> = ({ data, time, onClick }) => {
+const ScheduleItem: FC<ScheduleItemProps> = ({ data, onClick }) => {
   return (
     <Card
-      style={{ width: 200, padding: 0, height: '80px', backgroundColor: data?.id ? cyan[6] : '' }}
-      hoverable={!!data?.day}
+      style={{ width: 200, padding: 0, height: '80px', backgroundColor: data.id ? cyan[6] : '' }}
+      hoverable={!!data.day}
       size="small"
-      bodyStyle={{ padding: '5px' }}
-      onClick={data?.day ? onClick : undefined}
+      styles={{ body: { padding: '5px' } }}
+      onClick={data.day ? onClick : undefined}
     >
-      <Typography>{time}</Typography>
-      {data?.acceptor && <Typography>{getFullName(data.acceptor)}</Typography>}
-      {data?.car && <Typography>{data.car.car_model.model}</Typography>}
+      <Typography>{data.time}</Typography>
+      {data.car && <Typography>{getFullName(data.car.owner)}</Typography>}
+      {data.car && <Typography>{data.car.car_model.model}</Typography>}
     </Card>
   );
 };

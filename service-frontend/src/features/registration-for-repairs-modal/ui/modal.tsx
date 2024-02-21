@@ -5,9 +5,10 @@ import { ScheduleItem } from 'entities';
 import { RegistrationForRepairsForm } from './form';
 
 import { Button, Modal } from 'antd';
+import { registrationForRepairsState } from '../model';
 
 type RegistrationForRepairsModalProps = {
-  data?: RegistrationForRepairs;
+  initialData?: RegistrationForRepairs;
   time: string;
 };
 
@@ -15,22 +16,32 @@ type RegistrationForRepairsModalProps = {
 
 export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> = (props) => {
   const { t } = useTranslation();
-  const { data, time } = props;
+  const { initialData, time } = props;
 
   const [open, setOpen] = useState(false);
+
+  const { date, currentAcceptorId } = registrationForRepairsState;
 
   const onClose = () => {
     setOpen(false);
   };
 
+  const scheduleItemData =
+    initialData ||
+    ({
+      day: date,
+      time,
+      acceptor: currentAcceptorId,
+    } as unknown as RegistrationForRepairs);
+
   return (
     <>
-      <ScheduleItem data={data} key={time} time={time} onClick={() => setOpen(true)} />
+      <ScheduleItem data={scheduleItemData} key={time} onClick={() => setOpen(true)} />
       <Modal
         open={open}
         onOk={undefined}
         onCancel={onClose}
-        title={data ? 'Edit' : 'Create'}
+        title={initialData ? 'Edit' : 'Create'}
         footer={[
           <Button key="back" onClick={onClose}>
             {t('Close')}
@@ -40,7 +51,12 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           </Button>,
         ]}
       >
-        <RegistrationForRepairsForm initialData={data} formId={time} action={onClose} />
+        <RegistrationForRepairsForm
+          initialData={initialData}
+          formId={time}
+          action={onClose}
+          time={time}
+        />
       </Modal>
     </>
   );
