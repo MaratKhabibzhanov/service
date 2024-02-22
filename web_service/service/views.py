@@ -110,10 +110,10 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     filterset_class = RegistrationFilter
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return RegistrationShortSerializer
-        return super().get_serializer_class()
+    # def get_serializer_class(self):
+    #     if self.action == 'list':
+    #         return RegistrationShortSerializer
+    #     return super().get_serializer_class()
 
 
 class OilViewSet(viewsets.ModelViewSet):
