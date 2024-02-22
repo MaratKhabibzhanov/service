@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useMemo } from 'react';
+import { FC, useEffect, useLayoutEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
@@ -61,6 +61,8 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
 
     registrationForRepairsState.getMaintenances(currentCarId || Number(carId));
   }, [carId, currentCarId]);
+
+  useEffect(() => form.resetFields(), [form]);
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
     notification[variant]({
@@ -140,18 +142,27 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   );
 
   const initialValues = useMemo(() => {
-    // TODO: refactor, как будет готов бэк
-
     if (initialData) return createInitialData(initialData);
     const currentValues = {
       time: dayjs(time, 'HH:mm'),
       day: date,
       modifiedCar: carsToSelect.find((item) => item.value === Number(carId)),
       acceptor: currentAcceptorId,
+      client: currentClientId,
+      maintenance: currentMaintenance?.id,
     };
 
     return currentValues;
-  }, [initialData, time, date, carsToSelect, currentAcceptorId, carId]);
+  }, [
+    initialData,
+    time,
+    date,
+    carsToSelect,
+    currentAcceptorId,
+    currentClientId,
+    currentMaintenance?.id,
+    carId,
+  ]);
 
   const filterOption = (input: string, option?: { label: string; value: number }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'app/store';
-import { RemoveCarButton } from 'features';
+import { RemoveCarButton, registrationForRepairsState } from 'features';
 import { CarInfoCard } from 'entities';
 
 import { Button, Flex, Typography } from 'antd';
@@ -37,13 +37,21 @@ const CarsList: FC = () => {
     );
   }
 
+  const goToRegistrationForRepairs = (carId: number) => {
+    if (!profile.profile) throw new Error('Profile not found');
+
+    navigate('/schedule');
+    registrationForRepairsState.setCurrentClientId(profile.profile.id);
+    registrationForRepairsState.setCurrentCarId(carId);
+  };
+
   return (
     <Flex gap="large" vertical>
       {profile.carsInfo.map((item) => (
         <Flex key={item.id} gap="20px">
           <CarInfoCard carInfo={item} />
           <Flex vertical justify="space-between" align="end" style={{ paddingTop: '26px' }}>
-            <Button onClick={() => navigate(`/registration_for_repairs/${item.id}`)}>
+            <Button onClick={() => goToRegistrationForRepairs(item.id)}>
               {t('Registration for repairs')}
             </Button>
             <RemoveCarButton carId={item.id} />

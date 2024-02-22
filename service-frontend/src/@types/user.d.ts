@@ -9,7 +9,7 @@ type NewUser = FullName & {
   email: string;
 };
 
-type User = NewUser & { role: UserRole };
+type User = NewUser & { role: UserRole; id: number };
 
 type UserToUpdate = Omit<NewUser, 'username' | 'password'>;
 

@@ -10,6 +10,7 @@ class RegistrationForRepairs {
   searchClient = '';
 
   cars: CarInfo[] = [];
+  currentCarId: number | null = null;
   acceptors: Acceptor[] = [];
   currentAcceptorId: number | null = null;
 
@@ -37,9 +38,13 @@ class RegistrationForRepairs {
     this.currentMaintenance = maintenance;
   }
 
-  async setCurrentClientId(id: number) {
+  setCurrentClientId(id: number) {
     this.currentClientId = id;
     this.getCars(id);
+  }
+
+  setCurrentCarId(id: number) {
+    this.currentCarId = id;
   }
 
   async getCars(clientId: number) {

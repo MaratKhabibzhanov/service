@@ -4,22 +4,31 @@ import { observer } from 'mobx-react-lite';
 import { TIMES_ONE, TIMES_THREE, TIMES_TWO } from '../consts';
 
 import { Flex } from 'antd';
-import { RegistrationForRepairsModal } from 'features';
+import { RegistrationForRepairsModal, registrationForRepairsState } from 'features';
 
 type ScheduleProps = {
   items: RegistrationForRepairs[];
 };
 
 const ScheduleList: FC<ScheduleProps> = ({ items }) => {
+  const { date, currentAcceptorId } = registrationForRepairsState;
+
   const renderContent = useCallback(
     (times: string[]) => {
       return times.map((time) => {
         const currentItem = items.find((item) => item.time.slice(0, 5) === time);
 
-        return <RegistrationForRepairsModal initialData={currentItem} key={time} time={time} />;
+        const modalProps = {
+          initialData: currentItem,
+          key: time,
+          isActive: !!(date && currentAcceptorId),
+          time,
+        };
+
+        return <RegistrationForRepairsModal {...modalProps} />;
       });
     },
-    [items]
+    [currentAcceptorId, date, items]
   );
 
   return (
