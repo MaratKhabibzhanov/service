@@ -151,7 +151,26 @@ def get_maintenance(callback: types.CallbackQuery, bot: TeleBot) -> None:
     maintenance_pk = callback.data.lstrip("maintenance_pk=")
     with bot.retrieve_data(callback.from_user.id) as data:
         data['maintenance_pk'] = maintenance_pk
-        msg = save_registration(data)
+    maintenance = Maintenance.objects.get(pk=maintenance_pk)
+    msg = f"Предварительная стоимость: {maintenance.total_cost}"
+    buttons = [
+        {'text': 'Подтвердить', 'callback_data': f'confirm=Yes'},
+        {'text': 'Отказаться', 'callback_data': f'confirm='}
+    ]
+    kb = Keyboa(items=buttons, items_in_row=2)
+    bot.edit_message_text(msg,
+                          callback.message.chat.id,
+                          callback.message.message_id,
+                          reply_markup=kb())
+
+
+def confirm_registration(callback: types.CallbackQuery, bot: TeleBot) -> None:
+    confirm = callback.data.lstrip("confirm=")
+    if confirm:
+        with bot.retrieve_data(callback.from_user.id) as data:
+            msg = save_registration(data)
+    else:
+        msg = "Запись на ремонт не зарегистрирована"
     bot.delete_state(callback.from_user.id)
     bot.edit_message_text(msg,
                           callback.message.chat.id,
@@ -212,4 +231,7 @@ def registration_handlers(bot: TeleBot):
                                         pass_bot=True)
     bot.register_callback_query_handler(get_maintenance,
                                         func=lambda call: re.match(r"maintenance_pk=\d+", call.data),
+                                        pass_bot=True)
+    bot.register_callback_query_handler(confirm_registration,
+                                        func=lambda call: re.match(r"confirm=\w*", call.data),
                                         pass_bot=True)
