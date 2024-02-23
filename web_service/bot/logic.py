@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import Optional, Union, List
+from typing import Union
 from django.contrib.auth.hashers import check_password
-from django.db.models import QuerySet
 from service.models import Registration
 from users.models import CustomUser
 from telegram_bot_calendar import DetailedTelegramCalendar

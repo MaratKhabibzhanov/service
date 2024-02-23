@@ -1,11 +1,12 @@
 from datetime import date, time
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from config import settings
 from customs.fields import ObjectField
 from users.models import CustomUser
-from users.serializers import UsersSerializer
+from users.serializers import UsersSerializer, UsersShortSerializer
 from .models import (Car,
                      Acceptor,
                      WorkingType,
@@ -54,6 +55,15 @@ class CarModelSerializer(serializers.ModelSerializer):
                   ]
 
 
+class CarModelShortSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CarModel
+        fields = ['id',
+                  'model',
+                  ]
+
+
 class WorkingTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkingType
@@ -85,8 +95,8 @@ class MaintenanceSerializer(serializers.ModelSerializer):
 
 class CarUserSerializer(serializers.ModelSerializer):
     car_model = serializers.PrimaryKeyRelatedField(
-        queryset=CarModelSerializer.Meta.model.objects.all(),
-        pk_field=ObjectField(serializer=CarModelSerializer),
+        queryset=CarModelShortSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=CarModelShortSerializer),
         required=True,
     )
     engine = serializers.PrimaryKeyRelatedField(
@@ -119,25 +129,9 @@ class CarUserSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(CarUserSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-
-    class Meta:
-        model = Car
-        fields = ['id',
-                  'owner',
-                  'vin',
-                  'number',
-                  'vehicle_certificate',
-                  'sold_date',
-                  'mileage',
-                  'car_model',
-                  'engine']
-
-
-class CarForManagerRegistrationSerializer(CarUserSerializer):
     owner = serializers.PrimaryKeyRelatedField(
-        pk_field=ObjectField(serializer=UsersSerializer),
-        read_only=True)
+            pk_field=ObjectField(serializer=UsersShortSerializer),
+            read_only=True)
 
     class Meta:
         model = Car
@@ -150,6 +144,16 @@ class CarForManagerRegistrationSerializer(CarUserSerializer):
                   'mileage',
                   'car_model',
                   'engine']
+
+
+class CarShortSerializer(CarSerializer):
+
+    class Meta:
+        model = Car
+        fields = ['id',
+                  'owner',
+                  'number',
+                  'car_model']
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -183,6 +187,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         maintenance = validated_data.get('maintenance')
         day = validated_data.get('day')
         register_time = validated_data.get('time')
+        acceptor = validated_data.get('acceptor')
+        self._validate_distinct_acceptor_time(day, register_time, acceptor)
         self._validate_distinct(day, car)
         self._validate_time(register_time)
         self._validate_maintenance(car, maintenance)
@@ -209,11 +215,21 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if register_time.minute not in (time(minute=0).minute, time(minute=30).minute):
             raise serializers.ValidationError({"detail": 'Ошибка при выборе ячейки записи (интервал 30 минут)'})
 
+    def _validate_distinct_acceptor_time(self, day: date,
+                                         register_time: time,
+                                         acceptor: Acceptor) -> None:
+        register = Registration.objects.filter(day=day,
+                                               time=register_time,
+                                               acceptor=acceptor)
+        if register.exists():
+            raise serializers.ValidationError({"detail": f'У мастера-приемщика "{acceptor}" '
+                                                         f'в {register_time} уже есть запись'})
 
-class RegistrationForManagerSerializer(RegistrationSerializer):
+
+class RegistrationShortSerializer(RegistrationSerializer):
     car = serializers.PrimaryKeyRelatedField(
-        queryset=CarForManagerRegistrationSerializer.Meta.model.objects.all(),
-        pk_field=ObjectField(serializer=CarForManagerRegistrationSerializer),
+        queryset=CarShortSerializer.Meta.model.objects.all(),
+        pk_field=ObjectField(serializer=CarShortSerializer),
         required=True,
     )
 
@@ -223,5 +239,4 @@ class RegistrationForManagerSerializer(RegistrationSerializer):
                   'day',
                   'time',
                   'acceptor',
-                  'maintenance',
                   'car']

@@ -28,7 +28,8 @@ from .serializers import (PartSerializer,
                           RegistrationSerializer,
                           OilSerializer,
                           EngineSerializer,
-                          CarUserSerializer, RegistrationForManagerSerializer)
+                          CarUserSerializer,
+                          RegistrationShortSerializer)
 from users.models import CustomUser
 
 
@@ -81,6 +82,8 @@ class CarViewSet(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    filterset_fields = ('owner',)
 
     def perform_create(self, serializer):
         if self.request.user.role == CustomUser.USER_ROLE:
@@ -107,10 +110,10 @@ class RegistrationViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     filterset_class = RegistrationFilter
 
-    def get_serializer_class(self):
-        if self.request.user.role == CustomUser.MANAGER_ROLE:
-            return RegistrationForManagerSerializer
-        return super().get_serializer_class()
+    # def get_serializer_class(self):
+    #     if self.action == 'list':
+    #         return RegistrationShortSerializer
+    #     return super().get_serializer_class()
 
 
 class OilViewSet(viewsets.ModelViewSet):
