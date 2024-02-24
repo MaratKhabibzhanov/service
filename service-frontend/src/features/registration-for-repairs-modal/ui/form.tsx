@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useMemo } from 'react';
+import { FC, useLayoutEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,7 @@ import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getCarTitle, getFullName, range } from 'shared/helpers';
 
-import { Button, DatePicker, Form, Select, App } from 'antd';
+import { Button, DatePicker, Form, Select, App, FormInstance } from 'antd';
 import { createInitialData } from '../helpers';
 import { registrationForRepairsState } from '../model';
 import dayjs from 'dayjs';
@@ -20,6 +20,7 @@ type RegistrationForRepairsFormProps = {
   formId?: string;
   action?: () => void;
   time: string;
+  form: FormInstance<RegistrationFoeRepairsFields>;
 };
 
 export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = observer((props) => {
@@ -27,11 +28,10 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
-  const { initialData, formId, action, time } = props;
+  const { initialData, formId, action, time, form } = props;
 
   const { profile } = useStore();
   const { notification } = App.useApp();
-  const [form] = Form.useForm<RegistrationFoeRepairsFields>();
 
   const {
     clients,
@@ -64,8 +64,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
 
     registrationForRepairsState.getMaintenances(currentCarId || Number(carId));
   }, [carId, currentCarId]);
-
-  useEffect(() => form.resetFields(), [form]);
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
     notification[variant]({
