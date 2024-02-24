@@ -246,7 +246,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         />
       </Form.Item>
       <Form.Item label={t('Price')}>
-        <span>{currentMaintenance?.total_cost}</span>
+        <span>{initialData?.maintenance.total_cost || currentMaintenance?.total_cost}</span>
       </Form.Item>
 
       {!formId && (
