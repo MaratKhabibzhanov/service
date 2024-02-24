@@ -1,12 +1,14 @@
-import { Flex, Image } from 'antd';
+import { Flex, Typography } from 'antd';
 import { FC } from 'react';
 
-import background from 'shared/img/bg.webp';
+// TODO: translate
 
 const HomePage: FC = () => {
   return (
-    <Flex style={{ padding: '40px' }} align="center" justify="center">
-      <Image src={background} alt="background" preview={false} height={520} />
+    <Flex align="center" justify="center">
+      <Typography.Title style={{ width: '50%', textAlign: 'center', paddingTop: '100px' }}>
+        Добро пожаловать на портал сервисного центра автомобилей "KIA"
+      </Typography.Title>
     </Flex>
   );
 };

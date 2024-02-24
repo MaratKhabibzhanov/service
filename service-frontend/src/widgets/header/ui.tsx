@@ -29,7 +29,7 @@ const Header: FC = () => {
             <MobileMenu />
           </MediaQuery>
         )}
-        <Link to="/">
+        <Link to="/" style={{ display: 'block', backgroundColor: '#fff' }}>
           <Image src={logo} alt="logo" width={160} height={40} preview={false} />
         </Link>
       </Space>
