@@ -47,6 +47,10 @@ class RegistrationForRepairs {
     this.currentCarId = id;
   }
 
+  setCars(cars: CarInfo[]) {
+    this.cars = cars;
+  }
+
   async getCars(clientId: number) {
     let response = null;
 

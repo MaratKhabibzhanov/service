@@ -41,7 +41,6 @@ const CarsList: FC = () => {
     if (!profile.profile) throw new Error('Profile not found');
 
     navigate('/schedule');
-    registrationForRepairsState.setCurrentClientId(profile.profile.id);
     registrationForRepairsState.setCurrentCarId(carId);
   };
 

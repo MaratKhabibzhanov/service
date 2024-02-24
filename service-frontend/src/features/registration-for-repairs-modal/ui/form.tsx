@@ -32,7 +32,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const { profile } = useStore();
   const { notification } = App.useApp();
   const [form] = Form.useForm<RegistrationFoeRepairsFields>();
-  const currentCarId = Form.useWatch('car', form);
 
   const {
     clients,
@@ -43,18 +42,22 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     currentAcceptorId,
     date,
     currentClientId,
+    currentCarId,
   } = registrationForRepairsState;
 
   useLayoutEffect(() => {
-    registrationForRepairsState.getAcceptors();
+    if (profile.profile?.role === 'USER') return;
+
     registrationForRepairsState.getClients();
-  }, []);
+  }, [profile.profile?.role]);
 
   useLayoutEffect(() => {
     if (!currentClientId && initialData?.car.owner.id) {
       registrationForRepairsState.getCars(initialData.car.owner.id);
+    } else if (profile.profile?.role === 'USER') {
+      registrationForRepairsState.setCars(profile.carsInfo);
     }
-  }, [currentClientId, initialData]);
+  }, [currentClientId, initialData, profile.carsInfo, profile.profile?.role]);
 
   useLayoutEffect(() => {
     if (!currentCarId && !carId) return;
@@ -150,6 +153,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
       acceptor: currentAcceptorId,
       client: currentClientId,
       maintenance: currentMaintenance?.id,
+      car: currentCarId,
     };
 
     return currentValues;
@@ -161,6 +165,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     currentAcceptorId,
     currentClientId,
     currentMaintenance?.id,
+    currentCarId,
     carId,
   ]);
 
@@ -183,7 +188,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
       initialValues={initialValues}
       onFinish={sendForm}
     >
-      {formId && (
+      {profile.profile?.role === 'MANAGER' && (
         <Form.Item<RegistrationFoeRepairsFields>
           name="userId"
           label={t('Client')}
