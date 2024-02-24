@@ -7,8 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'app/store';
 import { AuthModal, Logout, MobileMenu, ThemeSwitcher } from 'features';
 
-import { Button, Flex, Layout, Menu, Space } from 'antd';
+import { Button, Flex, Image, Layout, Menu, Space } from 'antd';
 import { useGetMenuItems } from 'shared/hooks';
+
+import logo from 'shared/img/logo.png';
 
 const Header: FC = () => {
   const { pathname } = useLocation();
@@ -27,8 +29,8 @@ const Header: FC = () => {
             <MobileMenu />
           </MediaQuery>
         )}
-        <Link to="/" style={{ color: '#fff', fontSize: '20px' }}>
-          Habib Service
+        <Link to="/">
+          <Image src={logo} alt="logo" width={160} height={40} preview={false} />
         </Link>
       </Space>
       {auth.isAuth && (
