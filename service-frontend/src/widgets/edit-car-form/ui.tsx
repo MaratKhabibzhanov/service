@@ -68,7 +68,7 @@ const EditCarForm: FC = () => {
         await profile.addCar(currentValues);
         navigate('/cars');
       } catch (e) {
-        console.warn(e);
+        catchCallback(e as Error);
       }
     }
   };

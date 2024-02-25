@@ -50,7 +50,6 @@ export class Profile {
         response = 'ok';
       });
     } catch (e) {
-      console.warn(e);
       response = (e as Error).message;
     }
 
