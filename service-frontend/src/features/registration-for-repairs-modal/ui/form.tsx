@@ -9,7 +9,7 @@ import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
 import { getCarTitle, getFullName, range } from 'shared/helpers';
 
-import { Button, DatePicker, Form, Select, App, FormInstance } from 'antd';
+import { Button, DatePicker, Form, Select, App, FormInstance, Flex } from 'antd';
 import { createInitialData } from '../helpers';
 import { registrationForRepairsState } from '../model';
 import dayjs from 'dayjs';
@@ -242,10 +242,13 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
           }
         />
       </Form.Item>
-      <Form.Item label={t('Price')}>
+      {/* <Form.Item label={t('Price')}>
         <span>{initialData?.maintenance.total_cost || currentMaintenance?.total_cost}</span>
-      </Form.Item>
-
+      </Form.Item> */}
+      <Flex gap="10px">
+        <span>Предварительная стоимость:</span>
+        <span>{initialData?.maintenance.total_cost || currentMaintenance?.total_cost}</span>
+      </Flex>
       {!formId && (
         <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>

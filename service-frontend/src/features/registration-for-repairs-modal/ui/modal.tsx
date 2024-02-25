@@ -98,11 +98,12 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           key={time}
           onClick={isActive ? () => setOpen(true) : undefined}
         />
+        {/* TODO: translate  */}
         <Modal
           open={open}
           onOk={undefined}
           onCancel={onClose}
-          title={initialData ? 'Edit' : 'Create'}
+          title={initialData ? 'Редактирование' : 'Создание'}
           footer={modalButtons}
         >
           <RegistrationForRepairsForm
