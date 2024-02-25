@@ -90,6 +90,12 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     try {
       await RepairService.registrationForRepairs(dataToSend);
       openNotification('success', 'Your entry has been sent');
+      if (date && currentAcceptorId) {
+        registrationForRepairsState.getNotes({
+          day: date.format('YYYY-MM-DD'),
+          acceptorId: currentAcceptorId,
+        });
+      }
       if (action) action();
     } catch (e) {
       catchCallback(e as Error);

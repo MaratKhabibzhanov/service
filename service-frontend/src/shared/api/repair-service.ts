@@ -20,6 +20,11 @@ export default class RepairService {
     return request;
   }
 
+  static async removeRepairNote(id: number) {
+    const request: null = await $api.delete(`service/registration/${id}/`).json();
+    return request;
+  }
+
   static async getRepairNotes(params: GetRepairNotesParams) {
     const { day, acceptorId } = params;
 

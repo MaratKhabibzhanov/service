@@ -2,8 +2,9 @@ import { Dayjs } from 'dayjs';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { AdditionalService, RepairService } from 'shared/api';
 
-class RegistrationForRepairs {
+class RegistrationForRepairsState {
   date: Dayjs | null = null;
+  notes: RegistrationForRepairs[] = [];
 
   clients: Client[] = [];
   currentClientId: number | null = null;
@@ -117,6 +118,22 @@ class RegistrationForRepairs {
     return response;
   }
 
+  async getNotes(params: { day: string; acceptorId: number }) {
+    let response = null;
+
+    try {
+      const notesData = await RepairService.getRepairNotes(params);
+      runInAction(() => {
+        this.notes = notesData.results;
+        response = 'ok';
+      });
+    } catch (e) {
+      response = (e as Error).message;
+    }
+
+    return response;
+  }
+
   clearStore() {
     this.currentClientId = null;
     this.searchClient = '';
@@ -126,4 +143,4 @@ class RegistrationForRepairs {
   }
 }
 
-export const registrationForRepairsState = new RegistrationForRepairs();
+export const registrationForRepairsState = new RegistrationForRepairsState();

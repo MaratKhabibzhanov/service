@@ -1,8 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
 
-import { RepairService } from 'shared/api';
 import { getFullName } from 'shared/helpers';
 import { registrationForRepairsState } from 'features';
 
@@ -11,8 +10,6 @@ import ScheduleList from './schedule-list';
 
 const Schedule: FC = () => {
   const { t } = useTranslation();
-
-  const [notes, setNotes] = useState<RegistrationForRepairs[]>([]);
 
   const { acceptors, currentAcceptorId, date } = registrationForRepairsState;
 
@@ -28,9 +25,7 @@ const Schedule: FC = () => {
       acceptorId: currentAcceptorId,
     };
 
-    RepairService.getRepairNotes(params).then((notesData) => {
-      setNotes(notesData.results);
-    });
+    registrationForRepairsState.getNotes(params);
   }, [currentAcceptorId, date]);
 
   const modifiedAcceptors = acceptors.map((item) => ({
@@ -49,7 +44,7 @@ const Schedule: FC = () => {
           placeholder={t('Select acceptor')}
         />
       </Flex>
-      <ScheduleList items={notes} />
+      <ScheduleList />
     </Space>
   );
 };
