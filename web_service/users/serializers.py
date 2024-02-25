@@ -42,6 +42,7 @@ class UsersShortSerializer(serializers.ModelSerializer):
                   'patronymic',
                   )
 
+
 class UserRegistrationSerializer(BaseUserRegistrationSerializer):
     class Meta(BaseUserRegistrationSerializer.Meta):
         fields = ('username',
