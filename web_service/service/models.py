@@ -116,6 +116,10 @@ class Car(models.Model):
     def __str__(self):
         return self.vin
 
+    class Meta:
+        verbose_name = "Автомобиль"
+        verbose_name_plural = "Автомобили"
+
 
 class Registration(models.Model):
     """Регистрация"""
