@@ -12,7 +12,9 @@ const useGetMenuItems = (role?: UserRole) => {
   }
 
   if (role === 'USER') {
-    currentMenuItems = menuItems.filter((item) => item.key !== 'schedule');
+    currentMenuItems = menuItems.filter(
+      (item) => item.key !== 'schedule' && item.key !== 'manage/clients'
+    );
   } else {
     currentMenuItems = menuItems.filter((item) => item.key !== 'cars');
   }

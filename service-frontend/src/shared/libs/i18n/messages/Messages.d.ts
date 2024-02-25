@@ -80,4 +80,5 @@ type Messages = {
   'Please select client!': string;
   Client: string;
   'Select acceptor': string;
+  Clients: string;
 };

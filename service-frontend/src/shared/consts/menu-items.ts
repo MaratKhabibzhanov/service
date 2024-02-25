@@ -1,4 +1,4 @@
-type MenuKeys = '/' | 'schedule' | 'cars';
+type MenuKeys = '/' | 'schedule' | 'cars' | 'manage/clients';
 
 type MenuItems = {
   label: string;
@@ -17,5 +17,9 @@ export const menuItems: MenuItems[] = [
   {
     label: 'Cars',
     key: 'cars',
+  },
+  {
+    label: 'Clients',
+    key: 'manage/clients',
   },
 ];

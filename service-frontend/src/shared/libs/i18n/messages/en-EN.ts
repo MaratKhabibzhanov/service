@@ -80,6 +80,7 @@ const enEN: Messages = {
   'Please select client!': 'Please select client!',
   Client: 'Client',
   'Select acceptor': 'Select acceptor',
+  Clients: 'Clients',
 };
 
 export default enEN;

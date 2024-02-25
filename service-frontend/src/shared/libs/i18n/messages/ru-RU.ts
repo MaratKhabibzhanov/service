@@ -81,6 +81,7 @@ const ruRU: Messages = {
   'Please select client!': 'Пожалуйста, выберите клиента!',
   Client: 'Клиент',
   'Select acceptor': 'Выберите мастера-приёмщика',
+  Clients: 'Клиенты',
 };
 
 export default ruRU;

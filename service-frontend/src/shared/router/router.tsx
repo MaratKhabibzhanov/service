@@ -8,6 +8,7 @@ import {
   RegistrationPage,
   SchedulePage,
   HomePage,
+  ClientsPage,
 } from 'pages';
 import { rootStore } from 'app/store';
 
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: 'manage/schedule',
         element: <SchedulePage />,
+      },
+      {
+        path: 'manage/clients',
+        element: <ClientsPage />,
       },
 
       {
