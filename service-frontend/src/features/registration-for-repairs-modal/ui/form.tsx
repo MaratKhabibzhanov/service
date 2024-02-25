@@ -1,5 +1,4 @@
 import { FC, useLayoutEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import debounce from 'debounce';
@@ -24,7 +23,6 @@ type RegistrationForRepairsFormProps = {
 };
 
 export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = observer((props) => {
-  const { carId } = useParams();
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
@@ -60,10 +58,10 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   }, [currentClientId, initialData, profile.carsInfo, profile.profile?.role]);
 
   useLayoutEffect(() => {
-    if (!currentCarId && !carId) return;
+    if (!currentCarId) return;
 
-    registrationForRepairsState.getMaintenances(currentCarId || Number(carId));
-  }, [carId, currentCarId]);
+    registrationForRepairsState.getMaintenances(currentCarId);
+  }, [currentCarId]);
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
     notification[variant]({
@@ -129,15 +127,8 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   }));
 
   const carsToSelect = useMemo(() => {
-    if (!carId) {
-      return cars.map((car) => ({ value: car.id, label: getCarTitle(car) }));
-    }
-
-    return profile.carsInfo.map((item) => ({
-      value: item.id,
-      label: getCarTitle(item),
-    }));
-  }, [carId, cars, profile.carsInfo]);
+    return cars.map((car) => ({ value: car.id, label: getCarTitle(car) }));
+  }, [cars]);
 
   const clientsToSelect = useMemo(
     () =>
@@ -153,7 +144,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     const currentValues = {
       time: dayjs(time, 'HH:mm'),
       day: date,
-      modifiedCar: carsToSelect.find((item) => item.value === Number(carId)),
+      modifiedCar: carsToSelect.find((item) => item.value === currentCarId),
       acceptor: currentAcceptorId,
       client: currentClientId,
       maintenance: currentMaintenance?.id,
@@ -170,7 +161,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     currentClientId,
     currentMaintenance?.id,
     currentCarId,
-    carId,
   ]);
 
   const filterOption = (input: string, option?: { label: string; value: number }) =>
@@ -212,7 +202,10 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         label={t('Car')}
         rules={[{ required: true, message: t('Please select car!') }]}
       >
-        <Select options={carsToSelect} />
+        <Select
+          options={carsToSelect}
+          onChange={(carId) => registrationForRepairsState.setCurrentCarId(carId)}
+        />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         label={t('Acceptor')}

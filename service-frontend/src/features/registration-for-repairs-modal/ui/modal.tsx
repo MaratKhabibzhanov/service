@@ -69,7 +69,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
         </Button>,
       ];
 
-      if (profile.profile?.role === 'MANAGER') {
+      if (profile.profile?.role === 'MANAGER' && initialData) {
         // TODO: translate
         buttons.unshift(
           <Popconfirm
@@ -88,7 +88,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
       }
 
       return buttons;
-    }, [isActive, onClose, profile.profile?.role, removeRepairNote, t, time]);
+    }, [initialData, isActive, onClose, profile.profile?.role, removeRepairNote, t, time]);
 
     return (
       <>

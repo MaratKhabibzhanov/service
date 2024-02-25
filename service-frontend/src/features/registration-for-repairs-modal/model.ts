@@ -136,6 +136,7 @@ class RegistrationForRepairsState {
 
   clearStore() {
     this.currentClientId = null;
+    this.currentCarId = null;
     this.searchClient = '';
     this.cars = [];
     this.maintenances = [];
