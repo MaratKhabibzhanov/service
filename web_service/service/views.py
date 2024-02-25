@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import RegistrationFilter
+from .mixins import CustomValidationErrorMixin
 from .models import (Part,
                      CarModel,
                      WorkingType,
@@ -78,7 +79,7 @@ class MaintenanceView(generics.GenericAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class CarViewSet(viewsets.ModelViewSet):
+class CarViewSet(CustomValidationErrorMixin, viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
