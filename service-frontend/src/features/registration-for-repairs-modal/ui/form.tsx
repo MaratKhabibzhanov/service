@@ -7,7 +7,7 @@ import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
 import { formItemLayout } from 'shared/consts';
 import { RepairService } from 'shared/api';
-import { getCarTitle, getFullName, range } from 'shared/helpers';
+import { getCarTitle, getFullName } from 'shared/helpers';
 
 import { Button, DatePicker, Form, Select, App, FormInstance, Flex } from 'antd';
 import { createInitialData } from '../helpers';
