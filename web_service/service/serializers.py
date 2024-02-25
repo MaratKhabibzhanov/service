@@ -1,12 +1,10 @@
 from datetime import date, time
 
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 
 from config import settings
 from customs.fields import ObjectField
-from users.models import CustomUser
-from users.serializers import UsersSerializer, UsersShortSerializer
+from users.serializers import UsersShortSerializer
 from .models import (Car,
                      Acceptor,
                      WorkingType,

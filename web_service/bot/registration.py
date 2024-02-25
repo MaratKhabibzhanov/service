@@ -21,8 +21,8 @@ class RegistrationStates(StatesGroup):
 
 def main_registration(message: types.Message, bot: TeleBot) -> None:
     bot.send_message(message.from_user.id,
-                     text='Хотите записаться на ремонт или отменить ранее созданную запись?',
-                     reply_markup=keyboard(["/записаться", "/отменить_запись", "/прервать"]))
+                     text='Начинаем процесс записи на ремонт?',
+                     reply_markup=keyboard(["/записаться", "/прервать"]))
 
 
 def cancelling_registration(message: types.Message, bot: TeleBot) -> None:
