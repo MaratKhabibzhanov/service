@@ -1,0 +1,38 @@
+.header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  z-index: 10;
+  width: 100vw;
+}
+
+.menu {
+  flex-grow: 1;
+}
+
+.container {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+@media (max-width: 576px) {
+  .header,
+  .container {
+    padding: 0 20px;
+  }
+
+  .header {
+    gap: 0;
+  }
+}
+
+.footer {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-end;
+}

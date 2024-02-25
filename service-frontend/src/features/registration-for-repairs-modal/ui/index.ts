@@ -1,0 +1,1 @@
+export { RegistrationForRepairsModal } from './modal';
