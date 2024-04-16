@@ -16,12 +16,11 @@ const ScheduleList: FC = () => {
 
         const modalProps = {
           initialData: currentItem,
-          key: time,
           isActive: !!(date && currentAcceptorId),
           time,
         };
 
-        return <RegistrationForRepairsModal {...modalProps} />;
+        return <RegistrationForRepairsModal key={time} {...modalProps} />;
       });
     },
     [currentAcceptorId, date, notes]

@@ -7,13 +7,13 @@ const Footer: FC = () => {
     <Layout.Footer className="footer">
       <Flex align="center" gap={10}>
         <Typography.Text code>Backend: </Typography.Text>
-        <a href="https://github.com/MaratKhabibzhanov" target="_blank">
+        <a href="https://github.com/MaratKhabibzhanov" target="_blank" rel="noreferrer">
           <Button icon={<GithubOutlined />} shape="circle" />
         </a>
       </Flex>
       <Flex align="center" gap={10}>
         <Typography.Text code>Frontend: </Typography.Text>
-        <a href="https://github.com/skrill3901" target="_blank">
+        <a href="https://github.com/skrill3901" target="_blank" rel="noreferrer">
           <Button icon={<GithubOutlined />} shape="circle" />
         </a>
       </Flex>
