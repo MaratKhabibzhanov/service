@@ -80,7 +80,11 @@ const AuthModal: FC = () => {
               placeholder={t('Password')}
             />
           </Form.Item>
-          {error && <Typography.Text type="danger">{error}</Typography.Text>}
+          {error && (
+            <Typography.Text type="danger" style={{ display: 'block', marginTop: '-22px' }}>
+              {error}
+            </Typography.Text>
+          )}
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>{t('Remember me')}</Checkbox>
