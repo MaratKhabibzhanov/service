@@ -75,10 +75,9 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   ]);
 
   useEffect(() => {
-    if (!currentCarId) return;
-
-    registrationForRepairsState.getMaintenances(currentCarId);
-  }, [currentCarId]);
+    const carId = initialData?.car.id || currentCarId;
+    if (carId) registrationForRepairsState.getMaintenances(carId);
+  }, [currentCarId, initialData?.car.id]);
 
   const openNotification = (variant: 'success' | 'error', description: string) => {
     notification[variant]({
