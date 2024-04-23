@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useMemo } from 'react';
+import { FC, useCallback, useLayoutEffect, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
@@ -6,19 +6,16 @@ import dayjs from 'dayjs';
 import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
 import { formItemLayout } from 'shared/consts';
-import { RepairService } from 'shared/api';
-import { getCarTitle, getFullName } from 'shared/helpers';
 
-import { Button, DatePicker, Form, Select, App, FormInstance, Flex } from 'antd';
+import { Button, DatePicker, Form, App, FormInstance, Flex } from 'antd';
 import { createInitialData } from '../helpers';
 import { registrationForRepairsState } from '../model';
-import { CarsField, ClientField } from './fields';
+import { AcceptorsField, CarsField, ClientsField, MaintenancesField } from './fields';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
-  formId?: string;
   action?: () => void;
-  time: string;
+  time?: string;
   form: FormInstance<RegistrationFoeRepairsFields>;
 };
 
@@ -26,7 +23,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const { catchCallback } = useCatch();
   const { t } = useTranslation();
 
-  const { initialData, formId, action, time, form } = props;
+  const { initialData, action, time, form } = props;
   const { profile } = useStore();
   const { notification } = App.useApp();
 
@@ -35,64 +32,39 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     [initialData?.id, profile.profile?.role]
   );
 
-  const {
-    cars,
-    acceptors,
-    maintenances,
-    currentMaintenance,
-    currentAcceptorId,
-    date,
-    currentClientId,
-    currentCarId,
-  } = registrationForRepairsState;
+  const { currentMaintenance, currentAcceptorId, date, currentClientId, currentCarId } =
+    registrationForRepairsState;
 
   useLayoutEffect(() => {
-    if (initialData?.car.owner.id) {
+    if (initialData) {
+      // TODO: объединить действия
       registrationForRepairsState.setCurrentClientId(initialData.car.owner.id);
+      registrationForRepairsState.setCurrentCarId(initialData.car.id);
     }
-  }, [initialData?.car.owner.id]);
+  }, [initialData]);
 
-  useEffect(() => {
-    const carId = initialData?.car.id || currentCarId;
-    if (carId) registrationForRepairsState.getMaintenances(carId);
-  }, [currentCarId, initialData?.car.id]);
+  const openNotification = useCallback(
+    (variant: 'success' | 'error', description: string) => {
+      notification[variant]({
+        message: variant === 'success' ? 'Success' : 'Error',
+        description,
+      });
+    },
+    [notification]
+  );
 
-  const openNotification = (variant: 'success' | 'error', description: string) => {
-    notification[variant]({
-      message: variant === 'success' ? 'Success' : 'Error',
-      description,
-    });
-  };
-
-  const sendForm = async (values: RegistrationFoeRepairsFields) => {
-    const car = formId
-      ? cars.find((item) => item.id === currentCarId)
-      : profile.carsInfo.find((item) => item.id === values.car);
-
-    if (!car) throw new Error('Car not found');
-
-    const dataToSend: RegistrationForRepairs = {
-      day: values.day.format('YYYY-MM-DD'),
-      time: values.time.format('HH:mm'),
-      acceptor: acceptors.find((item) => item.id === values.acceptor) || acceptors[0],
-      maintenance: currentMaintenance || maintenances[0],
-      car,
-    };
-
-    try {
-      await RepairService.registrationForRepairs(dataToSend);
-      openNotification('success', 'Your entry has been sent');
-      if (date && currentAcceptorId) {
-        registrationForRepairsState.getNotes({
-          day: date.format('YYYY-MM-DD'),
-          acceptorId: currentAcceptorId,
-        });
+  const sendForm = useCallback(
+    async (values: RegistrationFoeRepairsFields) => {
+      try {
+        await registrationForRepairsState.registration(values);
+        openNotification('success', 'Your entry has been sent');
+        if (action) action();
+      } catch (e: unknown) {
+        catchCallback(new Error(e as string));
       }
-      if (action) action();
-    } catch (e) {
-      catchCallback(e as Error);
-    }
-  };
+    },
+    [action, catchCallback, openNotification]
+  );
 
   const disableDates = useMemo(() => {
     const currentDate = new Date();
@@ -100,36 +72,11 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     return currentDate;
   }, []);
 
-  // const disabledTimes = () => {
-  //   const hours = range(0, 24);
-  //   const currentDisabledHours = [...hours.slice(0, 8), ...hours.slice(20, 24)];
-
-  //   return {
-  //     disabledHours: () => currentDisabledHours,
-  //     disabledMinutes: () => range(30, 60),
-  //   };
-  // };
-
-  const acceptorsToSelect = acceptors.map((item) => ({
-    value: item.id,
-    label: getFullName(item),
-  }));
-
-  const maintenancesToSelect = maintenances.map((item) => ({
-    value: item.id,
-    label: item.operation,
-  }));
-
-  const carsToSelect = useMemo(() => {
-    return cars.map((car) => ({ value: car.id, label: getCarTitle(car) }));
-  }, [cars]);
-
   const initialValues = useMemo(() => {
     if (initialData) return createInitialData(initialData);
     const currentValues = {
       time: dayjs(time, 'HH:mm'),
       day: date,
-      modifiedCar: carsToSelect.find((item) => item.value === currentCarId),
       acceptor: currentAcceptorId,
       client: currentClientId,
       maintenance: currentMaintenance?.id,
@@ -141,7 +88,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     initialData,
     time,
     date,
-    carsToSelect,
     currentAcceptorId,
     currentClientId,
     currentMaintenance?.id,
@@ -151,7 +97,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   return (
     <Form
       name={'registration-for-repairs'}
-      id={formId || 'registration-for-repairs'}
+      id={time || 'registration-for-repairs'}
       form={form}
       scrollToFirstError
       {...formItemLayout}
@@ -165,7 +111,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
           label={t('Client')}
           rules={[{ required: true, message: t('Please select client!') }]}
         >
-          <ClientField />
+          <ClientsField />
         </Form.Item>
       )}
       <Form.Item<RegistrationFoeRepairsFields>
@@ -180,7 +126,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         name="acceptor"
         rules={[{ required: true, message: t('Please select your acceptor!') }]}
       >
-        <Select options={acceptorsToSelect} disabled />
+        <AcceptorsField />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         name="day"
@@ -204,23 +150,14 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         label={t('Type of maintenance')}
         rules={[{ required: true, message: t('Please select type of maintenance!') }]}
       >
-        <Select
-          options={maintenancesToSelect}
-          onChange={(value) =>
-            registrationForRepairsState.setCurrentMaintenance(
-              maintenances.find((item) => item.id === value) || null
-            )
-          }
-        />
+        <MaintenancesField />
       </Form.Item>
-      {/* <Form.Item label={t('Price')}>
-        <span>{initialData?.maintenance.total_cost || currentMaintenance?.total_cost}</span>
-      </Form.Item> */}
+      {/* TODO: translate */}
       <Flex gap="10px">
         <span>Предварительная стоимость:</span>
         <span>{initialData?.maintenance.total_cost || currentMaintenance?.total_cost}</span>
       </Flex>
-      {!formId && (
+      {!time && (
         <Form.Item wrapperCol={{ sm: { offset: 14, span: 6 } }}>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             {t('Submit')}

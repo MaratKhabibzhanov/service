@@ -49,7 +49,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
       ];
 
       if (profile.profile?.role === 'MANAGER' && initialData) {
-        buttons.unshift(<CancelButton repairData={initialData} onClose={onClose} />);
+        buttons.unshift(<CancelButton repairData={initialData} onClose={onClose} key="cancel" />);
       }
 
       return buttons;
@@ -74,7 +74,6 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           >
             <RegistrationForRepairsForm
               initialData={initialData}
-              formId={time}
               action={onClose}
               time={time}
               form={form}

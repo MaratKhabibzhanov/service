@@ -9,7 +9,7 @@ import { Select } from 'antd';
 import { registrationForRepairsState } from '../../model';
 import { FieldProps } from './types';
 
-export const ClientField: FC<FieldProps> = observer(({ value, onChange }) => {
+export const ClientsField: FC<FieldProps> = observer(({ value, onChange }) => {
   const { clients } = registrationForRepairsState;
 
   const initialRender = useRef(true);
