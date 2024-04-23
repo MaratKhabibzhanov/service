@@ -1,11 +1,8 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const createInitialData = (data?: RegistrationForRepairs): RegistrationFoeRepairsFields => {
   const time = data?.time
-    ? dayjs()
-        .set('hour', +data.time.slice(0, 2))
-        .set('minute', +data.time.slice(3, 5))
-        .set('second', 0)
+    ? dayjs().hour(+data.time.slice(0, 2)).minute(+data.time.slice(3, 5))
     : null;
 
   return {
@@ -16,4 +13,23 @@ export const createInitialData = (data?: RegistrationForRepairs): RegistrationFo
     time,
     maintenance: data?.maintenance?.id || undefined,
   };
+};
+
+export const checkAllowedSave = (date: Dayjs | null, time: string) => {
+  let allowSave = true;
+
+  if (!date) return true;
+
+  // TODO: дата должна быть больше или равна дате сегодняшней
+  if (!dayjs().isSameOrBefore(date, 'day')) allowSave = false;
+  else if (dayjs().isSame(dayjs(date), 'day')) {
+    const timeArray = time.split(':');
+
+    // TODO: если выбранные часы меньше чем текущие
+    if (dayjs().hour(+timeArray[0]).minute(+timeArray[1]).isBefore(dayjs(), 'hour')) {
+      allowSave = false;
+    }
+  }
+
+  return allowSave;
 };

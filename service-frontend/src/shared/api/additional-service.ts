@@ -21,7 +21,7 @@ export default class AdditionalService {
 
   static async getUsers(search?: string) {
     const request: DRFResponse<Client> = await $api
-      .get(`auth/users/?search=${search || ''}`)
+      .get(`auth/users/${search && `?search=${search}`}`)
       .json();
     return request;
   }

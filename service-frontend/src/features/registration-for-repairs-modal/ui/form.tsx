@@ -1,7 +1,8 @@
-import { FC, useLayoutEffect, useMemo } from 'react';
+import { FC, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import debounce from 'debounce';
+import dayjs from 'dayjs';
 
 import { useStore } from 'app/store';
 import { useCatch } from 'shared/hooks';
@@ -12,7 +13,6 @@ import { getCarTitle, getFullName } from 'shared/helpers';
 import { Button, DatePicker, Form, Select, App, FormInstance, Flex } from 'antd';
 import { createInitialData } from '../helpers';
 import { registrationForRepairsState } from '../model';
-import dayjs from 'dayjs';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
@@ -27,7 +27,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const { t } = useTranslation();
 
   const { initialData, formId, action, time, form } = props;
-
   const { profile } = useStore();
   const { notification } = App.useApp();
 
@@ -43,21 +42,39 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     currentCarId,
   } = registrationForRepairsState;
 
-  useLayoutEffect(() => {
-    if (profile.profile?.role === 'USER') return;
+  const initialRender = useRef(true);
 
-    registrationForRepairsState.getClients();
+  useLayoutEffect(() => {
+    if (profile.profile?.role === 'MANAGER' && initialRender.current) {
+      registrationForRepairsState.getClients();
+      initialRender.current = false;
+    }
   }, [profile.profile?.role]);
 
   useLayoutEffect(() => {
     if (!currentClientId && initialData?.car.owner.id) {
       registrationForRepairsState.getCars(initialData.car.owner.id);
     } else if (profile.profile?.role === 'USER') {
-      registrationForRepairsState.setCars(profile.carsInfo);
+      if (profile.carsInfo.length === 0 && initialRender.current) {
+        profile.getCars().then((response) => {
+          if (response === 'ok') registrationForRepairsState.setCars(profile.carsInfo);
+          else catchCallback(new Error(response));
+        });
+        initialRender.current = false;
+      } else {
+        registrationForRepairsState.setCars(profile.carsInfo);
+      }
     }
-  }, [currentClientId, initialData, profile.carsInfo, profile.profile?.role]);
+  }, [
+    catchCallback,
+    currentClientId,
+    initialData,
+    profile,
+    profile.carsInfo,
+    profile.profile?.role,
+  ]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!currentCarId) return;
 
     registrationForRepairsState.getMaintenances(currentCarId);
