@@ -33,7 +33,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
       setOpen(false);
 
       if (profile?.profile?.role === 'MANAGER') {
-        registrationForRepairsState.clearStore();
+        registrationForRepairsState.clearState();
         form.resetFields();
       }
     }, [form, profile?.profile?.role]);

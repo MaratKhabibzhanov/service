@@ -9,7 +9,7 @@ type NewCarInfo = {
   engine: Engine;
 };
 
-type CarInfo = Required<NewCarInfo> & { owner: FullName; id: number };
+type CarInfo = Required<NewCarInfo> & { owner: FullName & { id: number } };
 
 type CarModel = {
   id: number;

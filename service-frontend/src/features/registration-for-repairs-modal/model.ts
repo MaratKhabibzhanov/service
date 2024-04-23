@@ -134,7 +134,7 @@ class RegistrationForRepairsState {
     return response;
   }
 
-  clearStore() {
+  clearState() {
     this.currentClientId = null;
     this.currentCarId = null;
     this.searchClient = '';
