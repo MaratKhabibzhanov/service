@@ -16,11 +16,11 @@ const CarInfoCard: FC<CarInfoCardProps> = ({ carInfo }) => {
   const content = carInfoFields.map((item) => {
     let children: ReactNode = null;
     if (item.key === 'engine') children = `${carInfo.engine.model} ${carInfo.engine.engine_vol}`;
-    else children = carInfo[item.key];
+    else if (item.key !== 'owner') children = carInfo[item.key];
 
     const label = t(item.label);
 
-    return { label, children };
+    return { label, children, key: item.key };
   });
 
   return (
