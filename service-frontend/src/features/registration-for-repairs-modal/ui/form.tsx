@@ -1,7 +1,6 @@
-import { FC, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { FC, useEffect, useLayoutEffect, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
-import debounce from 'debounce';
 import dayjs from 'dayjs';
 
 import { useStore } from 'app/store';
@@ -13,6 +12,7 @@ import { getCarTitle, getFullName } from 'shared/helpers';
 import { Button, DatePicker, Form, Select, App, FormInstance, Flex } from 'antd';
 import { createInitialData } from '../helpers';
 import { registrationForRepairsState } from '../model';
+import { CarsField, ClientField } from './fields';
 
 type RegistrationForRepairsFormProps = {
   initialData?: RegistrationForRepairs;
@@ -36,7 +36,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   );
 
   const {
-    clients,
     cars,
     acceptors,
     maintenances,
@@ -47,37 +46,11 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     currentCarId,
   } = registrationForRepairsState;
 
-  const initialRender = useRef(true);
-
   useLayoutEffect(() => {
-    if (profile.profile?.role === 'MANAGER' && initialRender.current) {
-      registrationForRepairsState.getClients();
-      initialRender.current = false;
+    if (initialData?.car.owner.id) {
+      registrationForRepairsState.setCurrentClientId(initialData.car.owner.id);
     }
-  }, [profile.profile?.role]);
-
-  useLayoutEffect(() => {
-    if (!currentClientId && initialData?.car.owner.id) {
-      registrationForRepairsState.getCars(initialData.car.owner.id);
-    } else if (profile.profile?.role === 'USER') {
-      if (profile.carsInfo.length === 0 && initialRender.current) {
-        profile.getCars().then((response) => {
-          if (response === 'ok') registrationForRepairsState.setCars(profile.carsInfo);
-          else catchCallback(new Error(response));
-        });
-        initialRender.current = false;
-      } else {
-        registrationForRepairsState.setCars(profile.carsInfo);
-      }
-    }
-  }, [
-    catchCallback,
-    currentClientId,
-    initialData,
-    profile,
-    profile.carsInfo,
-    profile.profile?.role,
-  ]);
+  }, [initialData?.car.owner.id]);
 
   useEffect(() => {
     const carId = initialData?.car.id || currentCarId;
@@ -151,15 +124,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     return cars.map((car) => ({ value: car.id, label: getCarTitle(car) }));
   }, [cars]);
 
-  const clientsToSelect = useMemo(
-    () =>
-      clients.map((item) => ({
-        value: item.id,
-        label: getFullName(item),
-      })),
-    [clients]
-  );
-
   const initialValues = useMemo(() => {
     if (initialData) return createInitialData(initialData);
     const currentValues = {
@@ -184,14 +148,6 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
     currentCarId,
   ]);
 
-  const filterOption = (input: string, option?: { label: string; value: number }) =>
-    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-
-  const debouncedSearch = debounce(
-    (value: string) => registrationForRepairsState.setSearchClient(value),
-    500
-  );
-
   return (
     <Form
       name={'registration-for-repairs'}
@@ -209,13 +165,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
           label={t('Client')}
           rules={[{ required: true, message: t('Please select client!') }]}
         >
-          <Select
-            options={clientsToSelect}
-            filterOption={filterOption}
-            showSearch
-            onSearch={debouncedSearch}
-            onChange={(value) => registrationForRepairsState.setCurrentClientId(value)}
-          />
+          <ClientField />
         </Form.Item>
       )}
       <Form.Item<RegistrationFoeRepairsFields>
@@ -223,11 +173,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         label={t('Car')}
         rules={[{ required: true, message: t('Please select car!') }]}
       >
-        <Select
-          options={carsToSelect}
-          onChange={(carId) => registrationForRepairsState.setCurrentCarId(carId)}
-          disabled={isDisabledFields}
-        />
+        <CarsField />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         label={t('Acceptor')}

@@ -23,7 +23,6 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
     const { t } = useTranslation();
 
     const { initialData, time, isActive } = props;
-    const { date } = registrationForRepairsState;
 
     const { profile } = useStore();
     const [form] = Form.useForm<RegistrationFoeRepairsFields>();

@@ -44,7 +44,7 @@ class RegistrationForRepairsState {
     this.getCars(id);
   }
 
-  setCurrentCarId(id: number) {
+  setCurrentCarId(id: number | null) {
     this.currentCarId = id;
   }
 
