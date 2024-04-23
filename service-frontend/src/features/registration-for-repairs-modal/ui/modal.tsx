@@ -1,8 +1,6 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
-import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 import { useStore } from 'app/store';
 import { ScheduleItem } from 'entities';
@@ -12,8 +10,6 @@ import { Button, Form, Modal } from 'antd';
 import { registrationForRepairsState } from '../model';
 import { CancelButton } from './cancel-button';
 import { checkAllowedSave } from '../helpers';
-
-dayjs.extend(isSameOrBefore);
 
 type RegistrationForRepairsModalProps = {
   initialData?: RegistrationForRepairs;

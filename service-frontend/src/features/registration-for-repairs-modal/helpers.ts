@@ -1,4 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+dayjs.extend(isSameOrBefore);
 
 export const createInitialData = (data?: RegistrationForRepairs): RegistrationFoeRepairsFields => {
   const time = data?.time
