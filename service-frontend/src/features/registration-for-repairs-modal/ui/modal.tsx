@@ -9,7 +9,6 @@ import { RegistrationForRepairsForm } from './form';
 import { Button, Form, Modal } from 'antd';
 import { registrationForRepairsState } from '../model';
 import { CancelButton } from './cancel-button';
-import { checkAllowedSave } from '../helpers';
 
 type RegistrationForRepairsModalProps = {
   initialData?: RegistrationForRepairs;
@@ -41,20 +40,11 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
     }, [form, profile?.profile?.role]);
 
     const modalButtons = useMemo(() => {
-      const allowSave = checkAllowedSave(date, time);
-
       const buttons = [
         <Button key="back" onClick={isActive ? onClose : undefined}>
           {t('Close')}
         </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          onClick={undefined}
-          htmlType="submit"
-          form={time}
-          disabled={!allowSave}
-        >
+        <Button key="submit" type="primary" onClick={undefined} htmlType="submit" form={time}>
           {t('Save')}
         </Button>,
       ];
@@ -64,7 +54,7 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
       }
 
       return buttons;
-    }, [date, initialData, isActive, onClose, profile.profile?.role, t, time]);
+    }, [initialData, isActive, onClose, profile.profile?.role, t, time]);
 
     return (
       <>

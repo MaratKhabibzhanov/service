@@ -5,6 +5,7 @@ import { TIMES_ONE, TIMES_THREE, TIMES_TWO } from '../consts';
 
 import { Flex } from 'antd';
 import { RegistrationForRepairsModal, registrationForRepairsState } from 'features';
+import { checkIsActiveModal } from '../helpers';
 
 const ScheduleList: FC = () => {
   const { date, currentAcceptorId, notes } = registrationForRepairsState;
@@ -16,7 +17,7 @@ const ScheduleList: FC = () => {
 
         const modalProps = {
           initialData: currentItem,
-          isActive: !!(date && currentAcceptorId),
+          isActive: !!(checkIsActiveModal(date, time) && currentAcceptorId),
           time,
         };
 

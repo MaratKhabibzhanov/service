@@ -30,6 +30,11 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
   const { profile } = useStore();
   const { notification } = App.useApp();
 
+  const isDisabledFields = useMemo(
+    () => Boolean(initialData?.id && profile.profile?.role === 'USER'),
+    [initialData?.id, profile.profile?.role]
+  );
+
   const {
     clients,
     cars,
@@ -221,6 +226,7 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         <Select
           options={carsToSelect}
           onChange={(carId) => registrationForRepairsState.setCurrentCarId(carId)}
+          disabled={isDisabledFields}
         />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
@@ -235,14 +241,17 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
         label={t('Date')}
         rules={[{ required: true, message: t('Please input date!') }]}
       >
-        <DatePicker disabledDate={(d) => !d || d.isBefore(disableDates)} />
+        <DatePicker
+          disabledDate={(d) => !d || d.isBefore(disableDates)}
+          disabled={isDisabledFields}
+        />
       </Form.Item>
       <Form.Item
         name="time"
         label={t('Time')}
         rules={[{ required: true, message: t('Please input time!') }]}
       >
-        <DatePicker.TimePicker format={'HH:mm'} />
+        <DatePicker.TimePicker format={'HH:mm'} disabled={isDisabledFields} />
       </Form.Item>
       <Form.Item<RegistrationFoeRepairsFields>
         name="maintenance"
