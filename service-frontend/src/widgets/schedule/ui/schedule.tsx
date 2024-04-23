@@ -15,6 +15,10 @@ const Schedule: FC = () => {
 
   useEffect(() => {
     registrationForRepairsState.getAcceptors();
+
+    return () => {
+      registrationForRepairsState.clearState();
+    };
   }, []);
 
   useEffect(() => {

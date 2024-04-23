@@ -134,11 +134,28 @@ class RegistrationForRepairsState {
     return response;
   }
 
-  clearState() {
+  clearCardState() {
     this.currentClientId = null;
     this.currentCarId = null;
     this.searchClient = '';
     this.cars = [];
+    this.maintenances = [];
+    this.currentMaintenance = null;
+  }
+
+  clearState() {
+    this.date = null;
+    this.notes = [];
+
+    this.clients = [];
+    this.currentClientId = null;
+    this.searchClient = '';
+
+    this.cars = [];
+    this.currentCarId = null;
+    this.acceptors = [];
+    this.currentAcceptorId = null;
+
     this.maintenances = [];
     this.currentMaintenance = null;
   }
