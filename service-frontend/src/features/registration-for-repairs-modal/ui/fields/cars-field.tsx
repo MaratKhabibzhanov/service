@@ -1,4 +1,4 @@
-import { FC, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import { FC, useCallback, useLayoutEffect, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
@@ -15,10 +15,8 @@ export const CarsField: FC<FieldProps> = observer(({ value, onChange }) => {
   const { profile } = useStore();
   const { cars, currentClientId } = registrationForRepairsState;
 
-  const initialRender = useRef(true);
-
   useLayoutEffect(() => {
-    if (!initialRender || !currentClientId || !profile.profile) return;
+    if (!currentClientId || !profile.profile) return;
 
     if (profile.profile.role === 'MANAGER') {
       registrationForRepairsState.getCars(currentClientId);

@@ -37,9 +37,10 @@ export const RegistrationForRepairsForm: FC<RegistrationForRepairsFormProps> = o
 
   useLayoutEffect(() => {
     if (initialData) {
-      // TODO: объединить действия
-      registrationForRepairsState.setCurrentClientId(initialData.car.owner.id);
-      registrationForRepairsState.setCurrentCarId(initialData.car.id);
+      const { car } = initialData;
+
+      registrationForRepairsState.setCurrentClientId(car.owner.id);
+      registrationForRepairsState.setCurrentCarId(car.id);
     }
   }, [initialData]);
 
