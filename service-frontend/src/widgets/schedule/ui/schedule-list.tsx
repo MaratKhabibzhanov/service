@@ -29,13 +29,13 @@ const ScheduleList: FC = () => {
 
   return (
     <Flex gap="10px">
-      <Flex vertical style={{ width: '200px' }}>
+      <Flex vertical gap="5px" style={{ width: '200px' }}>
         {renderContent(TIMES_ONE)}
       </Flex>
-      <Flex vertical style={{ width: '200px' }}>
+      <Flex vertical gap="5px" style={{ width: '200px' }}>
         {renderContent(TIMES_TWO)}
       </Flex>
-      <Flex vertical style={{ width: '200px' }}>
+      <Flex vertical gap="5px" style={{ width: '200px' }}>
         {renderContent(TIMES_THREE)}
       </Flex>
     </Flex>

@@ -12,9 +12,13 @@ type ScheduleItemProps = {
 };
 
 const ScheduleItem: FC<ScheduleItemProps> = ({ data, onClick, time }) => {
+  let backgroundColor = cyan[8];
+
+  if (data) backgroundColor = cyan[6];
+  else if (!onClick) backgroundColor = '';
   return (
     <Card
-      style={{ width: 200, padding: 0, height: '80px', backgroundColor: data ? cyan[6] : '' }}
+      style={{ width: 200, padding: 0, height: '80px', backgroundColor }}
       hoverable={!!onClick}
       size="small"
       styles={{ body: { padding: '5px' } }}
