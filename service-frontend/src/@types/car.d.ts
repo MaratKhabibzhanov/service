@@ -14,7 +14,7 @@ type CarInfo = Required<NewCarInfo> & { owner: FullName & { id: number } };
 type CarModel = {
   id: number;
   model: string;
-  image: string;
+  image?: string;
 };
 
 type Engine = {

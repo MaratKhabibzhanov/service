@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect } from 'react';
+import { FC, useLayoutEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 
@@ -11,9 +11,12 @@ const CarsPage: FC = () => {
   const { t } = useTranslation();
   const { profile } = useStore();
 
+  const initialRender = useRef(true);
+
   useLayoutEffect(() => {
-    if (profile.carsInfo.length === 0) {
+    if (profile.carsInfo.length === 0 && initialRender.current) {
       profile.getCars();
+      initialRender.current = false;
     }
   }, [profile]);
 

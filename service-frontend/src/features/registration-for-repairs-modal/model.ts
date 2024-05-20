@@ -44,7 +44,7 @@ class RegistrationForRepairsState {
     this.getCars(id);
   }
 
-  setCurrentCarId(id: number) {
+  setCurrentCarId(id: number | null) {
     this.currentCarId = id;
   }
 
@@ -53,13 +53,12 @@ class RegistrationForRepairsState {
   }
 
   async getCars(clientId: number) {
-    let response = null;
+    let response = 'ok';
 
     try {
       const carsData = await AdditionalService.getCarsInfo(clientId);
       runInAction(() => {
         this.cars = carsData.results;
-        response = 'ok';
       });
     } catch (e) {
       response = (e as Error).message;
@@ -69,13 +68,12 @@ class RegistrationForRepairsState {
   }
 
   async getAcceptors() {
-    let response = null;
+    let response = 'ok';
 
     try {
       const acceptorsData = await RepairService.getAcceptors();
       runInAction(() => {
         this.acceptors = acceptorsData.results;
-        response = 'ok';
       });
     } catch (e) {
       console.warn(e);
@@ -86,14 +84,13 @@ class RegistrationForRepairsState {
   }
 
   async getClients() {
-    let response = null;
+    let response = 'ok';
 
     try {
       const clientsData = await AdditionalService.getUsers(this.searchClient);
 
       runInAction(() => {
         this.clients = clientsData.results;
-        response = 'ok';
       });
     } catch (e) {
       response = (e as Error).message;
@@ -103,13 +100,12 @@ class RegistrationForRepairsState {
   }
 
   async getMaintenances(carId: number) {
-    let response = null;
+    let response = 'ok';
 
     try {
       const maintenancesData = await RepairService.getMaintenances(carId);
       runInAction(() => {
         this.maintenances = maintenancesData;
-        response = 'ok';
       });
     } catch (e) {
       response = (e as Error).message;
@@ -119,13 +115,12 @@ class RegistrationForRepairsState {
   }
 
   async getNotes(params: { day: string; acceptorId: number }) {
-    let response = null;
+    let response = 'ok';
 
     try {
       const notesData = await RepairService.getRepairNotes(params);
       runInAction(() => {
         this.notes = notesData.results;
-        response = 'ok';
       });
     } catch (e) {
       response = (e as Error).message;
@@ -134,11 +129,56 @@ class RegistrationForRepairsState {
     return response;
   }
 
-  clearStore() {
+  async registration(values: RegistrationFoeRepairsFields) {
+    let response = 'ok';
+
+    const acceptor = this.acceptors.find((item) => item.id === values.acceptor);
+    if (!acceptor) throw new Error('Acceptor not found');
+    if (!this.currentMaintenance) throw new Error('Maintenance not found');
+
+    const car = this.cars.find((item) => item.id === this.currentCarId);
+    if (!car) throw new Error('Car not found');
+
+    const dataToSend: RegistrationForRepairs = {
+      day: values.day.format('YYYY-MM-DD'),
+      time: values.time.format('HH:mm'),
+      maintenance: this.currentMaintenance,
+      acceptor,
+      car,
+    };
+
+    try {
+      await RepairService.registrationForRepairs(dataToSend);
+      await this.getNotes({ day: values.day.format('YYYY-MM-DD'), acceptorId: acceptor.id });
+    } catch (e) {
+      response = (e as Error).message;
+    }
+
+    return response;
+  }
+
+  clearCardState() {
     this.currentClientId = null;
     this.currentCarId = null;
     this.searchClient = '';
     this.cars = [];
+    this.maintenances = [];
+    this.currentMaintenance = null;
+  }
+
+  clearState() {
+    this.date = null;
+    this.notes = [];
+
+    this.clients = [];
+    this.currentClientId = null;
+    this.searchClient = '';
+
+    this.cars = [];
+    this.currentCarId = null;
+    this.acceptors = [];
+    this.currentAcceptorId = null;
+
     this.maintenances = [];
     this.currentMaintenance = null;
   }

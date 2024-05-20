@@ -5,6 +5,7 @@ import { TIMES_ONE, TIMES_THREE, TIMES_TWO } from '../consts';
 
 import { Flex } from 'antd';
 import { RegistrationForRepairsModal, registrationForRepairsState } from 'features';
+import { checkIsActiveModal } from '../helpers';
 
 const ScheduleList: FC = () => {
   const { date, currentAcceptorId, notes } = registrationForRepairsState;
@@ -16,12 +17,11 @@ const ScheduleList: FC = () => {
 
         const modalProps = {
           initialData: currentItem,
-          key: time,
-          isActive: !!(date && currentAcceptorId),
+          isActive: !!(checkIsActiveModal(date, time) && currentAcceptorId),
           time,
         };
 
-        return <RegistrationForRepairsModal {...modalProps} />;
+        return <RegistrationForRepairsModal key={time} {...modalProps} />;
       });
     },
     [currentAcceptorId, date, notes]
@@ -29,13 +29,13 @@ const ScheduleList: FC = () => {
 
   return (
     <Flex gap="10px">
-      <Flex vertical style={{ width: '200px' }}>
+      <Flex vertical gap="5px" style={{ width: '200px' }}>
         {renderContent(TIMES_ONE)}
       </Flex>
-      <Flex vertical style={{ width: '200px' }}>
+      <Flex vertical gap="5px" style={{ width: '200px' }}>
         {renderContent(TIMES_TWO)}
       </Flex>
-      <Flex vertical style={{ width: '200px' }}>
+      <Flex vertical gap="5px" style={{ width: '200px' }}>
         {renderContent(TIMES_THREE)}
       </Flex>
     </Flex>

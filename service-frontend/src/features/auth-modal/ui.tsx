@@ -17,6 +17,7 @@ type FieldType = {
 const AuthModal: FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   const [form] = Form.useForm<FieldType>();
 
   const { auth, profile } = useStore();
@@ -79,14 +80,19 @@ const AuthModal: FC = () => {
               placeholder={t('Password')}
             />
           </Form.Item>
-          {error && <Typography.Text type="danger">{error}</Typography.Text>}
+          {error && (
+            <Typography.Text type="danger" style={{ display: 'block', marginTop: '-22px' }}>
+              {error}
+            </Typography.Text>
+          )}
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>{t('Remember me')}</Checkbox>
             </Form.Item>
-            <Link to="/" style={{ float: 'right' }} onClick={close}>
+            {/* TODO: reset */}
+            {/* <Link to="/" style={{ float: 'right' }} onClick={close}>
               {t('Forgot password')}
-            </Link>
+            </Link> */}
           </Form.Item>
           <Form.Item>
             <Button

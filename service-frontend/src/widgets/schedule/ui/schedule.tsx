@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { observer } from 'mobx-react-lite';
 
@@ -13,8 +13,17 @@ const Schedule: FC = () => {
 
   const { acceptors, currentAcceptorId, date } = registrationForRepairsState;
 
+  const initialRender = useRef(true);
+
   useEffect(() => {
-    registrationForRepairsState.getAcceptors();
+    if (initialRender.current) {
+      registrationForRepairsState.getAcceptors();
+      initialRender.current = false;
+    }
+
+    return () => {
+      registrationForRepairsState.clearState();
+    };
   }, []);
 
   useEffect(() => {

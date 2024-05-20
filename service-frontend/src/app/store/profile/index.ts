@@ -50,7 +50,6 @@ export class Profile {
         response = 'ok';
       });
     } catch (e) {
-      console.warn(e);
       response = (e as Error).message;
     }
 
@@ -59,15 +58,13 @@ export class Profile {
 
   async getCars() {
     this.carsLoadingStatus = 'loading';
-    let response = null;
+    let response = 'ok';
 
     try {
       const carsData = await AdditionalService.getCarsInfo();
       runInAction(() => {
         this.carsInfo = carsData.results;
         this.carsLoadingStatus = 'idle';
-
-        response = 'ok';
       });
     } catch (e) {
       response = (e as Error).message;

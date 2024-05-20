@@ -4,12 +4,11 @@ import { observer } from 'mobx-react-lite';
 
 import { useStore } from 'app/store';
 import { ScheduleItem } from 'entities';
-import { RepairService } from 'shared/api';
-import { useCatch } from 'shared/hooks';
 
 import { RegistrationForRepairsForm } from './form';
-import { App, Button, Form, Modal, Popconfirm } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import { registrationForRepairsState } from '../model';
+import { CancelButton } from './cancel-button';
 
 type RegistrationForRepairsModalProps = {
   initialData?: RegistrationForRepairs;
@@ -22,8 +21,6 @@ type RegistrationForRepairsModalProps = {
 export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> = observer(
   (props) => {
     const { t } = useTranslation();
-    const { catchCallback } = useCatch();
-    const { notification } = App.useApp();
 
     const { initialData, time, isActive } = props;
 
@@ -36,28 +33,10 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
       setOpen(false);
 
       if (profile?.profile?.role === 'MANAGER') {
-        registrationForRepairsState.clearStore();
+        registrationForRepairsState.clearCardState();
         form.resetFields();
       }
     }, [form, profile?.profile?.role]);
-
-    const removeRepairNote = useCallback(async () => {
-      if (!initialData?.id || !initialData?.acceptor.id) return;
-
-      try {
-        await RepairService.removeRepairNote(initialData?.id);
-        await registrationForRepairsState.getNotes({
-          day: initialData.day,
-          acceptorId: initialData?.acceptor.id,
-        });
-
-        // TODO: translate
-        notification.success({ message: 'Запись успешно удалена' });
-        onClose();
-      } catch (e) {
-        catchCallback(e as Error);
-      }
-    }, [catchCallback, initialData, notification, onClose]);
 
     const modalButtons = useMemo(() => {
       const buttons = [
@@ -70,25 +49,11 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
       ];
 
       if (profile.profile?.role === 'MANAGER' && initialData) {
-        // TODO: translate
-        buttons.unshift(
-          <Popconfirm
-            title="Отменить запись"
-            description="Вы уверены, что хотите отменить запись?"
-            onConfirm={removeRepairNote}
-            onCancel={undefined}
-            okText={t('Yes')}
-            cancelText={t('No')}
-          >
-            <Button type="primary" key="cancel" danger>
-              Отменить запись
-            </Button>
-          </Popconfirm>
-        );
+        buttons.unshift(<CancelButton repairData={initialData} onClose={onClose} key="cancel" />);
       }
 
       return buttons;
-    }, [initialData, isActive, onClose, profile.profile?.role, removeRepairNote, t, time]);
+    }, [initialData, isActive, onClose, profile.profile?.role, t, time]);
 
     return (
       <>
@@ -99,21 +64,22 @@ export const RegistrationForRepairsModal: FC<RegistrationForRepairsModalProps> =
           onClick={isActive ? () => setOpen(true) : undefined}
         />
         {/* TODO: translate  */}
-        <Modal
-          open={open}
-          onOk={undefined}
-          onCancel={onClose}
-          title={initialData ? 'Редактирование' : 'Создание'}
-          footer={modalButtons}
-        >
-          <RegistrationForRepairsForm
-            initialData={initialData}
-            formId={time}
-            action={onClose}
-            time={time}
-            form={form}
-          />
-        </Modal>
+        {open && (
+          <Modal
+            open={open}
+            onOk={undefined}
+            onCancel={onClose}
+            title={initialData ? 'Редактирование' : 'Создание'}
+            footer={modalButtons}
+          >
+            <RegistrationForRepairsForm
+              initialData={initialData}
+              action={onClose}
+              time={time}
+              form={form}
+            />
+          </Modal>
+        )}
       </>
     );
   }
