@@ -9,5 +9,5 @@ pyTelegramBotAPI
 drf-spectacular
 Pillow
 djoser
-djangorestframework_simplejwt
+djangorestframework-simplejwt
 django-filter
