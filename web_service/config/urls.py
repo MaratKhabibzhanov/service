@@ -30,6 +30,7 @@ urlpatterns += [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
     path('api/admin/', admin.site.urls),
+    path('api_v2/auth/', include(('authentication.urls', 'authentication'), namespace='authentication')),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
     path('api/service/', include(('service.urls', 'service'), namespace='service')),
