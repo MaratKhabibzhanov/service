@@ -15,7 +15,7 @@ services:
     depends_on:
       - backend
     env_file:
-      - .env.dev
+      - .env
 
   backend:
     build:
@@ -29,7 +29,7 @@ services:
       DJANGO_DATABASE_HOST: database
       DJANGO_REDIS_HOST: redis
     env_file:
-      - .env.dev
+      - .env
 
     depends_on:
       - database
@@ -39,10 +39,10 @@ services:
     ports:
       - 3305:5432
     volumes:
-      - dev_postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
       - ./pg_dump:/service/pg_dump
     env_file:
-      - .env.dev
+      - .env
 
 volumes:
-  dev_postgres_data:
+  postgres_data:
