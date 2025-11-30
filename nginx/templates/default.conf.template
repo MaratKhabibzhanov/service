@@ -32,8 +32,7 @@ server {
     # Путь к frontend
     location / {
         root   /usr/share/nginx/service-frontend/dist;
-        index  index.html index.htm;
-        try_files $uri /index.html;
+        try_files $uri $uri/ /index.html;
     }
 
 
