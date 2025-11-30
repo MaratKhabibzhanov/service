@@ -5,12 +5,12 @@ server {
 
     server_name ${SERVICE_HOSTNAME};
 
-    location /.well-known/acme-challenge/ {
+    location ^~ /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
 
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://$host:4434$request_uri;
     }
 }
 
@@ -23,6 +23,10 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/${SERVICE_HOSTNAME}/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
 
 
     # Путь к frontend
@@ -51,8 +55,4 @@ server {
     location /api/static/ {
         alias /usr/src/app/static/;
     }
-
-    location ~ /.well-known/acme-challenge/ {
-            root /var/www/certbot;
-        }
 }
