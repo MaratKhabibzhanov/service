@@ -1,10 +1,24 @@
 # service_nginx.conf
 
 server {
-    listen      80;
-    # Доменное имя пока не существует
-    server_name ${SERVICE_HOSTNAME}; # подставить доменное имя сервера
-    charset     utf-8;
+    listen 80 default_server;
+
+    server_name ${SERVICE_HOSTNAME};
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 4434 default_server ssl;
+    listen [::]:4434 ssl;
+
+    server_name ${SERVICE_HOSTNAME};
+
+    ssl_certificate /etc/letsencrypt/live/${SERVICE_HOSTNAME}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${SERVICE_HOSTNAME}/privkey.pem;
+
 
     # Путь к frontend
     location / {
@@ -33,4 +47,7 @@ server {
         alias /usr/src/app/static/;
     }
 
+    location ~ /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
 }

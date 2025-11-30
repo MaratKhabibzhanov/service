@@ -3,13 +3,12 @@ services:
     image: nginx:latest
     ports:
       - 80:80
-      - 4434:443
+      - 4434:4434
     volumes:
       - ./nginx/templates:/etc/nginx/templates
       - ./service-frontend/dist:/usr/share/nginx/service-frontend/dist
       - ./web_service/media:/usr/src/app/media
       - ./web_service/static:/usr/src/app/static
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - /var/www/certbot/:/var/www/certbot/:ro
       - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
