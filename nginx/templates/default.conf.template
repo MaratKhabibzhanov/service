@@ -15,7 +15,7 @@ server {
 }
 
 server {
-    listen 4434 default_server ssl;
+    listen 4434 ssl;
     listen [::]:4434 ssl;
 
     server_name ${SERVICE_HOSTNAME};
