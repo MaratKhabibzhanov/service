@@ -1,11 +1,11 @@
 # service_nginx.conf
 
 server {
-    listen 80 default_server;
+    listen 80;
 
     server_name ${SERVICE_HOSTNAME};
 
-    location ^~ /.well-known/acme-challenge/ {
+    location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
 
@@ -16,7 +16,6 @@ server {
 
 server {
     listen 4434 ssl;
-    listen [::]:4434 ssl;
 
     server_name ${SERVICE_HOSTNAME};
 
