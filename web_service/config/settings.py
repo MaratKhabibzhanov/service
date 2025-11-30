@@ -64,11 +64,11 @@ MIDDLEWARE = [
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# CSRF_TRUSTED_ORIGINS = [ f'https://{domen}' for domen in ALLOWED_HOSTS ]
-CSRF_TRUSTED_ORIGINS = [
-    'https://somestrangedomen.ru',
-    'https://somestrangedomen.ru:4434',
-]
+CSRF_TRUSTED_ORIGINS = [ f'https://{domen}' for domen in ALLOWED_HOSTS ]
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://somestrangedomen.ru',
+#     'https://somestrangedomen.ru:4434',
+# ]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
