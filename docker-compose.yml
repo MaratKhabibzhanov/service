@@ -3,7 +3,7 @@ services:
     image: nginx:latest
     ports:
       - 80:80
-      - 4434:4434
+      - 8443:8443
     volumes:
       - ./nginx/templates:/etc/nginx/templates
       - ./service-frontend/dist:/usr/share/nginx/service-frontend/dist

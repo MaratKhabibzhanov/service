@@ -10,12 +10,12 @@ server {
     }
 
     location / {
-        return 301 https://$host:4434$request_uri;
+        return 301 https://$host:8443$request_uri;
     }
 }
 
 server {
-    listen 4434 ssl;
+    listen 8443 ssl;
 
     server_name ${SERVICE_HOSTNAME};
 
