@@ -44,16 +44,22 @@ class EngineSerializer(serializers.ModelSerializer):
 
 
 class CarModelSerializer(serializers.ModelSerializer):
-
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = CarModel
         fields = ['id',
                   'model',
-
+                  'image',
                   ]
 
-
+    def get_image(self, obj):
+        request = self.context.get('request')
+        print(request.get_host())
+        print(request.build_absolute_uri('/test'))
+        print(obj.image.url)
+        print(request.build_absolute_uri(obj.image.url))
+        return request.build_absolute_uri(obj.image.url)
 
 
 class CarModelShortSerializer(serializers.ModelSerializer):
