@@ -14,6 +14,10 @@ from .models import (Car,
                      Maintenance,
                      Engine,
                      Registration)
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class PartSerializer(serializers.ModelSerializer):
@@ -55,11 +59,11 @@ class CarModelSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         request = self.context.get('request')
-        print(request.get_host())
-        print(request.build_absolute_uri('/test'))
-        print(obj.image.url)
-        print(request.build_absolute_uri(obj.image.url))
-        return None
+        logger.info(request.get_host())
+        logger.info(request.get_port())
+        logger.info(request.build_absolute_uri('/test'))
+        logger.info(obj.image.url)
+        return request.build_absolute_uri(obj.image.url)
 
 
 class CarModelShortSerializer(serializers.ModelSerializer):
