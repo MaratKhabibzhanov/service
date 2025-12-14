@@ -59,7 +59,7 @@ class CarModelSerializer(serializers.ModelSerializer):
         print(request.build_absolute_uri('/test'))
         print(obj.image.url)
         print(request.build_absolute_uri(obj.image.url))
-        return request.build_absolute_uri(obj.image.url)
+        return None
 
 
 class CarModelShortSerializer(serializers.ModelSerializer):
