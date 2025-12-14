@@ -79,7 +79,7 @@ class MaintenanceView(generics.GenericAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class CarViewSet(CustomValidationErrorMixin, viewsets.ModelViewSet):
+class CarViewSet(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrManager]
